@@ -7,3 +7,7 @@ abstract class Failure {
 class AuthenticationFailure extends Failure {
   AuthenticationFailure({super.message});
 }
+
+class LocalDataBaseKeyNotFoundFailure extends Failure {
+  LocalDataBaseKeyNotFoundFailure({super.message});
+}

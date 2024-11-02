@@ -16,10 +16,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginWithGitHub _loginWithGitHub;
   AuthBloc(this._loginWithGitHub) : super(_InitialState()) {
     on<_LoginWithGitHubEvent>(_onLoginWithGitHubEvent);
+    on<_LoadCredentialsEvent>(_onLoadCredentialsEvent);
   }
 
   Future<FutureOr<void>> _onLoginWithGitHubEvent(
       _LoginWithGitHubEvent event, Emitter<AuthState> emit) async {
+    emit(AuthState.loading());
+    final response = await _loginWithGitHub(NoParams());
+    final newState = response.when(
+      success: (data) => AuthState.success(),
+      failed: (failure) => AuthState.failed(failure: failure),
+    );
+    emit(newState);
+  }
+
+  Future<FutureOr<void>> _onLoadCredentialsEvent(
+      _LoadCredentialsEvent event, Emitter<AuthState> emit) async {
     emit(AuthState.loading());
     final response = await _loginWithGitHub(NoParams());
     final newState = response.when(

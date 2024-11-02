@@ -19,32 +19,38 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loginWithGitHub,
+    required TResult Function() loadCredentials,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loginWithGitHub,
+    TResult? Function()? loadCredentials,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loginWithGitHub,
+    TResult Function()? loadCredentials,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginWithGitHubEvent value) loginWithGitHub,
+    required TResult Function(_LoadCredentialsEvent value) loadCredentials,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginWithGitHubEvent value)? loginWithGitHub,
+    TResult? Function(_LoadCredentialsEvent value)? loadCredentials,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginWithGitHubEvent value)? loginWithGitHub,
+    TResult Function(_LoadCredentialsEvent value)? loadCredentials,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -107,6 +113,7 @@ class _$LoginWithGitHubEventImpl implements _LoginWithGitHubEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loginWithGitHub,
+    required TResult Function() loadCredentials,
   }) {
     return loginWithGitHub();
   }
@@ -115,6 +122,7 @@ class _$LoginWithGitHubEventImpl implements _LoginWithGitHubEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loginWithGitHub,
+    TResult? Function()? loadCredentials,
   }) {
     return loginWithGitHub?.call();
   }
@@ -123,6 +131,7 @@ class _$LoginWithGitHubEventImpl implements _LoginWithGitHubEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loginWithGitHub,
+    TResult Function()? loadCredentials,
     required TResult orElse(),
   }) {
     if (loginWithGitHub != null) {
@@ -135,6 +144,7 @@ class _$LoginWithGitHubEventImpl implements _LoginWithGitHubEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginWithGitHubEvent value) loginWithGitHub,
+    required TResult Function(_LoadCredentialsEvent value) loadCredentials,
   }) {
     return loginWithGitHub(this);
   }
@@ -143,6 +153,7 @@ class _$LoginWithGitHubEventImpl implements _LoginWithGitHubEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginWithGitHubEvent value)? loginWithGitHub,
+    TResult? Function(_LoadCredentialsEvent value)? loadCredentials,
   }) {
     return loginWithGitHub?.call(this);
   }
@@ -151,6 +162,7 @@ class _$LoginWithGitHubEventImpl implements _LoginWithGitHubEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginWithGitHubEvent value)? loginWithGitHub,
+    TResult Function(_LoadCredentialsEvent value)? loadCredentials,
     required TResult orElse(),
   }) {
     if (loginWithGitHub != null) {
@@ -162,6 +174,109 @@ class _$LoginWithGitHubEventImpl implements _LoginWithGitHubEvent {
 
 abstract class _LoginWithGitHubEvent implements AuthEvent {
   factory _LoginWithGitHubEvent() = _$LoginWithGitHubEventImpl;
+}
+
+/// @nodoc
+abstract class _$$LoadCredentialsEventImplCopyWith<$Res> {
+  factory _$$LoadCredentialsEventImplCopyWith(_$LoadCredentialsEventImpl value,
+          $Res Function(_$LoadCredentialsEventImpl) then) =
+      __$$LoadCredentialsEventImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadCredentialsEventImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$LoadCredentialsEventImpl>
+    implements _$$LoadCredentialsEventImplCopyWith<$Res> {
+  __$$LoadCredentialsEventImplCopyWithImpl(_$LoadCredentialsEventImpl _value,
+      $Res Function(_$LoadCredentialsEventImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LoadCredentialsEventImpl implements _LoadCredentialsEvent {
+  _$LoadCredentialsEventImpl();
+
+  @override
+  String toString() {
+    return 'AuthEvent.loadCredentials()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoadCredentialsEventImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loginWithGitHub,
+    required TResult Function() loadCredentials,
+  }) {
+    return loadCredentials();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loginWithGitHub,
+    TResult? Function()? loadCredentials,
+  }) {
+    return loadCredentials?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loginWithGitHub,
+    TResult Function()? loadCredentials,
+    required TResult orElse(),
+  }) {
+    if (loadCredentials != null) {
+      return loadCredentials();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoginWithGitHubEvent value) loginWithGitHub,
+    required TResult Function(_LoadCredentialsEvent value) loadCredentials,
+  }) {
+    return loadCredentials(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoginWithGitHubEvent value)? loginWithGitHub,
+    TResult? Function(_LoadCredentialsEvent value)? loadCredentials,
+  }) {
+    return loadCredentials?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoginWithGitHubEvent value)? loginWithGitHub,
+    TResult Function(_LoadCredentialsEvent value)? loadCredentials,
+    required TResult orElse(),
+  }) {
+    if (loadCredentials != null) {
+      return loadCredentials(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadCredentialsEvent implements AuthEvent {
+  factory _LoadCredentialsEvent() = _$LoadCredentialsEventImpl;
 }
 
 /// @nodoc
