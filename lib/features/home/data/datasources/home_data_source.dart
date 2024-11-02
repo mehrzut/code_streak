@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:code_streak/common/url_helper.dart';
-import 'package:code_streak/core/api/api_handler.dart';
+import 'package:code_streak/core/controllers/api_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 

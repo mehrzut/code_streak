@@ -1,4 +1,4 @@
-import 'package:code_streak/core/api/api_handler.dart';
+import 'package:code_streak/core/controllers/api_handler.dart';
 import 'package:code_streak/core/data/response_model.dart';
 import 'package:code_streak/features/auth/data/datasources/auth_data_source.dart';
 import 'package:code_streak/features/auth/domain/repositories/auth_repo.dart';
