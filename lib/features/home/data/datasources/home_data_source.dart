@@ -5,6 +5,7 @@ import 'package:code_streak/common/url_helper.dart';
 import 'package:code_streak/core/controllers/api_handler.dart';
 import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/core/data/response_model.dart';
+import 'package:code_streak/features/home/domain/entities/contribution_day_data.dart';
 import 'package:code_streak/features/home/domain/entities/contribution_week_data.dart';
 import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/domain/entities/user_info.dart';
@@ -13,7 +14,7 @@ import 'package:injectable/injectable.dart';
 
 abstract class HomeDataSource {
   Future<ResponseModel<ContributionsData>> fetchGithubContributions(
-      String userName);
+      String username);
   Future<ResponseModel<UserInfo>> fetchUserInfo();
 }
 
@@ -21,10 +22,10 @@ abstract class HomeDataSource {
 class HomeDataSourceImpl implements HomeDataSource {
   @override
   Future<ResponseModel<ContributionsData>> fetchGithubContributions(
-      String userName) async {
+      String username) async {
     final query = '''
       query {
-        user(login: "$userName") {
+        user(login: "$username") {
           contributionsCollection {
             contributionCalendar {
               totalContributions
@@ -62,12 +63,17 @@ class HomeDataSourceImpl implements HomeDataSource {
         ContributionsData(
             totlaContributions: contributionCalendar['totalContributions'],
             contributionCalendar: ((contributionCalendar['weeks'] ?? [])
-                    as List<Map<String, dynamic>>)
+                    as List<dynamic>)
                 .map(
-                  (e) => ContributionWeekData(
-                    count: e['contributionCount'] ?? 0,
-                    date: DateTime.tryParse(e['date'] ?? '') ?? DateTime.now(),
-                  ),
+                  (element) => ContributionWeekData(
+                      days: ((element['contributionDays'] ?? [])
+                              as List<dynamic>)
+                          .map((e) => ContributionDayData(
+                                contributionCount: e['contributionCount'] ?? 0,
+                                date: DateTime.tryParse(e['date'] ?? '') ??
+                                    DateTime.now(),
+                              ))
+                          .toList()),
                 )
                 .toList()),
       );

@@ -16,8 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ContributionWeekData {
-  DateTime get date => throw _privateConstructorUsedError;
-  int get count => throw _privateConstructorUsedError;
+  List<ContributionDayData> get days => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ContributionWeekDataCopyWith<ContributionWeekData> get copyWith =>
@@ -30,7 +29,7 @@ abstract class $ContributionWeekDataCopyWith<$Res> {
           $Res Function(ContributionWeekData) then) =
       _$ContributionWeekDataCopyWithImpl<$Res, ContributionWeekData>;
   @useResult
-  $Res call({DateTime date, int count});
+  $Res call({List<ContributionDayData> days});
 }
 
 /// @nodoc
@@ -47,18 +46,13 @@ class _$ContributionWeekDataCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? date = null,
-    Object? count = null,
+    Object? days = null,
   }) {
     return _then(_value.copyWith(
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      count: null == count
-          ? _value.count
-          : count // ignore: cast_nullable_to_non_nullable
-              as int,
+      days: null == days
+          ? _value.days
+          : days // ignore: cast_nullable_to_non_nullable
+              as List<ContributionDayData>,
     ) as $Val);
   }
 }
@@ -71,7 +65,7 @@ abstract class _$$ContributionWeekDataImplCopyWith<$Res>
       __$$ContributionWeekDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime date, int count});
+  $Res call({List<ContributionDayData> days});
 }
 
 /// @nodoc
@@ -85,18 +79,13 @@ class __$$ContributionWeekDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? date = null,
-    Object? count = null,
+    Object? days = null,
   }) {
     return _then(_$ContributionWeekDataImpl(
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      count: null == count
-          ? _value.count
-          : count // ignore: cast_nullable_to_non_nullable
-              as int,
+      days: null == days
+          ? _value._days
+          : days // ignore: cast_nullable_to_non_nullable
+              as List<ContributionDayData>,
     ));
   }
 }
@@ -104,17 +93,21 @@ class __$$ContributionWeekDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ContributionWeekDataImpl extends _ContributionWeekData {
-  _$ContributionWeekDataImpl({required this.date, required this.count})
-      : super._();
+  _$ContributionWeekDataImpl({required final List<ContributionDayData> days})
+      : _days = days,
+        super._();
 
+  final List<ContributionDayData> _days;
   @override
-  final DateTime date;
-  @override
-  final int count;
+  List<ContributionDayData> get days {
+    if (_days is EqualUnmodifiableListView) return _days;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_days);
+  }
 
   @override
   String toString() {
-    return 'ContributionWeekData(date: $date, count: $count)';
+    return 'ContributionWeekData(days: $days)';
   }
 
   @override
@@ -122,12 +115,12 @@ class _$ContributionWeekDataImpl extends _ContributionWeekData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ContributionWeekDataImpl &&
-            (identical(other.date, date) || other.date == date) &&
-            (identical(other.count, count) || other.count == count));
+            const DeepCollectionEquality().equals(other._days, _days));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, date, count);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_days));
 
   @JsonKey(ignore: true)
   @override
@@ -140,14 +133,12 @@ class _$ContributionWeekDataImpl extends _ContributionWeekData {
 
 abstract class _ContributionWeekData extends ContributionWeekData {
   factory _ContributionWeekData(
-      {required final DateTime date,
-      required final int count}) = _$ContributionWeekDataImpl;
+          {required final List<ContributionDayData> days}) =
+      _$ContributionWeekDataImpl;
   _ContributionWeekData._() : super._();
 
   @override
-  DateTime get date;
-  @override
-  int get count;
+  List<ContributionDayData> get days;
   @override
   @JsonKey(ignore: true)
   _$$ContributionWeekDataImplCopyWith<_$ContributionWeekDataImpl>

@@ -1,4 +1,5 @@
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
+import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/pages/home_page.dart';
 import 'package:code_streak/features/splash/presentation/pages/splash_page.dart';
@@ -17,8 +18,15 @@ final router = GoRouter(
     GoRoute(
       path: HomePage.pageRoute,
       name: HomePage.pageRoute,
-      builder: (context, state) => BlocProvider(
-        create: (context) => sl<UserInfoBloc>(),
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => sl<UserInfoBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<ContributionsBloc>(),
+          ),
+        ],
         child: const HomePage(),
       ),
     ),

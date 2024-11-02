@@ -1,5 +1,6 @@
 import 'package:code_streak/core/data/response_model.dart';
 import 'package:code_streak/features/home/data/datasources/home_data_source.dart';
+import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/domain/entities/user_info.dart';
 import 'package:code_streak/features/home/domain/repositories/home_repo.dart';
 import 'package:injectable/injectable.dart';
@@ -13,5 +14,11 @@ class HomeRepoImpl implements HomeRepo {
   @override
   Future<ResponseModel<UserInfo>> getUserInfo() {
     return dataSource.fetchUserInfo();
+  }
+
+  @override
+  Future<ResponseModel<ContributionsData>> getContributionsData(
+      {required String username}) {
+    return dataSource.fetchGithubContributions(username);
   }
 }
