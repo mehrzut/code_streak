@@ -27,9 +27,9 @@ import 'package:code_streak/features/home/data/repositories/home_repo_impl.dart'
 import 'package:code_streak/features/home/domain/repositories/home_repo.dart'
     as _i7;
 import 'package:code_streak/features/home/domain/usecases/get_contributions_data.dart'
-    as _i10;
-import 'package:code_streak/features/home/domain/usecases/get_user_info.dart'
     as _i9;
+import 'package:code_streak/features/home/domain/usecases/get_user_info.dart'
+    as _i10;
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart'
     as _i14;
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart'
@@ -54,18 +54,18 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i6.LocalDatabase>(() => const _i6.LocalDatabaseImpl());
     gh.lazySingleton<_i7.HomeRepo>(
         () => _i8.HomeRepoImpl(dataSource: gh<_i4.HomeDataSource>()));
-    gh.lazySingleton<_i9.GetUserInfo>(
-        () => _i9.GetUserInfo(repo: gh<_i7.HomeRepo>()));
-    gh.lazySingleton<_i10.GetContributionsData>(
-        () => _i10.GetContributionsData(repo: gh<_i7.HomeRepo>()));
+    gh.lazySingleton<_i9.GetContributionsData>(
+        () => _i9.GetContributionsData(repo: gh<_i7.HomeRepo>()));
+    gh.lazySingleton<_i10.GetUserInfo>(
+        () => _i10.GetUserInfo(repo: gh<_i7.HomeRepo>()));
     gh.lazySingleton<_i11.AuthRepo>(() => _i12.AuthRepoImpl(
           dataSource: gh<_i5.AuthDataSource>(),
           localDatabase: gh<_i6.LocalDatabase>(),
         ));
     gh.factory<_i13.UserInfoBloc>(
-        () => _i13.UserInfoBloc(gh<_i9.GetUserInfo>()));
+        () => _i13.UserInfoBloc(gh<_i10.GetUserInfo>()));
     gh.factory<_i14.ContributionsBloc>(
-        () => _i14.ContributionsBloc(gh<_i10.GetContributionsData>()));
+        () => _i14.ContributionsBloc(gh<_i9.GetContributionsData>()));
     gh.lazySingleton<_i15.LoginWithGitHub>(
         () => _i15.LoginWithGitHub(repo: gh<_i11.AuthRepo>()));
     gh.factory<_i16.AuthBloc>(() => _i16.AuthBloc(gh<_i15.LoginWithGitHub>()));
