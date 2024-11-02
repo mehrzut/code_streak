@@ -12,7 +12,7 @@ class AuthRepoImpl implements AuthRepo {
   AuthRepoImpl({required this.dataSource});
 
   @override
-  Future<ResponseModel<AccessTokenResponse>> loginWithGitHub() async {
+  Future<ResponseModel<void>> loginWithGitHub() async {
     final result = await dataSource.loginWithGitHub();
     result.whenOrNull(
       success: (data) {
