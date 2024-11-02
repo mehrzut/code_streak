@@ -11,3 +11,7 @@ class AuthenticationFailure extends Failure {
 class LocalDataBaseKeyNotFoundFailure extends Failure {
   LocalDataBaseKeyNotFoundFailure({super.message});
 }
+
+class APIErrorFailure extends Failure {
+  APIErrorFailure({super.message});
+}

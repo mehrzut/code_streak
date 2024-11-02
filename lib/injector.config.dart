@@ -13,15 +13,23 @@ import 'package:code_streak/core/controllers/local_database.dart' as _i6;
 import 'package:code_streak/features/auth/data/datasources/auth_data_source.dart'
     as _i5;
 import 'package:code_streak/features/auth/data/repositories/auth_repo_impl.dart'
-    as _i8;
+    as _i11;
 import 'package:code_streak/features/auth/domain/repositories/auth_repo.dart'
-    as _i7;
-import 'package:code_streak/features/auth/domain/usecases/login_with_github.dart'
-    as _i9;
-import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart'
     as _i10;
+import 'package:code_streak/features/auth/domain/usecases/login_with_github.dart'
+    as _i13;
+import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart'
+    as _i14;
 import 'package:code_streak/features/home/data/datasources/home_data_source.dart'
     as _i4;
+import 'package:code_streak/features/home/data/repositories/home_repo_impl.dart'
+    as _i8;
+import 'package:code_streak/features/home/domain/repositories/home_repo.dart'
+    as _i7;
+import 'package:code_streak/features/home/domain/usecases/get_user_info.dart'
+    as _i9;
+import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart'
+    as _i12;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
@@ -40,13 +48,19 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i4.HomeDataSource>(() => _i4.HomeDataSourceImpl());
     gh.lazySingleton<_i5.AuthDataSource>(() => _i5.AuthDataSourceImpl());
     gh.lazySingleton<_i6.LocalDatabase>(() => const _i6.LocalDatabaseImpl());
-    gh.lazySingleton<_i7.AuthRepo>(() => _i8.AuthRepoImpl(
+    gh.lazySingleton<_i7.HomeRepo>(
+        () => _i8.HomeRepoImpl(dataSource: gh<_i4.HomeDataSource>()));
+    gh.lazySingleton<_i9.GetUserInfo>(
+        () => _i9.GetUserInfo(repo: gh<_i7.HomeRepo>()));
+    gh.lazySingleton<_i10.AuthRepo>(() => _i11.AuthRepoImpl(
           dataSource: gh<_i5.AuthDataSource>(),
           localDatabase: gh<_i6.LocalDatabase>(),
         ));
-    gh.lazySingleton<_i9.LoginWithGitHub>(
-        () => _i9.LoginWithGitHub(repo: gh<_i7.AuthRepo>()));
-    gh.factory<_i10.AuthBloc>(() => _i10.AuthBloc(gh<_i9.LoginWithGitHub>()));
+    gh.factory<_i12.UserInfoBloc>(
+        () => _i12.UserInfoBloc(gh<_i9.GetUserInfo>()));
+    gh.lazySingleton<_i13.LoginWithGitHub>(
+        () => _i13.LoginWithGitHub(repo: gh<_i10.AuthRepo>()));
+    gh.factory<_i14.AuthBloc>(() => _i14.AuthBloc(gh<_i13.LoginWithGitHub>()));
     return this;
   }
 }
