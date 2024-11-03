@@ -60,7 +60,7 @@ class _ContributionCalendarWidgetState
                     ),
                   );
                 }
-                if (i + 1 > currentDays.length) {
+                if (i + 1 > current.monthLengthInDays) {
                   // next month's days
                   return const Expanded(child: SizedBox());
                 }
