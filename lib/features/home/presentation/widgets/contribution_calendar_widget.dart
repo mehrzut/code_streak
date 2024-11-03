@@ -25,7 +25,7 @@ class _ContributionCalendarWidgetState
   void initState() {
     allDays = widget.data.contributionCalendar.fold(<ContributionDayData>[],
         (previousValue, element) => [...previousValue, ...element.days]);
-    current = DateTime(2024, 10, 4);
+    current = DateTime.now();
     super.initState();
   }
 
@@ -34,38 +34,50 @@ class _ContributionCalendarWidgetState
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
       height: 250,
-      child: GridView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: current.monthLengthInWeeks * 7,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 7),
-        itemBuilder: (context, index) {
-          final currentDays = getDaysWithSameMonthAs(current);
-          final firstWeekday = currentDays.first.date.weekday % 7;
-          final i = index - firstWeekday;
-          if (firstWeekday > index) {
-            // previous month's days
-            return const SizedBox();
-          }
-          if (currentDays.length > i) {
-            // current month's days with data
-            return Container(
-              margin: const EdgeInsets.all(2),
-              color: Colors.red,
-              child: Text(currentDays[i].date.day.toString()),
-            );
-          }
-          if (i + 1 > currentDays.length) {
-            // next month's days
-            return const SizedBox();
-          }
-          // current month's days without data
-          return Container(
-            margin: const EdgeInsets.all(2),
-            color: Colors.grey,
-            child: Text((i + 1).toString()),
+      child: Row(
+        children: List.generate(current.monthLengthInWeeks, (weekIndex) {
+          return Expanded(
+            child: Column(
+              children: List.generate(7, (dayIndex) {
+                final index = weekIndex * 7 + dayIndex;
+                final currentDays = getDaysWithSameMonthAs(current);
+                final firstWeekday = currentDays.first.date.weekday % 7;
+                final i = index - firstWeekday;
+
+                if (firstWeekday > index) {
+                  // previous month's days
+                  return const Expanded(child: SizedBox());
+                }
+                if (currentDays.length > i) {
+                  // current month's days with data
+                  return Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.all(2),
+                      color: Colors.red,
+                      child: Center(
+                        child: Text(currentDays[i].date.day.toString()),
+                      ),
+                    ),
+                  );
+                }
+                if (i + 1 > currentDays.length) {
+                  // next month's days
+                  return const Expanded(child: SizedBox());
+                }
+                // current month's days without data
+                return Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.all(2),
+                    color: Colors.grey,
+                    child: Center(
+                      child: Text((i + 1).toString()),
+                    ),
+                  ),
+                );
+              }),
+            ),
           );
-        },
+        }),
       ),
     );
   }
