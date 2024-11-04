@@ -7,8 +7,12 @@ class ContributionCalendarWidget extends StatefulWidget {
   const ContributionCalendarWidget({
     super.key,
     required this.data,
+    required this.heatMapColor,
+    required this.defaultCalendarColor,
   });
   final ContributionsData data;
+  final Color heatMapColor;
+  final Color defaultCalendarColor;
 
   @override
   State<ContributionCalendarWidget> createState() =>
@@ -20,7 +24,10 @@ class _ContributionCalendarWidgetState
   List<ContributionDayData> allDays = [];
   List<ContributionDayData> currentDays = [];
   int firstWeekday = 0;
+  int maxContributeInCurrentPeriod = 0;
   late DateTime current;
+
+  double get _cellSize => 40;
 
   @override
   void initState() {
@@ -29,6 +36,11 @@ class _ContributionCalendarWidgetState
         (previousValue, element) => [...previousValue, ...element.days]);
     currentDays = getDaysWithSameMonthAs(current);
     firstWeekday = currentDays.first.date.weekday % 7;
+    maxContributeInCurrentPeriod = currentDays.fold(
+        0,
+        (previousValue, element) => element.contributionCount > previousValue
+            ? element.contributionCount
+            : previousValue);
 
     super.initState();
   }
@@ -37,7 +49,6 @@ class _ContributionCalendarWidgetState
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
-      height: 210,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(current.monthLengthInWeeks, (weekIndex) {
@@ -49,20 +60,28 @@ class _ContributionCalendarWidgetState
 
               if (firstWeekday > index) {
                 // previous month's days
-                return const Expanded(child: SizedBox());
+                return SizedBox.square(dimension: _cellSize);
               }
               if (currentDays.length > i) {
                 // current month's days with data
-                return _DayItemWidget(data: currentDays[i]);
+                return _DayItemWidget(
+                  defaultColor: widget.defaultCalendarColor,
+                  color: _getColor(currentDays, i),
+                  size: Size.square(_cellSize),
+                  data: currentDays[i],
+                );
               }
               if (i + 1 > current.monthLengthInDays) {
                 // next month's days
-                return const Expanded(child: SizedBox());
+                SizedBox.square(dimension: _cellSize);
               }
               // current month's days without data
               final date = currentDays.last.date
                   .add(Duration(days: i - currentDays.length + 1));
               return _DayItemWidget(
+                defaultColor: widget.defaultCalendarColor,
+                color: widget.defaultCalendarColor,
+                size: Size.square(_cellSize),
                 data: ContributionDayData(date: date, contributionCount: 0),
               );
             }),
@@ -81,24 +100,47 @@ class _ContributionCalendarWidgetState
     }
     return temp;
   }
+
+  Color _getColor(List<ContributionDayData> currentDays, int i) {
+    final opacity =
+        currentDays[i].contributionCount / maxContributeInCurrentPeriod;
+    return widget.heatMapColor.withOpacity(opacity);
+  }
 }
 
 class _DayItemWidget extends StatelessWidget {
-  const _DayItemWidget({required this.data});
-
+  const _DayItemWidget(
+      {required this.data,
+      required this.color,
+      required this.defaultColor,
+      required this.size});
+  final Color color;
+  final Color defaultColor;
   final ContributionDayData data;
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: 30,
-      child: Container(
-        margin: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(4)),
-        child: Center(
-          child: Text(data.date.day.toString()),
-        ),
+    return SizedBox.fromSize(
+      size: size,
+      child: Stack(
+        alignment: Alignment.center,
+        fit: StackFit.expand,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+                color: defaultColor, borderRadius: BorderRadius.circular(4)),
+          ),
+          Container(
+            margin: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+                color: color, borderRadius: BorderRadius.circular(4)),
+            child: Center(
+              child: Text(data.date.day.toString()),
+            ),
+          ),
+        ],
       ),
     );
   }

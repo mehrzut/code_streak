@@ -48,7 +48,11 @@ class _HomePage extends State<HomePage> {
                   loading: () => const Center(
                     child: CircularProgressIndicator(),
                   ),
-                  success: (data) => ContributionCalendarWidget(data:data),
+                  success: (data) => ContributionCalendarWidget(
+                    data: data,
+                    heatMapColor: Colors.green,
+                    defaultCalendarColor: Colors.grey.shade100,
+                  ),
                   orElse: () => const SizedBox(),
                 );
               },
