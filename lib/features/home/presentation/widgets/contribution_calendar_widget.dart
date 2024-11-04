@@ -35,7 +35,7 @@ class _ContributionCalendarWidgetState
     allDays = widget.data.contributionCalendar.fold(<ContributionDayData>[],
         (previousValue, element) => [...previousValue, ...element.days]);
     currentDays = getDaysWithSameMonthAs(current);
-    firstWeekday = currentDays.first.date.weekday % 7;
+    firstWeekday = (currentDays.first.date.weekday - 1) % 7;
     maxContributeInCurrentPeriod = currentDays.fold(
         0,
         (previousValue, element) => element.contributionCount > previousValue
@@ -53,8 +53,9 @@ class _ContributionCalendarWidgetState
         Column(
           children: List.generate(
             7,
-            (index) => SizedBox(
+            (index) => Container(
               height: _cellSize,
+              padding: const EdgeInsets.all(2),
               child: Center(child: Text((index + 1).weekdayName())),
             ),
           ),
@@ -143,7 +144,12 @@ class _DayItemWidget extends StatelessWidget {
           Container(
             margin: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-                color: color, borderRadius: BorderRadius.circular(4)),
+              color: color,
+              borderRadius: BorderRadius.circular(4),
+              border: data.date.isToday
+                  ? Border.all(color: Colors.black, width: 1)
+                  : null,
+            ),
             child: Center(
               child: Text(data.date.day.toString()),
             ),

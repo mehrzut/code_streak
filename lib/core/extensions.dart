@@ -16,6 +16,14 @@ extension DateTimeExt on DateTime {
   int get monthLengthInWeeks {
     return (monthLengthInDays + 6) ~/ 7;
   }
+
+  bool isSameDayAs(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
+  }
+
+  bool get isToday{
+    return isSameDayAs(DateTime.now());
+  }
 }
 
 extension IntExt on int {
