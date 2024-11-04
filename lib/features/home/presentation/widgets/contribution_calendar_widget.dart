@@ -24,12 +24,12 @@ class _ContributionCalendarWidgetState
 
   @override
   void initState() {
+    current = DateTime.now();
     allDays = widget.data.contributionCalendar.fold(<ContributionDayData>[],
         (previousValue, element) => [...previousValue, ...element.days]);
     currentDays = getDaysWithSameMonthAs(current);
     firstWeekday = currentDays.first.date.weekday % 7;
 
-    current = DateTime.now();
     super.initState();
   }
 
