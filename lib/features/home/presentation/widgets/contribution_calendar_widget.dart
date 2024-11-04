@@ -49,9 +49,17 @@ class _ContributionCalendarWidgetState
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(current.monthLengthInWeeks, (weekIndex) {
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Column(
+          children: List.generate(
+            7,
+            (index) => SizedBox(
+              height: _cellSize,
+              child: Center(child: Text((index + 1).weekdayName())),
+            ),
+          ),
+        ),
+        ...List.generate(current.monthLengthInWeeks, (weekIndex) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(7, (dayIndex) {
@@ -87,7 +95,7 @@ class _ContributionCalendarWidgetState
             }),
           );
         }),
-      ),
+      ]),
     );
   }
 

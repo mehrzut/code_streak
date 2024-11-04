@@ -17,3 +17,26 @@ extension DateTimeExt on DateTime {
     return (monthLengthInDays + 6) ~/ 7;
   }
 }
+
+extension IntExt on int {
+  String weekdayName() {
+    switch (this) {
+      case DateTime.monday:
+        return 'Mon';
+      case DateTime.tuesday:
+        return 'Tue';
+      case DateTime.wednesday:
+        return 'Wed';
+      case DateTime.thursday:
+        return 'Thu';
+      case DateTime.friday:
+        return 'Fri';
+      case DateTime.saturday:
+        return 'Sat';
+      case DateTime.sunday:
+        return 'Sun';
+      default:
+        return '';
+    }
+  }
+}
