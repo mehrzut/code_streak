@@ -8,9 +8,8 @@ extension DateTimeExt on DateTime {
   }
 
   int get monthLengthInDays {
-    return DateTime(year, month + 1, 1)
-        .difference(DateTime(year, month, 1))
-        .inDays;
+    final firstDayOfMonth = DateTime(year, month, 1);
+    return firstDayOfMonth.nextMonth.difference(firstDayOfMonth).inDays;
   }
 
   int get monthLengthInWeeks {
@@ -21,8 +20,24 @@ extension DateTimeExt on DateTime {
     return year == other.year && month == other.month && day == other.day;
   }
 
-  bool get isToday{
+  bool get isToday {
     return isSameDayAs(DateTime.now());
+  }
+
+  DateTime get nextMonth {
+    if (month <= 11) {
+      return DateTime(year, month + 1, day);
+    } else {
+      return DateTime(year + 1, 1, day);
+    }
+  }
+
+  DateTime get previousMonth {
+    if (month > 1) {
+      return DateTime(year, month - 1, day);
+    } else {
+      return DateTime(year - 1, 12, day);
+    }
   }
 }
 
