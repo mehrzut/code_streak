@@ -12,11 +12,11 @@ extension DateTimeExt on DateTime {
   }
 
   DateTime get firstDayOfMonth => DateTime(year, month, 1);
-  
+
   DateTime get lastDayOfMonth => DateTime(year, month, monthLengthInDays);
 
   int get monthLengthInWeeks {
-    return (monthLengthInDays + 6) ~/ 7;
+    return ((monthLengthInDays + firstDayOfMonth.weekday -1) ~/ 7) + 1;
   }
 
   bool isSameDayAs(DateTime other) {
