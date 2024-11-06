@@ -129,7 +129,7 @@ class _ContributionCalendarWidgetState
                   }
                   if (i + 1 > state.current.monthLengthInDays) {
                     // next month's days
-                    SizedBox.square(dimension: _cellSize);
+                    return SizedBox.square(dimension: _cellSize);
                   }
                   // current month's days without data
                   final date = (state.currentDays.isNotEmpty
