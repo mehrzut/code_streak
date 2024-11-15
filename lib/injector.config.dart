@@ -16,10 +16,12 @@ import 'package:code_streak/features/auth/data/repositories/auth_repo_impl.dart'
     as _i12;
 import 'package:code_streak/features/auth/domain/repositories/auth_repo.dart'
     as _i11;
+import 'package:code_streak/features/auth/domain/usecases/load_session.dart'
+    as _i16;
 import 'package:code_streak/features/auth/domain/usecases/login_with_github.dart'
     as _i15;
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart'
-    as _i16;
+    as _i17;
 import 'package:code_streak/features/home/data/datasources/home_data_source.dart'
     as _i4;
 import 'package:code_streak/features/home/data/repositories/home_repo_impl.dart'
@@ -68,7 +70,12 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i14.ContributionsBloc(gh<_i9.GetContributionsData>()));
     gh.lazySingleton<_i15.LoginWithGitHub>(
         () => _i15.LoginWithGitHub(repo: gh<_i11.AuthRepo>()));
-    gh.factory<_i16.AuthBloc>(() => _i16.AuthBloc(gh<_i15.LoginWithGitHub>()));
+    gh.lazySingleton<_i16.LoadSession>(
+        () => _i16.LoadSession(repo: gh<_i11.AuthRepo>()));
+    gh.factory<_i17.AuthBloc>(() => _i17.AuthBloc(
+          gh<_i15.LoginWithGitHub>(),
+          gh<_i16.LoadSession>(),
+        ));
     return this;
   }
 }
