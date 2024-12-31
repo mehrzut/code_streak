@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/enums.dart';
 import 'package:appwrite/models.dart';
 import 'package:code_streak/core/controllers/api_handler.dart';
