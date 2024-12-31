@@ -1,4 +1,7 @@
 import 'dart:developer';
+import 'package:code_streak/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_streak/injector.dart';
@@ -7,7 +10,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await _loadEnv();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging.instance.requestPermission();
+  log((await FirebaseMessaging.instance.getToken()).toString());
   await configureDependencies();
   runApp(const MainApp());
 }

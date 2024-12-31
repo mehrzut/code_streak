@@ -75,27 +75,32 @@ class HomeDataSourceImpl implements HomeDataSource {
 
   @override
   Future<ResponseModel<UserInfo>> fetchUserInfo() async {
-    final response = await ApiHandler.instance.callApi((dio) => dio.getUri(
-          Uri.parse('${UrlHelper.appwriteApiUrl}getUserInfo'),
-          options: Options(
-            contentType: 'application/json',
-          ),
-        ));
+    try {
+      final response = await ApiHandler.instance.callApi((dio) => dio.getUri(
+            Uri.parse('${UrlHelper.appwriteApiUrl}getUserInfo'),
+            options: Options(
+              contentType: 'application/json',
+            ),
+          ));
 
-    if (response.statusCode == 200) {
-      var data = response.data;
-      if (data is String) {
-        data = jsonDecode(response.data);
+      if (response.statusCode == 200) {
+        var data = response.data;
+        if (data is String) {
+          data = jsonDecode(response.data);
+        }
+        final viewer = data['data']['viewer'];
+        return ResponseModel.success(UserInfo(
+          username: viewer['login'] ?? '',
+          avatarUrl: viewer['avatarUrl'],
+          bio: viewer['bio'],
+          location: viewer['location'],
+          fullName: viewer['name'] ?? '',
+        ));
       }
-      final viewer = data['data']['viewer'];
-      return ResponseModel.success(UserInfo(
-        username: viewer['login'] ?? '',
-        avatarUrl: viewer['avatarUrl'],
-        bio: viewer['bio'],
-        location: viewer['location'],
-        fullName: viewer['name'] ?? '',
-      ));
+      return ResponseModel.failed(APIErrorFailure());
+    } catch (e) {
+      log(e.toString());
+      return ResponseModel.failed(APIErrorFailure());
     }
-    return ResponseModel.failed(APIErrorFailure());
   }
 }
