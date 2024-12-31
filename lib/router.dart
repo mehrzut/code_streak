@@ -1,3 +1,4 @@
+import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
@@ -30,6 +31,7 @@ final router = GoRouter(
           BlocProvider(
             create: (context) => sl<ReminderBloc>(),
           ),
+    
         ],
         child: const HomePage(),
       ),

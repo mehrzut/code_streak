@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:code_streak/common/url_helper.dart';
-import 'package:code_streak/core/controllers/api_handler.dart';
+import 'package:code_streak/core/controllers/client_handler.dart';
 import 'package:code_streak/core/controllers/notification_handler.dart';
 import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/core/data/response_model.dart';
@@ -30,7 +30,7 @@ class HomeDataSourceImpl implements HomeDataSource {
   Future<ResponseModel<ContributionsData>> fetchGithubContributions(
       String username) async {
     try {
-      final response = await ApiHandler.instance.callApi((dio) => dio.getUri(
+      final response = await ClientHandler.instance.callApi((dio) => dio.getUri(
             Uri.parse(
               '${UrlHelper.appwriteApiUrl}getGithubContributions?username=$username',
             ),
@@ -82,7 +82,7 @@ class HomeDataSourceImpl implements HomeDataSource {
   @override
   Future<ResponseModel<UserInfo>> fetchUserInfo() async {
     try {
-      final response = await ApiHandler.instance.callApi((dio) => dio.getUri(
+      final response = await ClientHandler.instance.callApi((dio) => dio.getUri(
             Uri.parse('${UrlHelper.appwriteApiUrl}getUserInfo'),
             options: Options(
               contentType: 'application/json',
@@ -116,21 +116,21 @@ class HomeDataSourceImpl implements HomeDataSource {
       /// get the user time zone offset
       final currentTimeZone = DateTime.now().timeZoneOffset.toString();
       await NotificationHandler.initialize();
-      await ApiHandler.instance.account
+      await ClientHandler.instance.account
           .updatePrefs(prefs: {'timezone': currentTimeZone});
       final token = await FirebaseMessaging.instance.getToken();
       if (token != null) {
         final currentSession =
-            await ApiHandler.instance.account.getSession(sessionId: 'current');
+            await ClientHandler.instance.account.getSession(sessionId: 'current');
         try {
-          await ApiHandler.instance.account.createPushTarget(
+          await ClientHandler.instance.account.createPushTarget(
               identifier: token,
               targetId: currentSession.userId,
               providerId: dotenv.get('APPWRITE_FCM_PROVIDER_ID', fallback: ''));
         } on AppwriteException catch (e) {
           log(e.toString());
           if (e.type == 'user_target_already_exists') {
-            await ApiHandler.instance.account.updatePushTarget(
+            await ClientHandler.instance.account.updatePushTarget(
               identifier: token,
               targetId: currentSession.userId,
             );

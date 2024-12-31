@@ -1,3 +1,5 @@
+import 'package:code_streak/core/controllers/overlay_manager.dart';
+import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
@@ -39,6 +41,12 @@ class _HomePage extends State<HomePage> {
         appBar: AppBar(
           title: const Text('CodeStreak'),
           centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.logout_outlined),
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
         ),
         body: SafeArea(
           child: CustomScrollView(
@@ -121,5 +129,15 @@ class _HomePage extends State<HomePage> {
 
   void _setUserReminder() {
     context.read<ReminderBloc>().add(ReminderEvent.set());
+  }
+
+  void _signOut() {
+    OverlayManager.showSignOutDialog(context).then(
+      (value) {
+        if ((value ?? false) && mounted) {
+          context.read<SignOutBloc>().add(const SignOutEvent.signOut());
+        }
+      },
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:appwrite/models.dart';
+
 extension DateTimeExt on DateTime {
   bool isSameMonthAs(DateTime other) {
     return year == other.year && month == other.month;
@@ -16,7 +18,7 @@ extension DateTimeExt on DateTime {
   DateTime get lastDayOfMonth => DateTime(year, month, monthLengthInDays);
 
   int get monthLengthInWeeks {
-    return ((monthLengthInDays + firstDayOfMonth.weekday -1) ~/ 7) + 1;
+    return ((monthLengthInDays + firstDayOfMonth.weekday - 1) ~/ 7) + 1;
   }
 
   bool isSameDayAs(DateTime other) {
@@ -99,5 +101,13 @@ extension IntExt on int {
       default:
         return '';
     }
+  }
+}
+
+extension SessionExt on Session {
+  bool get isExpired {
+    var currentTime = DateTime.now().toUtc();
+    var expiryTime = DateTime.parse(providerAccessTokenExpiry);
+    return currentTime.isAfter(expiryTime);
   }
 }

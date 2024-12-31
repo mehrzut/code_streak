@@ -7,19 +7,22 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class ApiHandler {
+class ClientHandler {
   final Dio _dio;
   Client client = Client()
       .setEndpoint('https://cloud.appwrite.io/v1')
       .setProject('code-streak');
   late final account = Account(client);
 
-  ApiHandler() : _dio = Dio(BaseOptions());
+  ClientHandler()
+      : _dio = Dio(BaseOptions(
+          validateStatus: (status) => (status ?? 400) < 500,
+        ));
 
-  static ApiHandler? _instance;
+  static ClientHandler? _instance;
 
-  static ApiHandler get instance {
-    _instance ??= ApiHandler();
+  static ClientHandler get instance {
+    _instance ??= ClientHandler();
     return _instance!;
   }
 
@@ -41,7 +44,7 @@ class ApiHandler {
     Response response,
     Future<Response> Function(Dio dio) caller,
   ) async {
-    final result = await sl<AuthRepo>().loginWithGitHub();
+    final result = await sl<AuthRepo>().refreshSession();
     return result.when(
       success: (data) {
         updateSession(data);

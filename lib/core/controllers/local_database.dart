@@ -10,6 +10,8 @@ import 'package:injectable/injectable.dart';
 abstract class LocalDatabase {
   Future<void> saveSession(Session data);
   Future<ResponseModel<Session>> loadSession();
+
+  Future<void> deleteSession();
 }
 
 @LazySingleton(as: LocalDatabase)
@@ -36,5 +38,10 @@ class LocalDatabaseImpl implements LocalDatabase {
   @override
   Future<void> saveSession(Session data) {
     return _storage.write(key: _sessionKey, value: jsonEncode(data.toMap()));
+  }
+
+  @override
+  Future<void> deleteSession() {
+    return _storage.delete(key: _sessionKey);
   }
 }
