@@ -1,13 +1,13 @@
 import 'dart:io';
+import 'package:appwrite/models.dart';
 import 'package:code_streak/features/auth/domain/repositories/auth_repo.dart';
 import 'package:code_streak/injector.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:oauth2_client/access_token_response.dart';
 
 @lazySingleton
 class ApiHandler {
-  AccessTokenResponse? _token;
+  Session? _session;
   final Dio _dio;
 
   ApiHandler() : _dio = Dio(BaseOptions()) {
@@ -15,9 +15,10 @@ class ApiHandler {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         // Add the token to the headers if it is available
-        if (_token?.accessToken != null && _token!.accessToken!.isNotEmpty) {
+        if (_session?.providerAccessToken != null &&
+            _session!.providerAccessToken.isNotEmpty) {
           options.headers[HttpHeaders.authorizationHeader] =
-              'Bearer ${_token!.accessToken}';
+              'Bearer ${_session!.providerAccessToken}';
         }
         handler.next(options); // Continue with the request
       },
@@ -32,8 +33,8 @@ class ApiHandler {
   }
 
   // Method to update the token
-  void updateToken(AccessTokenResponse? newToken) {
-    _token = newToken;
+  void updateSession(Session? newSession) {
+    _session = newSession;
   }
 
   Future<Response> callApi(Future<Response> Function(Dio dio) caller) async {
@@ -51,7 +52,7 @@ class ApiHandler {
     final result = await sl<AuthRepo>().loginWithGitHub();
     return result.when(
       success: (data) {
-        updateToken(data);
+        updateSession(data);
         return caller(_dio); // Retry the API call with the new token
       },
       failed: (failure) => response,

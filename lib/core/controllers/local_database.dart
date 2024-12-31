@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:appwrite/models.dart';
 import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/core/data/response_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
-import 'package:oauth2_client/access_token_response.dart';
 
 abstract class LocalDatabase {
-  Future<void> saveCredentials(AccessTokenResponse data);
-  Future<ResponseModel<AccessTokenResponse>> loadCredentials();
+  Future<void> saveSession(Session data);
+  Future<ResponseModel<Session>> loadSession();
 }
 
 @LazySingleton(as: LocalDatabase)
@@ -20,23 +20,21 @@ class LocalDatabaseImpl implements LocalDatabase {
     encryptedSharedPreferences: true,
   ));
 
-  static const _credentialsKey = 'CREDENTIALS_KEY';
+  static const _sessionKey = 'SESSION_KEY';
 
   @override
-  Future<ResponseModel<AccessTokenResponse>> loadCredentials() async {
-    final data = await _storage.read(key: _credentialsKey);
+  Future<ResponseModel<Session>> loadSession() async {
+    final data = await _storage.read(key: _sessionKey);
     if (data != null) {
-      return ResponseModel.success(
-          AccessTokenResponse.fromMap(jsonDecode(data)));
+      return ResponseModel.success(Session.fromMap(jsonDecode(data)));
     } else {
-      log('No Credentials!');
+      log('No Session!');
       return ResponseModel.failed(LocalDataBaseKeyNotFoundFailure());
     }
   }
 
   @override
-  Future<void> saveCredentials(AccessTokenResponse data) {
-    return _storage.write(
-        key: _credentialsKey, value: jsonEncode(data.toMap()));
+  Future<void> saveSession(Session data) {
+    return _storage.write(key: _sessionKey, value: jsonEncode(data.toMap()));
   }
 }
