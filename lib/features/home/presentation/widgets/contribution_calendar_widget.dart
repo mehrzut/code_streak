@@ -171,31 +171,36 @@ class _DayItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.fromSize(
-      size: size,
-      child: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.expand,
-        children: [
-          Container(
-            margin: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-                color: defaultColor, borderRadius: BorderRadius.circular(4)),
-          ),
-          Container(
-            margin: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(4),
-              border: data.date.isToday
-                  ? Border.all(color: Colors.black, width: 1)
-                  : null,
+    return Tooltip(
+      message:
+          '${data.contributionCount} contribution${data.contributionCount == 1 ? '' : 's'}',
+      triggerMode: TooltipTriggerMode.tap,
+      child: SizedBox.fromSize(
+        size: size,
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                  color: defaultColor, borderRadius: BorderRadius.circular(4)),
             ),
-            child: Center(
-              child: Text(data.date.day.toString()),
+            Container(
+              margin: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(4),
+                border: data.date.isToday
+                    ? Border.all(color: Colors.black, width: 1)
+                    : null,
+              ),
+              child: Center(
+                child: Text(data.date.day.toString()),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
