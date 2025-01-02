@@ -4,7 +4,7 @@ import 'package:code_streak/features/auth/domain/repositories/auth_repo.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class LoadSession extends UseCase<ResponseModel<void>, NoParams> {
+class LoadCredentials extends UseCase<ResponseModel<void>, NoParams> {
   final AuthRepo repo;
 
   LoadSession({required this.repo});

@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:code_streak/features/auth/data/models/auth_result_data.dart';
+import 'package:appwrite/appwrite.dart' hide Response;
+import 'package:appwrite/models.dart';
 import 'package:code_streak/features/auth/domain/repositories/auth_repo.dart';
 import 'package:code_streak/injector.dart';
 import 'package:dio/dio.dart';
@@ -7,18 +8,22 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class ApiHandler {
-  AuthResultData? _authData;
+  Session? _session;
   final Dio _dio;
+  Client client = Client()
+      .setEndpoint('https://cloud.appwrite.io/v1')
+      .setProject('code-streak');
+  late final account = Account(client);
 
   ApiHandler() : _dio = Dio(BaseOptions()) {
     // Add the token interceptor
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         // Add the token to the headers if it is available
-        if (_authData?.session.providerAccessToken != null &&
-            _authData!.session.providerAccessToken.isNotEmpty) {
+        if (_session?.providerAccessToken != null &&
+            _session!.providerAccessToken.isNotEmpty) {
           options.headers[HttpHeaders.authorizationHeader] =
-              'Bearer ${_authData!.session.providerAccessToken}';
+              'Bearer ${_session!.providerAccessToken}';
         }
         handler.next(options); // Continue with the request
       },
@@ -33,8 +38,8 @@ class ApiHandler {
   }
 
   // Method to update the token
-  void updateToken(AuthResultData? newToken) {
-    _authData = newToken;
+  void updateSession(Session? newSession) {
+    _session = newSession;
   }
 
   Future<Response> callApi(Future<Response> Function(Dio dio) caller) async {
@@ -52,6 +57,7 @@ class ApiHandler {
     final result = await sl<AuthRepo>().loginWithGitHub();
     return result.when(
       success: (data) {
+        updateSession(data);
         return caller(_dio); // Retry the API call with the new token
       },
       failed: (failure) => response,
