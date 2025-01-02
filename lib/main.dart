@@ -16,7 +16,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.instance.requestPermission();
-  log((await FirebaseMessaging.instance.getToken()).toString());
   await configureDependencies();
   runApp(const MainApp());
 }

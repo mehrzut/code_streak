@@ -8,27 +8,13 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class ApiHandler {
-  Session? _session;
   final Dio _dio;
   Client client = Client()
       .setEndpoint('https://cloud.appwrite.io/v1')
       .setProject('code-streak');
   late final account = Account(client);
 
-  ApiHandler() : _dio = Dio(BaseOptions()) {
-    // Add the token interceptor
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        // Add the token to the headers if it is available
-        if (_session?.providerAccessToken != null &&
-            _session!.providerAccessToken.isNotEmpty) {
-          options.headers[HttpHeaders.authorizationHeader] =
-              'Bearer ${_session!.providerAccessToken}';
-        }
-        handler.next(options); // Continue with the request
-      },
-    ));
-  }
+  ApiHandler() : _dio = Dio(BaseOptions());
 
   static ApiHandler? _instance;
 
@@ -39,7 +25,8 @@ class ApiHandler {
 
   // Method to update the token
   void updateSession(Session? newSession) {
-    _session = newSession;
+    _dio.options.headers["Authorization"] =
+        "Bearer ${newSession?.providerAccessToken}";
   }
 
   Future<Response> callApi(Future<Response> Function(Dio dio) caller) async {

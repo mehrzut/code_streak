@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/core/data/usecase.dart';
-import 'package:code_streak/features/auth/domain/usecases/load_credentials.dart';
+import 'package:code_streak/features/auth/domain/usecases/load_session.dart';
 import 'package:code_streak/features/auth/domain/usecases/login_with_github.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -14,7 +14,7 @@ part 'auth_bloc.freezed.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final LoadCredentials _loadCredentials;
+  final LoadSession _loadCredentials;
   final LoginWithGitHub _loginWithGitHub;
   AuthBloc(this._loginWithGitHub, this._loadCredentials)
       : super(_InitialState()) {
