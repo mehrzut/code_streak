@@ -23,7 +23,6 @@ dependencies:
   appwrite: 13.0.0
   firebase_core: ^3.9.0
   firebase_messaging: ^15.1.6
-  flutter_timezone: ^4.0.0
 
 dev_dependencies:
   flutter_test:

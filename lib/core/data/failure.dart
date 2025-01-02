@@ -15,3 +15,7 @@ class LocalDataBaseKeyNotFoundFailure extends Failure {
 class APIErrorFailure extends Failure {
   APIErrorFailure({super.message});
 }
+
+class AppwritePrefFailure extends Failure {
+  AppwritePrefFailure();
+}

@@ -16,6 +16,8 @@ abstract class HomeDataSource {
   Future<ResponseModel<ContributionsData>> fetchGithubContributions(
       String username);
   Future<ResponseModel<UserInfo>> fetchUserInfo();
+
+  Future<ResponseModel<bool>> setUserTimezone();
 }
 
 @LazySingleton(as: HomeDataSource)
@@ -101,6 +103,20 @@ class HomeDataSourceImpl implements HomeDataSource {
     } catch (e) {
       log(e.toString());
       return ResponseModel.failed(APIErrorFailure());
+    }
+  }
+
+  @override
+  Future<ResponseModel<bool>> setUserTimezone() async {
+    try {
+      /// get the user time zone offset
+      final currentTimeZone = DateTime.now().timeZoneOffset.toString();
+      await ApiHandler.instance.account
+          .updatePrefs(prefs: {'timezone': currentTimeZone});
+      return ResponseModel.success(true);
+    } catch (e) {
+      log(e.toString());
+      return ResponseModel.failed(AppwritePrefFailure());
     }
   }
 }

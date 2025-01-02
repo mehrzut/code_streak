@@ -1,5 +1,6 @@
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
+import 'package:code_streak/features/home/presentation/bloc/timezone_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/pages/home_page.dart';
 import 'package:code_streak/features/splash/presentation/pages/splash_page.dart';
@@ -25,6 +26,9 @@ final router = GoRouter(
           ),
           BlocProvider(
             create: (context) => sl<ContributionsBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<TimezoneBloc>(),
           ),
         ],
         child: const HomePage(),

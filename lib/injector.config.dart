@@ -13,15 +13,15 @@ import 'package:code_streak/core/controllers/local_database.dart' as _i6;
 import 'package:code_streak/features/auth/data/datasources/auth_data_source.dart'
     as _i5;
 import 'package:code_streak/features/auth/data/repositories/auth_repo_impl.dart'
-    as _i12;
+    as _i13;
 import 'package:code_streak/features/auth/domain/repositories/auth_repo.dart'
-    as _i11;
+    as _i12;
 import 'package:code_streak/features/auth/domain/usecases/load_session.dart'
-    as _i15;
-import 'package:code_streak/features/auth/domain/usecases/login_with_github.dart'
-    as _i16;
-import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart'
     as _i17;
+import 'package:code_streak/features/auth/domain/usecases/login_with_github.dart'
+    as _i18;
+import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart'
+    as _i19;
 import 'package:code_streak/features/home/data/datasources/home_data_source.dart'
     as _i4;
 import 'package:code_streak/features/home/data/repositories/home_repo_impl.dart'
@@ -32,10 +32,14 @@ import 'package:code_streak/features/home/domain/usecases/get_contributions_data
     as _i9;
 import 'package:code_streak/features/home/domain/usecases/get_user_info.dart'
     as _i10;
+import 'package:code_streak/features/home/domain/usecases/set_user_timezone.dart'
+    as _i11;
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart'
-    as _i14;
+    as _i16;
+import 'package:code_streak/features/home/presentation/bloc/timezone_bloc.dart'
+    as _i15;
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart'
-    as _i13;
+    as _i14;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
@@ -60,21 +64,25 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i9.GetContributionsData(repo: gh<_i7.HomeRepo>()));
     gh.lazySingleton<_i10.GetUserInfo>(
         () => _i10.GetUserInfo(repo: gh<_i7.HomeRepo>()));
-    gh.lazySingleton<_i11.AuthRepo>(() => _i12.AuthRepoImpl(
+    gh.lazySingleton<_i11.SetUserTimezone>(
+        () => _i11.SetUserTimezone(repo: gh<_i7.HomeRepo>()));
+    gh.lazySingleton<_i12.AuthRepo>(() => _i13.AuthRepoImpl(
           dataSource: gh<_i5.AuthDataSource>(),
           localDatabase: gh<_i6.LocalDatabase>(),
         ));
-    gh.factory<_i13.UserInfoBloc>(
-        () => _i13.UserInfoBloc(gh<_i10.GetUserInfo>()));
-    gh.factory<_i14.ContributionsBloc>(
-        () => _i14.ContributionsBloc(gh<_i9.GetContributionsData>()));
-    gh.lazySingleton<_i15.LoadSession>(
-        () => _i15.LoadSession(repo: gh<_i11.AuthRepo>()));
-    gh.lazySingleton<_i16.LoginWithGitHub>(
-        () => _i16.LoginWithGitHub(repo: gh<_i11.AuthRepo>()));
-    gh.factory<_i17.AuthBloc>(() => _i17.AuthBloc(
-          gh<_i16.LoginWithGitHub>(),
-          gh<_i15.LoadSession>(),
+    gh.factory<_i14.UserInfoBloc>(
+        () => _i14.UserInfoBloc(gh<_i10.GetUserInfo>()));
+    gh.factory<_i15.TimezoneBloc>(
+        () => _i15.TimezoneBloc(gh<_i11.SetUserTimezone>()));
+    gh.factory<_i16.ContributionsBloc>(
+        () => _i16.ContributionsBloc(gh<_i9.GetContributionsData>()));
+    gh.lazySingleton<_i17.LoadSession>(
+        () => _i17.LoadSession(repo: gh<_i12.AuthRepo>()));
+    gh.lazySingleton<_i18.LoginWithGitHub>(
+        () => _i18.LoginWithGitHub(repo: gh<_i12.AuthRepo>()));
+    gh.factory<_i19.AuthBloc>(() => _i19.AuthBloc(
+          gh<_i18.LoginWithGitHub>(),
+          gh<_i17.LoadSession>(),
         ));
     return this;
   }

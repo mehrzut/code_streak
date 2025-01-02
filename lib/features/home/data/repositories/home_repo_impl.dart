@@ -21,4 +21,9 @@ class HomeRepoImpl implements HomeRepo {
       {required String username}) {
     return dataSource.fetchGithubContributions(username);
   }
+  
+  @override
+  Future<ResponseModel<bool>> setUserTimezone() {
+    return dataSource.setUserTimezone();
+  }
 }
