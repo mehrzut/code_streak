@@ -23,7 +23,7 @@ class HomeRepoImpl implements HomeRepo {
   }
   
   @override
-  Future<ResponseModel<bool>> setUserTimezone() {
-    return dataSource.setUserTimezone();
+  Future<ResponseModel<bool>> setUserReminders() {
+    return dataSource.setUserReminders();
   }
 }

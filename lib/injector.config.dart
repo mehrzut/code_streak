@@ -32,11 +32,11 @@ import 'package:code_streak/features/home/domain/usecases/get_contributions_data
     as _i9;
 import 'package:code_streak/features/home/domain/usecases/get_user_info.dart'
     as _i10;
-import 'package:code_streak/features/home/domain/usecases/set_user_timezone.dart'
+import 'package:code_streak/features/home/domain/usecases/set_user_reminders.dart'
     as _i11;
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart'
     as _i16;
-import 'package:code_streak/features/home/presentation/bloc/timezone_bloc.dart'
+import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart'
     as _i15;
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart'
     as _i14;
@@ -64,16 +64,16 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i9.GetContributionsData(repo: gh<_i7.HomeRepo>()));
     gh.lazySingleton<_i10.GetUserInfo>(
         () => _i10.GetUserInfo(repo: gh<_i7.HomeRepo>()));
-    gh.lazySingleton<_i11.SetUserTimezone>(
-        () => _i11.SetUserTimezone(repo: gh<_i7.HomeRepo>()));
+    gh.lazySingleton<_i11.SetUserReminders>(
+        () => _i11.SetUserReminders(repo: gh<_i7.HomeRepo>()));
     gh.lazySingleton<_i12.AuthRepo>(() => _i13.AuthRepoImpl(
           dataSource: gh<_i5.AuthDataSource>(),
           localDatabase: gh<_i6.LocalDatabase>(),
         ));
     gh.factory<_i14.UserInfoBloc>(
         () => _i14.UserInfoBloc(gh<_i10.GetUserInfo>()));
-    gh.factory<_i15.TimezoneBloc>(
-        () => _i15.TimezoneBloc(gh<_i11.SetUserTimezone>()));
+    gh.factory<_i15.ReminderBloc>(
+        () => _i15.ReminderBloc(gh<_i11.SetUserReminders>()));
     gh.factory<_i16.ContributionsBloc>(
         () => _i16.ContributionsBloc(gh<_i9.GetContributionsData>()));
     gh.lazySingleton<_i17.LoadSession>(

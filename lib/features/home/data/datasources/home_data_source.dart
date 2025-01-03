@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:code_streak/common/url_helper.dart';
 import 'package:code_streak/core/controllers/api_handler.dart';
 import 'package:code_streak/core/data/failure.dart';
@@ -10,6 +11,8 @@ import 'package:code_streak/features/home/domain/entities/contribution_week_data
 import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/domain/entities/user_info.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class HomeDataSource {
@@ -17,7 +20,7 @@ abstract class HomeDataSource {
       String username);
   Future<ResponseModel<UserInfo>> fetchUserInfo();
 
-  Future<ResponseModel<bool>> setUserTimezone();
+  Future<ResponseModel<bool>> setUserReminders();
 }
 
 @LazySingleton(as: HomeDataSource)
@@ -107,13 +110,36 @@ class HomeDataSourceImpl implements HomeDataSource {
   }
 
   @override
-  Future<ResponseModel<bool>> setUserTimezone() async {
+  Future<ResponseModel<bool>> setUserReminders() async {
     try {
       /// get the user time zone offset
       final currentTimeZone = DateTime.now().timeZoneOffset.toString();
       await ApiHandler.instance.account
           .updatePrefs(prefs: {'timezone': currentTimeZone});
-      return ResponseModel.success(true);
+      final token = await FirebaseMessaging.instance.getToken();
+      if (token != null) {
+        final currentSession =
+            await ApiHandler.instance.account.getSession(sessionId: 'current');
+        try {
+          await ApiHandler.instance.account.createPushTarget(
+              identifier: token,
+              targetId: currentSession.userId,
+              providerId: dotenv.get('APPWRITE_FCM_PROVIDER_ID', fallback: ''));
+        } on AppwriteException catch (e) {
+          log(e.toString());
+          if (e.type == 'user_target_already_exists') {
+            await ApiHandler.instance.account.updatePushTarget(
+              identifier: token,
+              targetId: currentSession.userId,
+            );
+          } else {
+            return ResponseModel.failed(AppwritePrefFailure());
+          }
+        }
+        return ResponseModel.success(true);
+      } else {
+        return ResponseModel.failed(FirebaseFailure());
+      }
     } catch (e) {
       log(e.toString());
       return ResponseModel.failed(AppwritePrefFailure());

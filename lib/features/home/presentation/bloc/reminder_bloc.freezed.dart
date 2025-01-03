@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'timezone_bloc.dart';
+part of 'reminder_bloc.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$TimezoneEvent {
+mixin _$ReminderEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() set,
@@ -34,33 +34,33 @@ mixin _$TimezoneEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_SetTimezoneEvent value) set,
+    required TResult Function(_SetReminderEvent value) set,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_SetTimezoneEvent value)? set,
+    TResult? Function(_SetReminderEvent value)? set,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_SetTimezoneEvent value)? set,
+    TResult Function(_SetReminderEvent value)? set,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TimezoneEventCopyWith<$Res> {
-  factory $TimezoneEventCopyWith(
-          TimezoneEvent value, $Res Function(TimezoneEvent) then) =
-      _$TimezoneEventCopyWithImpl<$Res, TimezoneEvent>;
+abstract class $ReminderEventCopyWith<$Res> {
+  factory $ReminderEventCopyWith(
+          ReminderEvent value, $Res Function(ReminderEvent) then) =
+      _$ReminderEventCopyWithImpl<$Res, ReminderEvent>;
 }
 
 /// @nodoc
-class _$TimezoneEventCopyWithImpl<$Res, $Val extends TimezoneEvent>
-    implements $TimezoneEventCopyWith<$Res> {
-  _$TimezoneEventCopyWithImpl(this._value, this._then);
+class _$ReminderEventCopyWithImpl<$Res, $Val extends ReminderEvent>
+    implements $ReminderEventCopyWith<$Res> {
+  _$ReminderEventCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -69,35 +69,35 @@ class _$TimezoneEventCopyWithImpl<$Res, $Val extends TimezoneEvent>
 }
 
 /// @nodoc
-abstract class _$$SetTimezoneEventImplCopyWith<$Res> {
-  factory _$$SetTimezoneEventImplCopyWith(_$SetTimezoneEventImpl value,
-          $Res Function(_$SetTimezoneEventImpl) then) =
-      __$$SetTimezoneEventImplCopyWithImpl<$Res>;
+abstract class _$$SetReminderEventImplCopyWith<$Res> {
+  factory _$$SetReminderEventImplCopyWith(_$SetReminderEventImpl value,
+          $Res Function(_$SetReminderEventImpl) then) =
+      __$$SetReminderEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SetTimezoneEventImplCopyWithImpl<$Res>
-    extends _$TimezoneEventCopyWithImpl<$Res, _$SetTimezoneEventImpl>
-    implements _$$SetTimezoneEventImplCopyWith<$Res> {
-  __$$SetTimezoneEventImplCopyWithImpl(_$SetTimezoneEventImpl _value,
-      $Res Function(_$SetTimezoneEventImpl) _then)
+class __$$SetReminderEventImplCopyWithImpl<$Res>
+    extends _$ReminderEventCopyWithImpl<$Res, _$SetReminderEventImpl>
+    implements _$$SetReminderEventImplCopyWith<$Res> {
+  __$$SetReminderEventImplCopyWithImpl(_$SetReminderEventImpl _value,
+      $Res Function(_$SetReminderEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SetTimezoneEventImpl implements _SetTimezoneEvent {
-  _$SetTimezoneEventImpl();
+class _$SetReminderEventImpl implements _SetReminderEvent {
+  _$SetReminderEventImpl();
 
   @override
   String toString() {
-    return 'TimezoneEvent.set()';
+    return 'ReminderEvent.set()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SetTimezoneEventImpl);
+        (other.runtimeType == runtimeType && other is _$SetReminderEventImpl);
   }
 
   @override
@@ -134,7 +134,7 @@ class _$SetTimezoneEventImpl implements _SetTimezoneEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_SetTimezoneEvent value) set,
+    required TResult Function(_SetReminderEvent value) set,
   }) {
     return set(this);
   }
@@ -142,7 +142,7 @@ class _$SetTimezoneEventImpl implements _SetTimezoneEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_SetTimezoneEvent value)? set,
+    TResult? Function(_SetReminderEvent value)? set,
   }) {
     return set?.call(this);
   }
@@ -150,7 +150,7 @@ class _$SetTimezoneEventImpl implements _SetTimezoneEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_SetTimezoneEvent value)? set,
+    TResult Function(_SetReminderEvent value)? set,
     required TResult orElse(),
   }) {
     if (set != null) {
@@ -160,12 +160,12 @@ class _$SetTimezoneEventImpl implements _SetTimezoneEvent {
   }
 }
 
-abstract class _SetTimezoneEvent implements TimezoneEvent {
-  factory _SetTimezoneEvent() = _$SetTimezoneEventImpl;
+abstract class _SetReminderEvent implements ReminderEvent {
+  factory _SetReminderEvent() = _$SetReminderEventImpl;
 }
 
 /// @nodoc
-mixin _$TimezoneState {
+mixin _$ReminderState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -219,16 +219,16 @@ mixin _$TimezoneState {
 }
 
 /// @nodoc
-abstract class $TimezoneStateCopyWith<$Res> {
-  factory $TimezoneStateCopyWith(
-          TimezoneState value, $Res Function(TimezoneState) then) =
-      _$TimezoneStateCopyWithImpl<$Res, TimezoneState>;
+abstract class $ReminderStateCopyWith<$Res> {
+  factory $ReminderStateCopyWith(
+          ReminderState value, $Res Function(ReminderState) then) =
+      _$ReminderStateCopyWithImpl<$Res, ReminderState>;
 }
 
 /// @nodoc
-class _$TimezoneStateCopyWithImpl<$Res, $Val extends TimezoneState>
-    implements $TimezoneStateCopyWith<$Res> {
-  _$TimezoneStateCopyWithImpl(this._value, this._then);
+class _$ReminderStateCopyWithImpl<$Res, $Val extends ReminderState>
+    implements $ReminderStateCopyWith<$Res> {
+  _$ReminderStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -245,7 +245,7 @@ abstract class _$$InitialStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$InitialStateImplCopyWithImpl<$Res>
-    extends _$TimezoneStateCopyWithImpl<$Res, _$InitialStateImpl>
+    extends _$ReminderStateCopyWithImpl<$Res, _$InitialStateImpl>
     implements _$$InitialStateImplCopyWith<$Res> {
   __$$InitialStateImplCopyWithImpl(
       _$InitialStateImpl _value, $Res Function(_$InitialStateImpl) _then)
@@ -259,7 +259,7 @@ class _$InitialStateImpl implements _InitialState {
 
   @override
   String toString() {
-    return 'TimezoneState.initial()';
+    return 'ReminderState.initial()';
   }
 
   @override
@@ -346,7 +346,7 @@ class _$InitialStateImpl implements _InitialState {
   }
 }
 
-abstract class _InitialState implements TimezoneState {
+abstract class _InitialState implements ReminderState {
   factory _InitialState() = _$InitialStateImpl;
 }
 
@@ -359,7 +359,7 @@ abstract class _$$LoadingStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadingStateImplCopyWithImpl<$Res>
-    extends _$TimezoneStateCopyWithImpl<$Res, _$LoadingStateImpl>
+    extends _$ReminderStateCopyWithImpl<$Res, _$LoadingStateImpl>
     implements _$$LoadingStateImplCopyWith<$Res> {
   __$$LoadingStateImplCopyWithImpl(
       _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
@@ -373,7 +373,7 @@ class _$LoadingStateImpl implements _LoadingState {
 
   @override
   String toString() {
-    return 'TimezoneState.loading()';
+    return 'ReminderState.loading()';
   }
 
   @override
@@ -460,7 +460,7 @@ class _$LoadingStateImpl implements _LoadingState {
   }
 }
 
-abstract class _LoadingState implements TimezoneState {
+abstract class _LoadingState implements ReminderState {
   factory _LoadingState() = _$LoadingStateImpl;
 }
 
@@ -473,7 +473,7 @@ abstract class _$$SuccessStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$SuccessStateImplCopyWithImpl<$Res>
-    extends _$TimezoneStateCopyWithImpl<$Res, _$SuccessStateImpl>
+    extends _$ReminderStateCopyWithImpl<$Res, _$SuccessStateImpl>
     implements _$$SuccessStateImplCopyWith<$Res> {
   __$$SuccessStateImplCopyWithImpl(
       _$SuccessStateImpl _value, $Res Function(_$SuccessStateImpl) _then)
@@ -487,7 +487,7 @@ class _$SuccessStateImpl implements _SuccessState {
 
   @override
   String toString() {
-    return 'TimezoneState.success()';
+    return 'ReminderState.success()';
   }
 
   @override
@@ -574,7 +574,7 @@ class _$SuccessStateImpl implements _SuccessState {
   }
 }
 
-abstract class _SuccessState implements TimezoneState {
+abstract class _SuccessState implements ReminderState {
   factory _SuccessState() = _$SuccessStateImpl;
 }
 
@@ -589,7 +589,7 @@ abstract class _$$FailedStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$FailedStateImplCopyWithImpl<$Res>
-    extends _$TimezoneStateCopyWithImpl<$Res, _$FailedStateImpl>
+    extends _$ReminderStateCopyWithImpl<$Res, _$FailedStateImpl>
     implements _$$FailedStateImplCopyWith<$Res> {
   __$$FailedStateImplCopyWithImpl(
       _$FailedStateImpl _value, $Res Function(_$FailedStateImpl) _then)
@@ -619,7 +619,7 @@ class _$FailedStateImpl implements _FailedState {
 
   @override
   String toString() {
-    return 'TimezoneState.failed(failure: $failure)';
+    return 'ReminderState.failed(failure: $failure)';
   }
 
   @override
@@ -714,7 +714,7 @@ class _$FailedStateImpl implements _FailedState {
   }
 }
 
-abstract class _FailedState implements TimezoneState {
+abstract class _FailedState implements ReminderState {
   factory _FailedState({required final Failure failure}) = _$FailedStateImpl;
 
   Failure get failure;

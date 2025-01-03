@@ -8,5 +8,5 @@ abstract class HomeRepo {
   Future<ResponseModel<ContributionsData>> getContributionsData(
       {required String username});
 
-  Future<ResponseModel<bool>> setUserTimezone();
+  Future<ResponseModel<bool>> setUserReminders();
 }

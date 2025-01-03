@@ -1,5 +1,5 @@
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
-import 'package:code_streak/features/home/presentation/bloc/timezone_bloc.dart';
+import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/widgets/contribution_calendar_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _HomePage extends State<HomePage> {
   @override
   void initState() {
     _getUserInfo();
-    _setUserTimezone();
+    _setUserReminder();
     super.initState();
   }
 
@@ -75,7 +75,7 @@ class _HomePage extends State<HomePage> {
         .add(ContributionsEvent.get(username: username));
   }
 
-  void _setUserTimezone() {
-    context.read<TimezoneBloc>().add(TimezoneEvent.set());
+  void _setUserReminder() {
+    context.read<ReminderBloc>().add(ReminderEvent.set());
   }
 }

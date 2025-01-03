@@ -19,3 +19,6 @@ class APIErrorFailure extends Failure {
 class AppwritePrefFailure extends Failure {
   AppwritePrefFailure();
 }
+class FirebaseFailure extends Failure {
+  FirebaseFailure();
+}
