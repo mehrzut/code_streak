@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:appwrite/appwrite.dart';
 import 'package:code_streak/common/url_helper.dart';
 import 'package:code_streak/core/controllers/api_handler.dart';
+import 'package:code_streak/core/controllers/notification_handler.dart';
 import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/core/data/response_model.dart';
 import 'package:code_streak/features/home/domain/entities/contribution_day_data.dart';
@@ -114,6 +115,7 @@ class HomeDataSourceImpl implements HomeDataSource {
     try {
       /// get the user time zone offset
       final currentTimeZone = DateTime.now().timeZoneOffset.toString();
+      await NotificationHandler.initialize();
       await ApiHandler.instance.account
           .updatePrefs(prefs: {'timezone': currentTimeZone});
       final token = await FirebaseMessaging.instance.getToken();

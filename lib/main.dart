@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:code_streak/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_streak/injector.dart';
@@ -15,7 +14,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging.instance.requestPermission();
   await configureDependencies();
   runApp(const MainApp());
 }
