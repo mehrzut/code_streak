@@ -82,6 +82,7 @@ class _ContributionCalendarWidgetState
                     icon: const Icon(Icons.arrow_back)),
                 Text(
                   state.current.monthNameYearString,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 IconButton(
                     onPressed: () =>
@@ -101,8 +102,13 @@ class _ContributionCalendarWidgetState
                 7,
                 (index) => Container(
                   height: _cellSize,
+                  width: _cellSize,
                   padding: const EdgeInsets.all(2),
-                  child: Center(child: Text((index + 1).weekdayName())),
+                  child: Center(
+                      child: Text(
+                    (index + 1).weekdayName(),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  )),
                 ),
               ),
             ),
@@ -192,11 +198,16 @@ class _DayItemWidget extends StatelessWidget {
                 color: color,
                 borderRadius: BorderRadius.circular(4),
                 border: data.date.isToday
-                    ? Border.all(color: Colors.black, width: 1)
+                    ? Border.all(
+                        color: Theme.of(context).colorScheme.onTertiary,
+                        width: 2)
                     : null,
               ),
               child: Center(
-                child: Text(data.date.day.toString()),
+                child: Text(
+                  data.date.day.toString(),
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
               ),
             ),
           ],

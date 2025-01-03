@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:code_streak/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_streak/injector.dart';
@@ -44,6 +46,23 @@ class _MainAppState extends State<MainApp> {
     return BlocProvider(
       create: (context) => sl<AuthBloc>(),
       child: MaterialApp.router(
+        theme: FlexThemeData.dark(
+          scheme: FlexScheme.hippieBlue,
+          subThemesData: const FlexSubThemesData(
+            interactionEffects: true,
+            tintedDisabledControls: true,
+            blendOnColors: true,
+            useM2StyleDividerInM3: true,
+            inputDecoratorIsFilled: true,
+            inputDecoratorBorderType: FlexInputBorderType.outline,
+            alignedDropdown: true,
+            navigationRailUseIndicator: true,
+            navigationRailLabelType: NavigationRailLabelType.all,
+          ),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          cupertinoOverrideTheme:
+              const CupertinoThemeData(applyThemeToAll: true),
+        ),
         routerConfig: router,
       ),
     );

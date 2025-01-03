@@ -52,8 +52,8 @@ class _HomePage extends State<HomePage> {
                   ),
                   success: (data) => ContributionCalendarWidget(
                     data: data,
-                    heatMapColor: Colors.green,
-                    defaultCalendarColor: Colors.grey.shade100,
+                    heatMapColor: Theme.of(context).colorScheme.tertiary,
+                    defaultCalendarColor: Theme.of(context).colorScheme.surfaceContainerHigh,
                   ),
                   orElse: () => const SizedBox(),
                 );
