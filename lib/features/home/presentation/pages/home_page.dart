@@ -1,9 +1,12 @@
+import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/widgets/contribution_calendar_widget.dart';
+import 'package:code_streak/features/home/presentation/widgets/user_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatefulWidget {
   static const pageRoute = '/home';
@@ -21,6 +24,9 @@ class _HomePage extends State<HomePage> {
     super.initState();
   }
 
+  double get appbarExpandedHeight => MediaQuery.sizeOf(context).width;
+  double get appbarCollapsedHeight => kToolbarHeight;
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserInfoBloc, UserInfoState>(
@@ -30,36 +36,74 @@ class _HomePage extends State<HomePage> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(),
-        body: ListView(
-          children: [
-            BlocBuilder<UserInfoBloc, UserInfoState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  success: (data) => Text(data.toString()),
-                  orElse: () => const SizedBox(),
-                );
-              },
-            ),
-            BlocBuilder<ContributionsBloc, ContributionsState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  success: (data) => ContributionCalendarWidget(
-                    data: data,
-                    heatMapColor: Theme.of(context).colorScheme.tertiary,
-                    defaultCalendarColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-                  ),
-                  orElse: () => const SizedBox(),
-                );
-              },
-            ),
-          ],
+        appBar: AppBar(
+          title: const Text('CodeStreak'),
+          centerTitle: true,
+        ),
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              // SliverAppBar(
+              //   pinned: true,
+              //   floating: false,
+              //   backgroundColor: Colors.transparent,
+              //   expandedHeight: appbarExpandedHeight,
+              //   collapsedHeight: appbarCollapsedHeight,
+              //   flexibleSpace: BlocBuilder<UserInfoBloc, UserInfoState>(
+              //     builder: (context, state) {
+              //       return UserInfoAppBar(
+              //         state: state,
+              //         expandedHeight: appbarExpandedHeight,
+              //         collapsedHeight: appbarCollapsedHeight,
+              //       );
+              //     },
+              //   ),
+              // ),
+              SliverList(
+                  delegate: SliverChildListDelegate([
+                BlocBuilder<UserInfoBloc, UserInfoState>(
+                  builder: (context, state) {
+                    return UserInfoWidget(
+                      key: ValueKey(state),
+                      state: state,
+                    );
+                  },
+                ),
+                BlocBuilder<ContributionsBloc, ContributionsState>(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      failed: (failure) => const Center(
+                        child: Text(
+                          'Something went wrong',
+                        ),
+                      ),
+                      success: (data) => ContributionCalendarWidget(
+                        data: data,
+                        heatMapColor: Theme.of(context).colorScheme.tertiary,
+                        defaultCalendarColor:
+                            Theme.of(context).colorScheme.surfaceContainerHigh,
+                      ),
+                      orElse: () => Skeletonizer(
+                        enabled: true,
+                        enableSwitchAnimation: true,
+                        child: ContributionCalendarWidget(
+                          data: ContributionsData(
+                              totlaContributions: 0, contributionCalendar: []),
+                          heatMapColor: Theme.of(context).colorScheme.tertiary,
+                          defaultCalendarColor: Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHigh,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 500,
+                ),
+              ]))
+            ],
+          ),
         ),
       ),
     );

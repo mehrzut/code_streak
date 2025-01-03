@@ -32,7 +32,6 @@ class ContributionCalendarWidget extends StatelessWidget {
 
 class _ContributionCalendarWidget extends StatefulWidget {
   const _ContributionCalendarWidget({
-    super.key,
     required this.data,
     required this.heatMapColor,
     required this.defaultCalendarColor,
@@ -72,24 +71,22 @@ class _ContributionCalendarWidgetState
   Widget get _monthControllerWidget =>
       BlocBuilder<CalendarMonthCubit, CalendarMonthState>(
         builder: (context, state) {
-          return Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () =>
-                        context.read<CalendarMonthCubit>().previousMonth(),
-                    icon: const Icon(Icons.arrow_back)),
-                Text(
-                  state.current.monthNameYearString,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                IconButton(
-                    onPressed: () =>
-                        context.read<CalendarMonthCubit>().nextMonth(),
-                    icon: const Icon(Icons.arrow_forward)),
-              ],
-            ),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () =>
+                      context.read<CalendarMonthCubit>().previousMonth(),
+                  icon: const Icon(Icons.arrow_back)),
+              Text(
+                state.current.monthNameYearString,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              IconButton(
+                  onPressed: () =>
+                      context.read<CalendarMonthCubit>().nextMonth(),
+                  icon: const Icon(Icons.arrow_forward)),
+            ],
           );
         },
       );

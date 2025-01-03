@@ -29,7 +29,7 @@ class _AuthPage extends State<AuthPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
-              child: ElevatedButton(onPressed: _login, child: Text('login')),
+              child: ElevatedButton(onPressed: _login, child: const Text('login')),
             ),
           ],
         ),
