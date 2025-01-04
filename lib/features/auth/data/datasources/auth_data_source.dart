@@ -41,6 +41,17 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<ResponseModel<bool>> signOut() async {
     try {
+      try {
+        final session = await ClientHandler.instance.account.getSession(
+          sessionId: 'current',
+        );
+        // Delete the existing push target
+        await ClientHandler.instance.account.deletePushTarget(
+          targetId: session.userId,
+        );
+      } catch (e) {
+        log(e.toString());
+      }
       await ClientHandler.instance.account.deleteSession(sessionId: 'current');
       return ResponseModel.success(true);
     } catch (e) {
