@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:appwrite/appwrite.dart';
+import 'package:code_streak/core/controllers/client_handler.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationHandler {
@@ -45,6 +48,7 @@ class NotificationHandler {
         ),
       );
       _addOnReceiveMessageListener();
+      _addTokenRefreshListener();
     } catch (e) {
       log(e.toString());
     }
@@ -82,6 +86,27 @@ class NotificationHandler {
 
   static String _padZero(int value) {
     return value.toString().padLeft(2, '0');
+  }
+
+  static void _addTokenRefreshListener() {
+    FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
+      final currentSession =
+          await ClientHandler.instance.account.getSession(sessionId: 'current');
+      try {
+        await ClientHandler.instance.account.createPushTarget(
+            identifier: token,
+            targetId: currentSession.userId,
+            providerId: dotenv.get('APPWRITE_FCM_PROVIDER_ID', fallback: ''));
+      } on AppwriteException catch (e) {
+        log(e.toString());
+        if (e.type == 'user_target_already_exists') {
+          await ClientHandler.instance.account.updatePushTarget(
+            identifier: token,
+            targetId: currentSession.userId,
+          );
+        }
+      }
+    });
   }
 }
 
