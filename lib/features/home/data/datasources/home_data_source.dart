@@ -115,11 +115,11 @@ class HomeDataSourceImpl implements HomeDataSource {
     try {
       /// get the user time zone offset
       final currentTimeZone = DateTime.now().timeZoneOffset.toString();
-      final initialized = await NotificationHandler.initialize();
+      final permissionApproved = await NotificationHandler.initialize();
       await ClientHandler.instance.account
           .updatePrefs(prefs: {'timezone': currentTimeZone});
       final token = await FirebaseMessaging.instance.getToken();
-      if (token != null && initialized) {
+      if (token != null && permissionApproved) {
         final currentSession = await ClientHandler.instance.account
             .getSession(sessionId: 'current');
         try {
@@ -139,6 +139,8 @@ class HomeDataSourceImpl implements HomeDataSource {
           }
         }
         return ResponseModel.success(true);
+      } else if (!permissionApproved) {
+        return ResponseModel.failed(PermissionFailure());
       } else {
         return ResponseModel.failed(FirebaseFailure());
       }

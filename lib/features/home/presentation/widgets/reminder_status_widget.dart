@@ -1,3 +1,4 @@
+import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -10,9 +11,14 @@ class ReminderStatusWidget extends StatelessWidget {
         success: () => true,
         orElse: () => false,
       );
+
   bool get isLoading => state.maybeWhen(
         loading: () => true,
         orElse: () => false,
+      );
+
+  Failure? get failure => state.whenOrNull(
+        failed: (failure) => failure,
       );
 
   @override
@@ -37,7 +43,9 @@ class ReminderStatusWidget extends StatelessWidget {
               child: Text(
                 isReminderEnabled
                     ? "Hooray! 🎉 You'll receive reminders every day! ✅"
-                    : "Oops! 😕 Something went wrong setting up reminders. 🔄",
+                    : failure is PermissionFailure
+                        ? "Notification permission Denied! 😕 You need to approve it in settings to set reminders. 🚨"
+                        : "Oops! 😕 Something went wrong setting up reminders. 🔄",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: isReminderEnabled
                           ? Theme.of(context).colorScheme.onPrimaryFixed

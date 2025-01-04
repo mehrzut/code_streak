@@ -22,3 +22,7 @@ class AppwritePrefFailure extends Failure {
 class FirebaseFailure extends Failure {
   FirebaseFailure();
 }
+
+class PermissionFailure extends Failure {
+  PermissionFailure();
+}
