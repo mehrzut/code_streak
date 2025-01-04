@@ -5,6 +5,7 @@ import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.d
 import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/widgets/contribution_calendar_widget.dart';
+import 'package:code_streak/features/home/presentation/widgets/reminder_status_widget.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,6 +76,13 @@ class _HomePage extends State<HomePage> {
                     );
                   },
                 ),
+                BlocBuilder<ReminderBloc, ReminderState>(
+                  builder: (context, state) {
+                    return ReminderStatusWidget(
+                      state: state,
+                    );
+                  },
+                ),
                 BlocBuilder<ContributionsBloc, ContributionsState>(
                   builder: (context, state) {
                     return state.maybeWhen(
@@ -103,9 +111,6 @@ class _HomePage extends State<HomePage> {
                       ),
                     );
                   },
-                ),
-                const SizedBox(
-                  height: 500,
                 ),
               ]))
             ],
