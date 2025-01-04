@@ -32,9 +32,9 @@ class NotificationHandler {
     'Reminder Notifications',
     importance: Importance.max,
   );
-  static Future<void> initialize() async {
+  static Future<bool> initialize() async {
     try {
-      await FirebaseMessaging.instance.requestPermission();
+      final result = await FirebaseMessaging.instance.requestPermission();
       if (Platform.isAndroid) {
         await localNotifications
             .resolvePlatformSpecificImplementation<
@@ -49,9 +49,11 @@ class NotificationHandler {
       );
       _addOnReceiveMessageListener();
       _addTokenRefreshListener();
+      return result.authorizationStatus == AuthorizationStatus.authorized;
     } catch (e) {
       log(e.toString());
     }
+    return false;
   }
 
   static void _addOnReceiveMessageListener() {

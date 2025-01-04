@@ -21,12 +21,15 @@ class ReminderStatusWidget extends StatelessWidget {
       enabled: isLoading,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Container(
+        child: AnimatedContainer(
+          duration: Durations.medium2,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: isReminderEnabled
-                ? Theme.of(context).colorScheme.primaryFixed
-                : Theme.of(context).colorScheme.errorContainer,
+            color: isLoading
+                ? Theme.of(context).colorScheme.surfaceBright
+                : isReminderEnabled
+                    ? Theme.of(context).colorScheme.primaryFixed
+                    : Theme.of(context).colorScheme.errorContainer,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [

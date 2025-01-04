@@ -115,13 +115,13 @@ class HomeDataSourceImpl implements HomeDataSource {
     try {
       /// get the user time zone offset
       final currentTimeZone = DateTime.now().timeZoneOffset.toString();
-      await NotificationHandler.initialize();
+      final initialized = await NotificationHandler.initialize();
       await ClientHandler.instance.account
           .updatePrefs(prefs: {'timezone': currentTimeZone});
       final token = await FirebaseMessaging.instance.getToken();
-      if (token != null) {
-        final currentSession =
-            await ClientHandler.instance.account.getSession(sessionId: 'current');
+      if (token != null && initialized) {
+        final currentSession = await ClientHandler.instance.account
+            .getSession(sessionId: 'current');
         try {
           await ClientHandler.instance.account.createPushTarget(
               identifier: token,
