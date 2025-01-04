@@ -43,9 +43,7 @@ class _HomePage extends State<HomePage> {
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.logout_outlined),
-            onPressed: () {
-              Navigator.pushNamed(context, '/settings');
-            },
+            onPressed: _signOut,
           ),
         ),
         body: SafeArea(

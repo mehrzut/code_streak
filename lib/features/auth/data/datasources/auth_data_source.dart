@@ -23,8 +23,9 @@ class AuthDataSourceImpl implements AuthDataSource {
       // Request the access token
       await ClientHandler.instance.account.createOAuth2Session(
         provider: OAuthProvider.github,
-        scopes: ['read:user', 'user:email'],
+        scopes: ['read:user', 'user:email', 'offline_access'],
       );
+      await ClientHandler.instance.account.get();
       final session =
           await ClientHandler.instance.account.getSession(sessionId: 'current');
 

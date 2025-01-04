@@ -25,7 +25,7 @@ class DialogWidget extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 460),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         decoration: ShapeDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          color: Theme.of(context).colorScheme.surfaceBright,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
@@ -45,18 +45,20 @@ class DialogWidget extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            Text(title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    )),
             const SizedBox(
               height: 12,
             ),
             Text(
               description,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
             const SizedBox(
               height: 32,
@@ -67,15 +69,37 @@ class DialogWidget extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: button.type == ButtonType.primary
-                          ? ElevatedButton(
-                              onPressed: () => context.pop(button.value),
-                              child: Text(button.title),
-                            )
-                          : TextButton(
-                              onPressed: () => context.pop(button.value),
-                              child: Text(button.title),
-                            ),
+                      child: _getButton(context, button),
+                      // button.type == ButtonType.primary
+                      //     ? ElevatedButton(
+                      //         // style: ButtonStyle(
+                      //         //     backgroundColor:
+                      //         //         WidgetStateProperty.all(primary)),
+                      //         onPressed: () => context.pop(button.value),
+                      //         child: Text(
+                      //           button.title,
+                      //           // style: Theme.of(context)
+                      //           //     .textTheme
+                      //           //     .labelMedium
+                      //           //     ?.copyWith(
+                      //           //         color: Theme.of(context)
+                      //           //             .colorScheme
+                      //           //             .onSurface),
+                      //         ),
+                      //       )
+                      //     : TextButton(
+                      //         onPressed: () => context.pop(button.value),
+                      //         child: Text(
+                      //           button.title,
+                      //           // style: Theme.of(context)
+                      //           //     .textTheme
+                      //           //     .labelMedium
+                      //           //     ?.copyWith(
+                      //           //         color: Theme.of(context)
+                      //           //             .colorScheme
+                      //           //             .onSurface),
+                      //         ),
+                      //       ),
                     ),
                   )
               ],
@@ -107,6 +131,33 @@ class DialogWidget extends StatelessWidget {
           ),
         );
       });
+
+  Widget _getButton(BuildContext context, DialogButton button) {
+    onPressed() => context.pop(button.value);
+    final child = Text(
+      button.title,
+    );
+    switch (button.type) {
+      case ButtonType.elevated:
+        return ElevatedButton(onPressed: onPressed, child: child);
+      case ButtonType.filled:
+        return FilledButton(onPressed: onPressed, child: child);
+      case ButtonType.warning:
+        return FilledButton(
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(
+                  Theme.of(context).colorScheme.errorContainer),
+              foregroundColor: WidgetStateProperty.all(
+                  Theme.of(context).colorScheme.onErrorContainer),
+            ),
+            onPressed: onPressed,
+            child: child);
+      case ButtonType.outlined:
+        return OutlinedButton(onPressed: onPressed, child: child);
+      case ButtonType.text:
+        return TextButton(onPressed: onPressed, child: child);
+    }
+  }
 }
 
 class DialogButton<T> {

@@ -1,5 +1,7 @@
-
 enum ButtonType {
-  primary,
-  secondary,
+  elevated,
+  filled,
+  warning,
+  outlined,
+  text,
 }

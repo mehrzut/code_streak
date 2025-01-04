@@ -10,15 +10,16 @@ class SignOutDialog extends StatelessWidget {
     return DialogWidget(
         title: 'Sign Out',
         description: 'Are you sure you want to sign out?',
+        primary: Theme.of(context).colorScheme.errorContainer,
         buttons: [
           DialogButton(
             title: 'Cancel',
-            type: ButtonType.secondary,
+            type: ButtonType.outlined,
             value: false,
           ),
           DialogButton(
             title: 'Sign Out',
-            type: ButtonType.primary,
+            type: ButtonType.warning,
             value: true,
           ),
         ]);

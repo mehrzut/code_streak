@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:code_streak/core/controllers/navigation_helper.dart';
 import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/firebase_options.dart';
@@ -86,6 +87,9 @@ class _MainAppState extends State<MainApp> {
   }
 
   void _handleSignOut() {
-    context.pushReplacementNamed(AuthPage.pageRoute);
+    sl<NavigationHelper>()
+        .key
+        .currentContext
+        ?.pushReplacementNamed(AuthPage.pageRoute);
   }
 }
