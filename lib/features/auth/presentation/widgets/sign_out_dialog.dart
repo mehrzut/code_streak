@@ -14,7 +14,7 @@ class SignOutDialog extends StatelessWidget {
         buttons: [
           DialogButton(
             title: 'Cancel',
-            type: ButtonType.outlined,
+            type: ButtonType.text,
             value: false,
           ),
           DialogButton(
