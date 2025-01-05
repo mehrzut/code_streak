@@ -6,6 +6,7 @@ import 'package:code_streak/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class AuthPage extends StatefulWidget {
   static const pageRoute = '/auth';
@@ -69,7 +70,24 @@ class _AuthPage extends State<AuthPage> {
                               Theme.of(context).colorScheme.onSurfaceVariant),
                     ),
                   ),
-                  ElevatedButton(onPressed: _login, child: const Text('login')),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: state.maybeWhen(
+                          orElse: () => _login,
+                          loading: () => null,
+                        ),
+                        child: Skeletonizer(
+                          enabled: state.maybeWhen(
+                            orElse: () => false,
+                            loading: () => true,
+                          ),
+                          enableSwitchAnimation: true,
+                          child: const Text('Login'),
+                        ),
+                      );
+                    },
+                  ),
                 ].verticalPadding(24),
               ),
             ),

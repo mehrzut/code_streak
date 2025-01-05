@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyTheme {
   static ThemeData data = ThemeData(
@@ -8,11 +9,20 @@ class MyTheme {
     primaryColorLight: const Color(0xFF1466B8),
     primaryColorDark: const Color(0xFF1466B8),
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1466B8),
-            foregroundColor: const Color(0xffffffff),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)))),
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(16),
+        backgroundColor: const Color(0xFF1466B8),
+        foregroundColor: const Color(0xffffffff),
+        textStyle: TextStyle(
+          fontSize: 14,
+          fontFamily: GoogleFonts.spaceGrotesk().fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    ),
     colorScheme: const ColorScheme.dark(
       brightness: Brightness.dark,
       primary: Color(0xFF1466B8),
@@ -31,6 +41,7 @@ class MyTheme {
       primaryContainer: Color(0xff98C1EA),
       onPrimaryContainer: Color(0xff053C73),
       surfaceContainerLow: Color(0xff2793FF),
+      outline: Color(0xff3D4754),
     ),
   );
 }
