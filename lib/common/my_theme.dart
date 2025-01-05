@@ -23,6 +23,10 @@ class MyTheme {
         ),
       ),
     ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF121417),
+      foregroundColor: Color(0xffffffff),
+    ),
     colorScheme: const ColorScheme.dark(
       brightness: Brightness.dark,
       primary: Color(0xFF1466B8),

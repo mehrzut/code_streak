@@ -5,6 +5,7 @@ import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_streak/injector.dart';
@@ -16,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Animate.restartOnHotReload = true;
   await _loadEnv();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
