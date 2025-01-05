@@ -42,9 +42,22 @@ class _HomePage extends State<HomePage> {
         appBar: AppBar(
           title: const Text('CodeStreak'),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.logout_outlined),
-            onPressed: _signOut,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.logout_outlined),
+                onPressed: _signOut,
+              ),
+            )
+          ],
+          leading: BlocBuilder<UserInfoBloc, UserInfoState>(
+            builder: (context, state) {
+              return UserInfoWidget(
+                key: ValueKey(state),
+                state: state,
+              );
+            },
           ),
         ),
         body: SafeArea(
@@ -104,9 +117,8 @@ class _HomePage extends State<HomePage> {
                         child: ContributionCalendarWidget(
                           data: ContributionsData(
                               totlaContributions: 0, contributionCalendar: []),
-                          heatMapColor: Theme.of(context)
-                              .colorScheme
-                              .surfaceContainerLow,
+                          heatMapColor:
+                              Theme.of(context).colorScheme.surfaceContainerLow,
                           defaultCalendarColor:
                               Theme.of(context).colorScheme.surface,
                         ),
