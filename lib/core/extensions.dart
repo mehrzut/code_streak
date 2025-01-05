@@ -1,4 +1,5 @@
 import 'package:appwrite/models.dart';
+import 'package:flutter/material.dart';
 
 extension DateTimeExt on DateTime {
   bool isSameMonthAs(DateTime other) {
@@ -109,5 +110,50 @@ extension SessionExt on Session {
     var currentTime = DateTime.now().toUtc();
     var expiryTime = DateTime.parse(providerAccessTokenExpiry);
     return currentTime.isAfter(expiryTime);
+  }
+}
+
+extension IterableWidgetExt on Iterable<Widget> {
+  List<Widget> verticalPadding(
+    double px, {
+    bool addToEnd = false,
+    bool addToStart = false,
+  }) {
+    return putSeparator(
+      SizedBox(
+        height: px,
+      ),
+      addToStart: addToStart,
+      addToEnd: addToEnd,
+    );
+  }
+
+  List<Widget> horizontalPadding(
+    double px, {
+    bool addToEnd = false,
+    bool addToStart = false,
+  }) {
+    return putSeparator(
+      SizedBox(
+        width: px,
+      ),
+      addToStart: addToStart,
+      addToEnd: addToEnd,
+    );
+  }
+
+  List<Widget> putSeparator(Widget separator,
+      {bool addToEnd = false, bool addToStart = false}) {
+    final List<Widget> items = [];
+    for (int i = 0; i < length; i++) {
+      if (addToStart && i == 0) {
+        items.add(separator);
+      }
+      items.add(elementAt(i));
+      if (addToEnd || i < length - 1) {
+        items.add(separator);
+      }
+    }
+    return items;
   }
 }

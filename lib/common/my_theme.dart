@@ -7,6 +7,12 @@ class MyTheme {
     primaryColor: const Color(0xFF1466B8),
     primaryColorLight: const Color(0xFF1466B8),
     primaryColorDark: const Color(0xFF1466B8),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF1466B8),
+            foregroundColor: const Color(0xffffffff),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)))),
     colorScheme: const ColorScheme.dark(
       brightness: Brightness.dark,
       primary: Color(0xFF1466B8),
