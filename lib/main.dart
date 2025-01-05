@@ -1,11 +1,10 @@
 import 'dart:developer';
+import 'package:code_streak/common/my_theme.dart';
 import 'package:code_streak/core/controllers/navigation_helper.dart';
 import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_streak/injector.dart';
@@ -13,6 +12,7 @@ import 'package:code_streak/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,23 +64,9 @@ class _MainAppState extends State<MainApp> {
         );
       },
       child: MaterialApp.router(
-        theme: FlexThemeData.dark(
-          scheme: FlexScheme.hippieBlue,
-          subThemesData: const FlexSubThemesData(
-            interactionEffects: true,
-            tintedDisabledControls: true,
-            blendOnColors: true,
-            useM2StyleDividerInM3: true,
-            inputDecoratorIsFilled: true,
-            inputDecoratorBorderType: FlexInputBorderType.outline,
-            alignedDropdown: true,
-            navigationRailUseIndicator: true,
-            navigationRailLabelType: NavigationRailLabelType.all,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          cupertinoOverrideTheme:
-              const CupertinoThemeData(applyThemeToAll: true),
-        ),
+        theme: MyTheme.data.copyWith(
+            textTheme:
+                GoogleFonts.spaceGroteskTextTheme(ThemeData.dark().textTheme)),
         routerConfig: router,
       ),
     );

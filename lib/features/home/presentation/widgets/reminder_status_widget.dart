@@ -32,9 +32,9 @@ class ReminderStatusWidget extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isLoading
-                ? Theme.of(context).colorScheme.surfaceBright
+                ? Theme.of(context).colorScheme.surface
                 : isReminderEnabled
-                    ? Theme.of(context).colorScheme.primaryFixed
+                    ? Theme.of(context).colorScheme.primaryContainer
                     : Theme.of(context).colorScheme.errorContainer,
             borderRadius: BorderRadius.circular(8),
           ),
@@ -48,7 +48,7 @@ class ReminderStatusWidget extends StatelessWidget {
                         : "Oops! 😕 Something went wrong setting up reminders. 🔄",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: isReminderEnabled
-                          ? Theme.of(context).colorScheme.onPrimaryFixed
+                          ? Theme.of(context).colorScheme.onPrimaryContainer
                           : Theme.of(context).colorScheme.onErrorContainer,
                     ),
               ),

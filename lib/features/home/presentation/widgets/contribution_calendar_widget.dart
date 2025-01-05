@@ -196,14 +196,15 @@ class _DayItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
                 border: data.date.isToday
                     ? Border.all(
-                        color: Theme.of(context).colorScheme.onTertiary,
-                        width: 2)
+                        color: Theme.of(context).colorScheme.outline, width: 2)
                     : null,
               ),
               child: Center(
                 child: Text(
                   data.date.day.toString(),
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                 ),
               ),
             ),

@@ -93,9 +93,10 @@ class _HomePage extends State<HomePage> {
                       ),
                       success: (data) => ContributionCalendarWidget(
                         data: data,
-                        heatMapColor: Theme.of(context).colorScheme.tertiary,
+                        heatMapColor:
+                            Theme.of(context).colorScheme.surfaceContainerLow,
                         defaultCalendarColor:
-                            Theme.of(context).colorScheme.surfaceContainerHigh,
+                            Theme.of(context).colorScheme.surface,
                       ),
                       orElse: () => Skeletonizer(
                         enabled: true,
@@ -103,10 +104,11 @@ class _HomePage extends State<HomePage> {
                         child: ContributionCalendarWidget(
                           data: ContributionsData(
                               totlaContributions: 0, contributionCalendar: []),
-                          heatMapColor: Theme.of(context).colorScheme.tertiary,
-                          defaultCalendarColor: Theme.of(context)
+                          heatMapColor: Theme.of(context)
                               .colorScheme
-                              .surfaceContainerHigh,
+                              .surfaceContainerLow,
+                          defaultCalendarColor:
+                              Theme.of(context).colorScheme.surface,
                         ),
                       ),
                     );

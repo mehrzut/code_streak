@@ -1,4 +1,3 @@
-
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -46,7 +45,10 @@ class UserInfoWidget extends StatelessWidget {
             loading: () => 'John Doe',
             success: (data) => data.fullName,
           ),
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
         );
       });
 
