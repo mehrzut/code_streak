@@ -157,3 +157,48 @@ extension IterableWidgetExt on Iterable<Widget> {
     return items;
   }
 }
+
+extension NullableListExt<T> on List<T>? {
+  bool get isNullOrEmpty {
+    if (this == null) return true;
+    return this!.isEmpty;
+  }
+
+  bool get isNotNullOrEmpty {
+    return !isNullOrEmpty;
+  }
+}
+
+extension ListExt<T> on List<T> {
+  List<List<T>> splitAt(int index) {
+    return [sublist(0, index), sublist(index)];
+  }
+
+  List<List<T>> splitAtNotContaining(int index) {
+    return [sublist(0, index), sublist(index + 1)];
+  }
+
+  List<T> addOrUpdateWhere(
+    bool Function(T e) condition,
+    T Function(T? e) updatedItemGenerator,
+  ) {
+    if (any((e) => condition(e))) {
+      return map((e) => condition(e) ? updatedItemGenerator(e) : e).toList();
+    } else {
+      return [...this, updatedItemGenerator(null)];
+    }
+  }
+}
+
+extension NullableString on String? {
+  bool get isNullOrEmpty {
+    if (this == null) return true;
+    return this!.isEmpty;
+  }
+
+  bool get isNotNullOrEmpty {
+    return !isNullOrEmpty;
+  }
+
+  String? get nullOnEmpty => isNullOrEmpty ? null : this;
+}

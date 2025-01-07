@@ -1,0 +1,283 @@
+import 'dart:developer';
+
+import 'package:code_streak/core/extensions.dart';
+import 'package:flutter/material.dart';
+
+class SliverAnimatedHeader extends StatefulWidget {
+  SliverAnimatedHeader({super.key, required this.delegate})
+      : assert(
+            delegate.children.map((e) => e.priority).toSet().length ==
+                delegate.children.length,
+            'All children priorities must be unique.'),
+        assert(
+            delegate.children.every(
+              (element) => element.priority >= 0,
+            ),
+            'All children priorities must be greater than or equal to 0.');
+
+  final SliverAnimatedDelegate delegate;
+
+  @override
+  State<SliverAnimatedHeader> createState() => _SliverAnimatedHeaderState();
+}
+
+class _SliverAnimatedHeaderState extends State<SliverAnimatedHeader> {
+  double get expandedHeight => widget.delegate.children.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue + element.expanded.preferredSize.height,
+      );
+
+  double get collapsedHeight => widget.delegate.children.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue + element.collapsed.preferredSize.height,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      automaticallyImplyLeading: false,
+      expandedHeight: expandedHeight -
+          (widget.delegate.safeArea
+              ? 0
+              : MediaQuery.paddingOf(context).vertical),
+      collapsedHeight: collapsedHeight -
+          (widget.delegate.safeArea
+              ? 0
+              : MediaQuery.paddingOf(context).vertical),
+      pinned: widget.delegate.pinned,
+      floating: widget.delegate.floating,
+      flexibleSpace: FlexibleSpaceBar(
+        titlePadding: EdgeInsets.zero,
+        expandedTitleScale: 1.0,
+        title: SafeArea(
+          bottom: widget.delegate.safeArea,
+          top: widget.delegate.safeArea,
+          left: widget.delegate.safeArea,
+          right: widget.delegate.safeArea,
+          child: _SliverAnimatedChildrenList(
+            delegate: widget.delegate,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SliverAnimatedChildrenList extends StatefulWidget {
+  const _SliverAnimatedChildrenList({required this.delegate});
+  final SliverAnimatedDelegate delegate;
+
+  @override
+  State<_SliverAnimatedChildrenList> createState() =>
+      __SliverAnimatedChildrenListState();
+}
+
+class __SliverAnimatedChildrenListState
+    extends State<_SliverAnimatedChildrenList> {
+  List<_SliverChildRange> shrinkPoints = [];
+
+  double get expandedHeight => widget.delegate.children.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue + element.expanded.preferredSize.height,
+      );
+
+  double get collapsedHeight => widget.delegate.children.fold(
+        0.0,
+        (previousValue, element) =>
+            previousValue + element.collapsed.preferredSize.height,
+      );
+
+  List<SliverAnimatedChild> get _sortedByPriority => [
+        ...widget.delegate.children
+      ]..sort((a, b) => a.priority.compareTo(b.priority));
+
+  @override
+  void initState() {
+    // _previousHeight = expandedHeight;
+    _configure();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant _SliverAnimatedChildrenList oldWidget) {
+    _configure();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final lastPriorityCollapsed =
+            _getPriorityOfLastCollapsingItem(constraints.maxHeight);
+        log(lastPriorityCollapsed.toString());
+        return Align(
+          alignment: widget.delegate.animationAlignment,
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: widget.delegate.crossAxisAlignment,
+              mainAxisAlignment: widget.delegate.mainAxisAlignment,
+              children: widget.delegate.children.map((child) {
+                final isExpanded = lastPriorityCollapsed == null
+                    ? true
+                    : child.priority > lastPriorityCollapsed;
+                return AnimatedCrossFade(
+                  firstChild: child.expanded,
+                  secondChild: child.collapsed,
+                  crossFadeState: isExpanded
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: widget.delegate.duration,
+                  layoutBuilder: widget.delegate.layoutBuilder ??
+                      AnimatedCrossFade.defaultLayoutBuilder,
+                  firstCurve: Curves.easeIn,
+                  secondCurve: Curves.easeOut,
+                  sizeCurve: Curves.decelerate,
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  int? _getPriorityOfLastCollapsingItem(double currentHeight) {
+    final firstExpandedIndex = shrinkPoints.indexWhere(
+      (element) => element.expandsOnAndAfter <= currentHeight,
+    );
+    if (firstExpandedIndex == -1) {
+      // all items are collapsed
+      return _sortedByPriority.last.priority;
+    }
+    final newCollapsedItemIndex = firstExpandedIndex - 1;
+    if (newCollapsedItemIndex < shrinkPoints.length &&
+        newCollapsedItemIndex >= 0) {
+      final newCollapsedItem = shrinkPoints[newCollapsedItemIndex];
+      return newCollapsedItem.priority;
+    }
+    // all items are expanded
+    return null;
+  }
+
+  void _configure() {
+    for (var i = 0; i < _sortedByPriority.length; i++) {
+      final collapsed = _sortedByPriority.splitAtNotContaining(i).first;
+      final expanded = _sortedByPriority.splitAtNotContaining(i).last;
+      final itemsMinSpaceToExpand = collapsed.fold(
+            0.0,
+            (previousValue, element) =>
+                previousValue + element.collapsed.preferredSize.height,
+          ) +
+          expanded.fold(
+            0.0,
+            (previousValue, element) =>
+                previousValue + element.expanded.preferredSize.height,
+          ) +
+          widget.delegate.children[i].expanded.preferredSize.height;
+      shrinkPoints = shrinkPoints.addOrUpdateWhere(
+          (e) => e.priority == _sortedByPriority[i].priority,
+          (e) => (_SliverChildRange(
+                priority: _sortedByPriority[i].priority,
+                expandsOnAndAfter: itemsMinSpaceToExpand,
+              )));
+    }
+    log(shrinkPoints.toString());
+  }
+}
+
+class SliverAnimatedChild {
+  final PreferredSizeWidget expanded;
+  final PreferredSizeWidget collapsed;
+
+  /// The priority of the child
+  /// The higher the number the higher the priority
+  /// Which means the child with the lowest priority will collapse first
+  final int priority;
+  final bool isExpanded;
+
+  SliverAnimatedChild._({
+    required this.expanded,
+    required this.collapsed,
+    required this.priority,
+    this.isExpanded = true,
+  });
+
+  SliverAnimatedChild collapse() => copyWith(isExpanded: false);
+
+  factory SliverAnimatedChild.vanish({
+    required PreferredSizeWidget expanded,
+    required int priority,
+  }) =>
+      SliverAnimatedChild._(
+        expanded: expanded,
+        collapsed: const PreferredSize(
+          preferredSize: Size.zero,
+          child: SizedBox(),
+        ),
+        priority: priority,
+      );
+
+  factory SliverAnimatedChild({
+    required PreferredSizeWidget expanded,
+    required PreferredSizeWidget collapsed,
+    required int priority,
+  }) =>
+      SliverAnimatedChild._(
+        expanded: expanded,
+        collapsed: collapsed,
+        priority: priority,
+      );
+
+  SliverAnimatedChild copyWith(
+          {PreferredSizeWidget? expanded,
+          PreferredSizeWidget? collapsed,
+          int? priority,
+          bool? isExpanded}) =>
+      SliverAnimatedChild._(
+        expanded: expanded ?? this.expanded,
+        collapsed: collapsed ?? this.collapsed,
+        priority: priority ?? this.priority,
+        isExpanded: isExpanded ?? this.isExpanded,
+      );
+}
+
+class _SliverChildRange {
+  final double expandsOnAndAfter;
+  final int priority;
+
+  _SliverChildRange({required this.expandsOnAndAfter, required this.priority});
+
+  @override
+  String toString() {
+    return '_SliverChildRange(expandsOnAndAfter: $expandsOnAndAfter, priority: $priority)';
+  }
+}
+
+class SliverAnimatedDelegate {
+  final List<SliverAnimatedChild> children;
+  final bool safeArea;
+  final bool floating;
+  final bool pinned;
+  final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisAlignment mainAxisAlignment;
+  final AlignmentGeometry animationAlignment;
+  final AnimatedCrossFadeBuilder? layoutBuilder;
+  final Duration duration;
+
+  SliverAnimatedDelegate({
+    required this.children,
+    this.safeArea = true,
+    this.floating = false,
+    this.pinned = false,
+    this.layoutBuilder,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.animationAlignment = AlignmentDirectional.bottomCenter,
+    required this.duration,
+  });
+}
