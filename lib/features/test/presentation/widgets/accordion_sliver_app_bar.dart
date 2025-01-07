@@ -148,13 +148,25 @@ class __SliverAnimatedChildrenListState
                   sizeCurve: Curves.decelerate,
                 );
                 if (child.wrapperBuilder != null) {
-                  return child.wrapperBuilder!(
-                      context,
-                      animatedChild,
-                      isExpanded
-                          ? child.expanded.preferredSize
-                          : child.collapsed.preferredSize,
-                      isExpanded);
+                  return AnimatedContainer(
+                    duration: widget.delegate.duration,
+                    width: isExpanded
+                        ? child.expanded.preferredSize.width
+                        : child.collapsed.preferredSize.width,
+                    height: isExpanded
+                        ? child.expanded.preferredSize.height
+                        : child.collapsed.preferredSize.height,
+                    child: Align(
+                      alignment: widget.delegate.animationAlignment,
+                      child: child.wrapperBuilder!(
+                          context,
+                          animatedChild,
+                          isExpanded
+                              ? child.expanded.preferredSize
+                              : child.collapsed.preferredSize,
+                          isExpanded),
+                    ),
+                  );
                 }
                 return animatedChild;
               }).toList(),
