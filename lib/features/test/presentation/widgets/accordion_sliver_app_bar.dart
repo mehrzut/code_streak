@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:code_streak/core/extensions.dart';
 import 'package:flutter/material.dart';
 
-class SliverAnimatedHeader extends StatefulWidget {
-  SliverAnimatedHeader({super.key, required this.delegate})
+class AccordionSliverAppBar extends StatefulWidget {
+  AccordionSliverAppBar({super.key, required this.delegate})
       : assert(
             delegate.children.map((e) => e.priority).toSet().length ==
                 delegate.children.length,
@@ -15,13 +15,13 @@ class SliverAnimatedHeader extends StatefulWidget {
             ),
             'All children priorities must be greater than or equal to 0.');
 
-  final SliverAnimatedDelegate delegate;
+  final AccordionSliverDeligate delegate;
 
   @override
-  State<SliverAnimatedHeader> createState() => _SliverAnimatedHeaderState();
+  State<AccordionSliverAppBar> createState() => _AccordionSliverAppBarState();
 }
 
-class _SliverAnimatedHeaderState extends State<SliverAnimatedHeader> {
+class _AccordionSliverAppBarState extends State<AccordionSliverAppBar> {
   double get expandedHeight => widget.delegate.children.fold(
         0.0,
         (previousValue, element) =>
@@ -33,6 +33,16 @@ class _SliverAnimatedHeaderState extends State<SliverAnimatedHeader> {
         (previousValue, element) =>
             previousValue + element.collapsed.preferredSize.height,
       );
+
+  @override
+  void didUpdateWidget(covariant AccordionSliverAppBar oldWidget) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        setState(() {});
+      },
+    );
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +77,7 @@ class _SliverAnimatedHeaderState extends State<SliverAnimatedHeader> {
 
 class _SliverAnimatedChildrenList extends StatefulWidget {
   const _SliverAnimatedChildrenList({required this.delegate});
-  final SliverAnimatedDelegate delegate;
+  final AccordionSliverDeligate delegate;
 
   @override
   State<_SliverAnimatedChildrenList> createState() =>
@@ -90,13 +100,12 @@ class __SliverAnimatedChildrenListState
             previousValue + element.collapsed.preferredSize.height,
       );
 
-  List<SliverAnimatedChild> get _sortedByPriority => [
+  List<AccordionSliverChild> get _sortedByPriority => [
         ...widget.delegate.children
       ]..sort((a, b) => a.priority.compareTo(b.priority));
 
   @override
   void initState() {
-    // _previousHeight = expandedHeight;
     _configure();
     super.initState();
   }
@@ -125,9 +134,9 @@ class __SliverAnimatedChildrenListState
                 final isExpanded = lastPriorityCollapsed == null
                     ? true
                     : child.priority > lastPriorityCollapsed;
-                return AnimatedCrossFade(
-                  firstChild: child.expanded,
-                  secondChild: child.collapsed,
+                final animatedChild = AnimatedCrossFade(
+                  firstChild: child.expanded.child,
+                  secondChild: child.collapsed.child,
                   crossFadeState: isExpanded
                       ? CrossFadeState.showFirst
                       : CrossFadeState.showSecond,
@@ -138,6 +147,16 @@ class __SliverAnimatedChildrenListState
                   secondCurve: Curves.easeOut,
                   sizeCurve: Curves.decelerate,
                 );
+                if (child.wrapperBuilder != null) {
+                  return child.wrapperBuilder!(
+                      context,
+                      animatedChild,
+                      isExpanded
+                          ? child.expanded.preferredSize
+                          : child.collapsed.preferredSize,
+                      isExpanded);
+                }
+                return animatedChild;
               }).toList(),
             ),
           ),
@@ -190,9 +209,12 @@ class __SliverAnimatedChildrenListState
   }
 }
 
-class SliverAnimatedChild {
-  final PreferredSizeWidget expanded;
-  final PreferredSizeWidget collapsed;
+class AccordionSliverChild {
+  final SizedSliverChild expanded;
+  final SizedSliverChild collapsed;
+  final Widget Function(
+          BuildContext context, Widget child, Size size, bool isExpanded)?
+      wrapperBuilder;
 
   /// The priority of the child
   /// The higher the number the higher the priority
@@ -200,45 +222,50 @@ class SliverAnimatedChild {
   final int priority;
   final bool isExpanded;
 
-  SliverAnimatedChild._({
+  AccordionSliverChild._({
     required this.expanded,
     required this.collapsed,
     required this.priority,
     this.isExpanded = true,
+    this.wrapperBuilder,
   });
 
-  SliverAnimatedChild collapse() => copyWith(isExpanded: false);
+  AccordionSliverChild collapse() => copyWith(isExpanded: false);
 
-  factory SliverAnimatedChild.vanish({
-    required PreferredSizeWidget expanded,
+  factory AccordionSliverChild.vanish({
+    required SizedSliverChild expanded,
     required int priority,
   }) =>
-      SliverAnimatedChild._(
+      AccordionSliverChild._(
         expanded: expanded,
-        collapsed: const PreferredSize(
+        collapsed: SizedSliverChild(
           preferredSize: Size.zero,
-          child: SizedBox(),
+          child: const SizedBox(),
         ),
         priority: priority,
       );
 
-  factory SliverAnimatedChild({
-    required PreferredSizeWidget expanded,
-    required PreferredSizeWidget collapsed,
+  factory AccordionSliverChild({
+    required SizedSliverChild expanded,
+    required SizedSliverChild collapsed,
     required int priority,
+    Widget Function(
+            BuildContext context, Widget child, Size size, bool isExpanded)?
+        wrapperBuilder,
   }) =>
-      SliverAnimatedChild._(
+      AccordionSliverChild._(
         expanded: expanded,
         collapsed: collapsed,
         priority: priority,
+        wrapperBuilder: wrapperBuilder,
       );
 
-  SliverAnimatedChild copyWith(
-          {PreferredSizeWidget? expanded,
-          PreferredSizeWidget? collapsed,
+  AccordionSliverChild copyWith(
+          {SizedSliverChild? expanded,
+          SizedSliverChild? collapsed,
           int? priority,
           bool? isExpanded}) =>
-      SliverAnimatedChild._(
+      AccordionSliverChild._(
         expanded: expanded ?? this.expanded,
         collapsed: collapsed ?? this.collapsed,
         priority: priority ?? this.priority,
@@ -258,8 +285,8 @@ class _SliverChildRange {
   }
 }
 
-class SliverAnimatedDelegate {
-  final List<SliverAnimatedChild> children;
+class AccordionSliverDeligate {
+  final List<AccordionSliverChild> children;
   final bool safeArea;
   final bool floating;
   final bool pinned;
@@ -269,7 +296,7 @@ class SliverAnimatedDelegate {
   final AnimatedCrossFadeBuilder? layoutBuilder;
   final Duration duration;
 
-  SliverAnimatedDelegate({
+  AccordionSliverDeligate({
     required this.children,
     this.safeArea = true,
     this.floating = false,
@@ -280,4 +307,10 @@ class SliverAnimatedDelegate {
     this.animationAlignment = AlignmentDirectional.bottomCenter,
     required this.duration,
   });
+}
+
+class SizedSliverChild {
+  final Widget child;
+  final Size preferredSize;
+  SizedSliverChild({required this.child, required this.preferredSize});
 }
