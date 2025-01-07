@@ -6,6 +6,7 @@ import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/widgets/contribution_calendar_widget.dart';
 import 'package:code_streak/features/home/presentation/widgets/reminder_status_widget.dart';
+import 'package:code_streak/features/home/presentation/widgets/user_avatar.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,9 +54,9 @@ class _HomePage extends State<HomePage> {
           ],
           leading: BlocBuilder<UserInfoBloc, UserInfoState>(
             builder: (context, state) {
-              return UserInfoWidget(
-                key: ValueKey(state),
+              return UserAvatar(
                 state: state,
+                size: 48,
               );
             },
           ),
