@@ -16,28 +16,22 @@ class UserInfoWidget extends StatelessWidget {
         loading: () => true,
       ),
       enableSwitchAnimation: true,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 16,
-            ),
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _nameWidget,
-                _usernameWidget,
-                state.maybeWhen(
-                  orElse: () => const SizedBox(),
-                  success: (data) =>
-                      data.location != null ? _addressWidget : const SizedBox(),
-                )
-              ],
-            ))
-          ],
-        ),
+      child: Row(
+        children: [
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _nameWidget,
+              _usernameWidget,
+              state.maybeWhen(
+                orElse: () => const SizedBox(),
+                success: (data) =>
+                    data.location != null ? _addressWidget : const SizedBox(),
+              )
+            ],
+          ))
+        ],
       ),
     );
   }

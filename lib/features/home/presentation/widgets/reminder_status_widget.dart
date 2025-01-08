@@ -25,36 +25,33 @@ class ReminderStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer(
       enabled: isLoading,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: AnimatedContainer(
-          duration: Durations.medium2,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: isLoading
-                ? Theme.of(context).colorScheme.surface
-                : isReminderEnabled
-                    ? Theme.of(context).colorScheme.primaryContainer
-                    : Theme.of(context).colorScheme.errorContainer,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Expanded(
-              child: Text(
-                isReminderEnabled
-                    ? "Hooray! 🎉 You'll receive reminders every day! ✅"
-                    : failure is PermissionFailure
-                        ? "Notification permission Denied! 😕 You need to approve it in settings to set reminders. 🚨"
-                        : "Oops! 😕 Something went wrong setting up reminders. 🔄",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: isReminderEnabled
-                          ? Theme.of(context).colorScheme.onPrimaryContainer
-                          : Theme.of(context).colorScheme.onErrorContainer,
-                    ),
-              ),
-            )
-          ]),
+      child: AnimatedContainer(
+        duration: Durations.medium2,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isLoading
+              ? Theme.of(context).colorScheme.surface
+              : isReminderEnabled
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(context).colorScheme.errorContainer,
+          borderRadius: BorderRadius.circular(8),
         ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Expanded(
+            child: Text(
+              isReminderEnabled
+                  ? "Hooray! 🎉 You'll receive reminders every day! ✅"
+                  : failure is PermissionFailure
+                      ? "Notification permission Denied! 😕 You need to approve it in settings to set reminders. 🚨"
+                      : "Oops! 😕 Something went wrong setting up reminders. 🔄",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: isReminderEnabled
+                        ? Theme.of(context).colorScheme.onPrimaryContainer
+                        : Theme.of(context).colorScheme.onErrorContainer,
+                  ),
+            ),
+          )
+        ]),
       ),
     );
   }
