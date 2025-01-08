@@ -52,11 +52,21 @@ class _HomePage extends State<HomePage> {
               ),
             )
           ],
+          leadingWidth: 64,
           leading: BlocBuilder<UserInfoBloc, UserInfoState>(
             builder: (context, state) {
-              return UserAvatar(
-                state: state,
-                size: 48,
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    UserAvatar(
+                      state: state,
+                      size: 48,
+                    ),
+                  ],
+                ),
               );
             },
           ),

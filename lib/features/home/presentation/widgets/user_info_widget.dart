@@ -20,7 +20,6 @@ class UserInfoWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
           children: [
-            _imageWidget,
             const SizedBox(
               width: 16,
             ),
@@ -30,6 +29,11 @@ class UserInfoWidget extends StatelessWidget {
               children: [
                 _nameWidget,
                 _usernameWidget,
+                state.maybeWhen(
+                  orElse: () => const SizedBox(),
+                  success: (data) =>
+                      data.location != null ? _addressWidget : const SizedBox(),
+                )
               ],
             ))
           ],
@@ -66,20 +70,17 @@ class UserInfoWidget extends StatelessWidget {
         );
       });
 
-  Widget get _imageWidget => Builder(builder: (context) {
-        return Container(
-          width: _imageSize,
-          height: _imageSize,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(_imageSize / 2),
-              image: DecorationImage(
-                  image: NetworkImage(
-                state.maybeWhen(
-                  orElse: () => '',
-                  loading: () => 'https://picsum.photos/${_imageSize.toInt()}',
-                  success: (data) => data.avatarUrl ?? '',
-                ),
-              ))),
+  Widget get _addressWidget => Builder(builder: (context) {
+        return Text(
+          state.maybeWhen(
+            orElse: () => '',
+            loading: () => 'San Francisco, CA',
+            success: (data) => '${data.location}',
+          ),
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         );
       });
 }

@@ -25,5 +25,11 @@ class UserAvatar extends StatelessWidget {
     );
   }
 
-  Widget get _defaultAvatar => Assets.images.avatar.image();
+  Widget get _defaultAvatar => ClipRRect(
+        borderRadius: BorderRadius.circular(size / 2),
+        child: Assets.images.avatar.image(
+          width: size,
+          height: size,
+        ),
+      );
 }
