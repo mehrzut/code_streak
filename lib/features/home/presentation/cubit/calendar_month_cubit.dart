@@ -20,4 +20,8 @@ class CalendarMonthCubit extends Cubit<CalendarMonthState> {
   void previousMonth() {
     emit(state.copyWith(current: state.current.previousMonth));
   }
+
+  void goMonthsForwardOrBackward(int n) {
+    emit(state.copyWith(current: state.current.goMonthsForwardOrBackward(n)));
+  }
 }

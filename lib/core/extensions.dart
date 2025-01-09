@@ -1,4 +1,5 @@
 import 'package:appwrite/models.dart';
+import 'package:code_streak/features/home/domain/entities/contribution_day_data.dart';
 import 'package:flutter/material.dart';
 
 extension DateTimeExt on DateTime {
@@ -46,6 +47,32 @@ extension DateTimeExt on DateTime {
     }
   }
 
+  DateTime monthsBefore(int n) {
+    DateTime t = this;
+    for (int i = 0; i < n; i++) {
+      t = t.previousMonth;
+    }
+    return t;
+  }
+
+  DateTime goMonthsForwardOrBackward(int n) {
+    if (n == 0) {
+      return this;
+    } else if (n < 0) {
+      return monthsBefore(n.abs());
+    } else {
+      return monthsAfter(n);
+    }
+  }
+
+  DateTime monthsAfter(int n) {
+    DateTime t = this;
+    for (int i = 0; i < n; i++) {
+      t = t.nextMonth;
+    }
+    return t;
+  }
+
   String get monthNameYearString {
     return '$monthName $year';
   }
@@ -79,6 +106,25 @@ extension DateTimeExt on DateTime {
       default:
         return '';
     }
+  }
+
+  int get firstWeekdayOfMonth => (firstDayOfMonth.weekday - 1) % 7;
+  int maxContributeInMonth(List<ContributionDayData> allDaysContributionData) =>
+      getContributionDaysOfMonth(allDaysContributionData).fold(
+          0,
+          (previousValue, element) => element.contributionCount > previousValue
+              ? element.contributionCount
+              : previousValue);
+
+  List<ContributionDayData> getContributionDaysOfMonth(
+      List<ContributionDayData> allDaysContributionData) {
+    List<ContributionDayData> temp = [];
+    for (int i = allDaysContributionData.length - 1; i >= 0; i--) {
+      if (allDaysContributionData[i].date.isSameMonthAs(this)) {
+        temp.insert(0, allDaysContributionData[i]);
+      }
+    }
+    return temp;
   }
 }
 

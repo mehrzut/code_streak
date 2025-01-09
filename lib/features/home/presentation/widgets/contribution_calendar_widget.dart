@@ -2,6 +2,7 @@ import 'package:code_streak/core/extensions.dart';
 import 'package:code_streak/features/home/domain/entities/contribution_day_data.dart';
 import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/presentation/cubit/calendar_month_cubit.dart';
+import 'package:code_streak/features/home/presentation/widgets/calendar_month_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,16 +48,25 @@ class _ContributionCalendarWidget extends StatefulWidget {
 
 class _ContributionCalendarWidgetState
     extends State<_ContributionCalendarWidget> {
+  static const _initIndex = 50;
+  final _pageController = PageController(initialPage: _initIndex);
 
   @override
   void initState() {
+    _pageController.addListener(_pageListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.removeListener(_pageListener);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+      padding: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).colorScheme.outline,
@@ -78,156 +88,75 @@ class _ContributionCalendarWidgetState
   Widget get _monthControllerWidget =>
       BlocBuilder<CalendarMonthCubit, CalendarMonthState>(
         builder: (context, state) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () =>
-                      context.read<CalendarMonthCubit>().previousMonth(),
-                  icon: const Icon(Icons.arrow_back)),
-              Text(
-                state.current.monthNameYearString,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              IconButton(
-                  onPressed: () =>
-                      context.read<CalendarMonthCubit>().nextMonth(),
-                  icon: const Icon(Icons.arrow_forward)),
-            ],
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () =>
+                        context.read<CalendarMonthCubit>().previousMonth(),
+                    icon: const Icon(Icons.chevron_left)),
+                AnimatedSwitcher(
+                  duration: Durations.medium2,
+                  child: Text(
+                    state.current.monthNameYearString,
+                    key: ValueKey(state.current),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () =>
+                        context.read<CalendarMonthCubit>().nextMonth(),
+                    icon: const Icon(Icons.chevron_right)),
+              ],
+            ),
           );
         },
       );
 
-  Widget get _daysWidget => BlocBuilder<CalendarMonthCubit, CalendarMonthState>(
-        builder: (context, state) {
-          return LayoutBuilder(builder: (context, constraints) {
-            final _cellSize = constraints.biggest.width / 7;
-            return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Column(
-                children: List.generate(
-                  7,
-                  (index) => Container(
-                    height: _cellSize,
-                    width: _cellSize,
-                    padding: const EdgeInsets.all(2),
-                    child: Center(
-                        child: Text(
-                      (index + 1).weekdayName(),
-                      style: Theme.of(context).textTheme.labelLarge,
-                    )),
-                  ),
-                ),
-              ),
-              Expanded(
+  Widget get _daysWidget => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: LayoutBuilder(builder: (context, constraints) {
+          return BlocBuilder<CalendarMonthCubit, CalendarMonthState>(
+            builder: (context, state) {
+              final cellSize = constraints.biggest.width / 7;
+              return SizedBox(
+                height: cellSize * 7,
                 child: Row(
-                  children: List.generate(state.current.monthLengthInWeeks,
-                      (weekIndex) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(7, (dayIndex) {
-                        final index = weekIndex * 7 + dayIndex;
-                        final i = index - state.firstWeekday;
-
-                        if (state.firstWeekday > index) {
-                          // previous month's days
-                          return SizedBox.square(dimension: _cellSize);
-                        }
-                        if (state.currentDays.length > i) {
-                          // current month's days with data
-                          return _DayItemWidget(
-                            defaultColor: widget.defaultCalendarColor,
-                            color: _getColor(state.currentDays, i,
-                                state.maxContributeInCurrentPeriod),
-                            size: Size.square(_cellSize),
-                            data: state.currentDays[i],
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        reverse: true,
+                        scrollDirection: Axis.horizontal,
+                        controller: _pageController,
+                        itemBuilder: (context, index) {
+                          return CalendarMonthWidget(
+                            allDaysContributionData:
+                                state.allDaysContributionData,
+                            month: state.current
+                                .goMonthsForwardOrBackward(_initIndex - index),
+                            defaultCalendarColor: widget.defaultCalendarColor,
+                            heatMapColor: widget.heatMapColor,
                           );
-                        }
-                        if (i + 1 > state.current.monthLengthInDays) {
-                          // next month's days
-                          return SizedBox.square(dimension: _cellSize);
-                        }
-                        // current month's days without data
-                        final date = (state.currentDays.isNotEmpty
-                                ? state.currentDays.last.date
-                                : state.current.previousMonth.lastDayOfMonth)
-                            .add(Duration(
-                                days: i - state.currentDays.length + 1));
-                        return _DayItemWidget(
-                          defaultColor: widget.defaultCalendarColor,
-                          color: widget.defaultCalendarColor,
-                          size: Size.square(_cellSize),
-                          data: ContributionDayData(
-                              date: date, contributionCount: 0),
-                        );
-                      }),
-                    );
-                  }),
+                        },
+                        onPageChanged: (value) {},
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            ]);
-          });
-        },
+              );
+            },
+          );
+        }),
       );
 
-  Color _getColor(List<ContributionDayData> currentDays, int i,
-      int maxContributeInCurrentPeriod) {
-    final opacity = maxContributeInCurrentPeriod != 0
-        ? currentDays[i].contributionCount / maxContributeInCurrentPeriod
-        : 0.0;
-    return widget.heatMapColor.withOpacity(opacity);
-  }
-}
-
-class _DayItemWidget extends StatelessWidget {
-  const _DayItemWidget(
-      {required this.data,
-      required this.color,
-      required this.defaultColor,
-      required this.size});
-  final Color color;
-  final Color defaultColor;
-  final ContributionDayData data;
-  final Size size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Tooltip(
-      message:
-          '${data.contributionCount} contribution${data.contributionCount == 1 ? '' : 's'}',
-      triggerMode: TooltipTriggerMode.tap,
-      child: SizedBox.fromSize(
-        size: size,
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                  color: defaultColor, borderRadius: BorderRadius.circular(4)),
-            ),
-            Container(
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(4),
-                border: data.date.isToday
-                    ? Border.all(
-                        color: Theme.of(context).colorScheme.outline, width: 2)
-                    : null,
-              ),
-              child: Center(
-                child: Text(
-                  data.date.day.toString(),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void _pageListener() {
+    if (_pageController.page != null &&
+        _pageController.page == _pageController.page?.toInt().toDouble()) {
+      context.read<CalendarMonthCubit>().goMonthsForwardOrBackward(
+          _initIndex - _pageController.page!.toInt());
+      _pageController.jumpToPage(_initIndex);
+    }
   }
 }
