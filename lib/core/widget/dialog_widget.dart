@@ -146,9 +146,9 @@ class DialogWidget extends StatelessWidget {
         return FilledButton(
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all(
-                  Theme.of(context).colorScheme.errorContainer),
+                  Theme.of(context).colorScheme.error),
               foregroundColor: WidgetStateProperty.all(
-                  Theme.of(context).colorScheme.onErrorContainer),
+                  Theme.of(context).colorScheme.onError),
             ),
             onPressed: onPressed,
             child: child);

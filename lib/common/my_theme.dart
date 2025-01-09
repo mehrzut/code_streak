@@ -23,6 +23,46 @@ class MyTheme {
         ),
       ),
     ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: const Color(0xFF1466B8),
+        foregroundColor: const Color(0xffffffff),
+        textStyle: TextStyle(
+          fontSize: 14,
+          fontFamily: GoogleFonts.spaceGrotesk().fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: const Color(0xFF1980E8),
+        textStyle: TextStyle(
+          fontSize: 14,
+          fontFamily: GoogleFonts.spaceGrotesk().fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: const Color(0xFF1980E8),
+        textStyle: TextStyle(
+          fontSize: 14,
+          fontFamily: GoogleFonts.spaceGrotesk().fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFF121417),
       foregroundColor: Color(0xffffffff),
