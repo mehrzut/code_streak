@@ -1,4 +1,5 @@
 import 'package:code_streak/core/enums.dart';
+import 'package:code_streak/core/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -23,7 +24,7 @@ class DialogWidget extends StatelessWidget {
     return Dialog(
       child: Container(
         constraints: const BoxConstraints(maxWidth: 460),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         decoration: ShapeDecoration(
           color: Theme.of(context).colorScheme.surfaceBright,
           shape: RoundedRectangleBorder(
@@ -67,42 +68,9 @@ class DialogWidget extends StatelessWidget {
               children: [
                 for (DialogButton button in buttons)
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: _getButton(context, button),
-                      // button.type == ButtonType.primary
-                      //     ? ElevatedButton(
-                      //         // style: ButtonStyle(
-                      //         //     backgroundColor:
-                      //         //         WidgetStateProperty.all(primary)),
-                      //         onPressed: () => context.pop(button.value),
-                      //         child: Text(
-                      //           button.title,
-                      //           // style: Theme.of(context)
-                      //           //     .textTheme
-                      //           //     .labelMedium
-                      //           //     ?.copyWith(
-                      //           //         color: Theme.of(context)
-                      //           //             .colorScheme
-                      //           //             .onSurface),
-                      //         ),
-                      //       )
-                      //     : TextButton(
-                      //         onPressed: () => context.pop(button.value),
-                      //         child: Text(
-                      //           button.title,
-                      //           // style: Theme.of(context)
-                      //           //     .textTheme
-                      //           //     .labelMedium
-                      //           //     ?.copyWith(
-                      //           //         color: Theme.of(context)
-                      //           //             .colorScheme
-                      //           //             .onSurface),
-                      //         ),
-                      //       ),
-                    ),
+                    child: _getButton(context, button),
                   )
-              ],
+              ].horizontalPadding(16),
             )
           ],
         ),
@@ -145,8 +113,8 @@ class DialogWidget extends StatelessWidget {
       case ButtonType.warning:
         return FilledButton(
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(
-                  Theme.of(context).colorScheme.error),
+              backgroundColor:
+                  WidgetStateProperty.all(Theme.of(context).colorScheme.error),
               foregroundColor: WidgetStateProperty.all(
                   Theme.of(context).colorScheme.onError),
             ),
