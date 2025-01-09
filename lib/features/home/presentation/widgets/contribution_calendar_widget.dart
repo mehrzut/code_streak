@@ -47,7 +47,6 @@ class _ContributionCalendarWidget extends StatefulWidget {
 
 class _ContributionCalendarWidgetState
     extends State<_ContributionCalendarWidget> {
-  // double get _cellSize => 40;
 
   @override
   void initState() {

@@ -31,16 +31,26 @@ class AuthRepoImpl implements AuthRepo {
   @override
   Future<ResponseModel<void>> loadSession() async {
     final result = await localDatabase.loadSession();
-    await result.whenOrNull(
+    return result.when<Future<ResponseModel<Session>>>(
       success: (data) async {
         ClientHandler.instance.updateSession(data as Session);
         final session = await _checkExpiry(data);
         if (session != data) {
           ClientHandler.instance.updateSession(session);
         }
+        return result;
+      },
+      failed: (failure) async {
+        try {
+          final session = await ClientHandler.instance.account
+              .getSession(sessionId: 'current');
+          return ResponseModel.success(session);
+        } catch (e) {
+          log(e.toString());
+          return result;
+        }
       },
     );
-    return result;
   }
 
   @override
