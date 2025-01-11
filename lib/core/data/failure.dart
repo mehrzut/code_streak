@@ -16,13 +16,18 @@ class APIErrorFailure extends Failure {
   APIErrorFailure({super.message});
 }
 
-class AppwritePrefFailure extends Failure {
-  AppwritePrefFailure();
+class AppWritePrefFailure extends Failure {
+  AppWritePrefFailure();
 }
+
 class FirebaseFailure extends Failure {
   FirebaseFailure();
 }
 
 class PermissionFailure extends Failure {
   PermissionFailure();
+}
+
+class GeneralFailure extends Failure {
+  GeneralFailure({super.message});
 }

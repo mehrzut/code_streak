@@ -28,6 +28,9 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_animate: ^4.5.2
   accordion_sliver_app_bar: ^0.0.2
+  mobile_device_identifier: ^0.0.3
+  convert: ^3.1.2
+  crypto: ^3.0.6
 
 dev_dependencies:
   flutter_test:

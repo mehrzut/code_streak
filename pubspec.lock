@@ -186,13 +186,13 @@ packages:
     source: hosted
     version: "3.0.0"
   convert:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: convert
-      sha256: "0f08b14755d163f6e2134cb58222dd25ea2a2ee8a195e53983d57c075324d592"
+      sha256: b30acd5944035672bc15c6b7a8b47d773e41e2f17de064350988c5d02adb1c68
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "3.1.2"
   cookie_jar:
     dependency: transitive
     description:
@@ -202,13 +202,13 @@ packages:
     source: hosted
     version: "4.0.8"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
-      sha256: ff625774173754681d66daaf4a448684fb04b78f902da9cb3d308c19cc5e8bab
+      sha256: "1e445881f28f22d6140f181e07737b22f1e099a5e1ff94b0af2f9e4a463f4855"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.3"
+    version: "3.0.6"
   dart_style:
     dependency: transitive
     description:
@@ -736,6 +736,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  mobile_device_identifier:
+    dependency: "direct main"
+    description:
+      name: mobile_device_identifier
+      sha256: "50c838c4783b84a3d70e3bb06960ba8a9d17d6852d49882c8c3f54c794791caa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   nested:
     dependency: transitive
     description:

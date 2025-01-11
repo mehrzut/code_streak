@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:appwrite/appwrite.dart';
 import 'package:code_streak/common/url_helper.dart';
 import 'package:code_streak/core/controllers/client_handler.dart';
+import 'package:code_streak/core/controllers/id_handler.dart';
 import 'package:code_streak/core/controllers/notification_handler.dart';
 import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/core/data/response_model.dart';
@@ -119,24 +120,26 @@ class HomeDataSourceImpl implements HomeDataSource {
       await ClientHandler.instance.account
           .updatePrefs(prefs: {'timezone': currentTimeZone});
       final token = await FirebaseMessaging.instance.getToken();
+      final targetId = await IdHandler.getDeviceId();
       if (token != null && permissionApproved) {
-        final currentSession = await ClientHandler.instance.account
-            .getSession(sessionId: 'current');
         try {
           await ClientHandler.instance.account.createPushTarget(
               identifier: token,
-              targetId: currentSession.userId,
+              targetId: targetId,
               providerId: dotenv.get('APPWRITE_FCM_PROVIDER_ID', fallback: ''));
         } on AppwriteException catch (e) {
           log(e.toString());
           if (e.type == 'user_target_already_exists') {
             await ClientHandler.instance.account.updatePushTarget(
               identifier: token,
-              targetId: currentSession.userId,
+              targetId: targetId,
             );
           } else {
-            return ResponseModel.failed(AppwritePrefFailure());
+            return ResponseModel.failed(AppWritePrefFailure());
           }
+        } catch (e) {
+          log(e.toString());
+          return ResponseModel.failed(GeneralFailure(message: e.toString()));
         }
         return ResponseModel.success(true);
       } else if (!permissionApproved) {
@@ -146,7 +149,7 @@ class HomeDataSourceImpl implements HomeDataSource {
       }
     } catch (e) {
       log(e.toString());
-      return ResponseModel.failed(AppwritePrefFailure());
+      return ResponseModel.failed(AppWritePrefFailure());
     }
   }
 }
