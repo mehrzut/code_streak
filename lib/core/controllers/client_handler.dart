@@ -16,7 +16,7 @@ class ClientHandler {
 
   ClientHandler()
       : _dio = Dio(BaseOptions(
-          validateStatus: (status) => (status ?? 400) < 500,
+          validateStatus: (status) => true,
         ));
 
   static ClientHandler? _instance;
