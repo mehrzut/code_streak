@@ -142,15 +142,20 @@ class HomeDataSourceImpl implements HomeDataSource {
           return ResponseModel.failed(GeneralFailure(message: e.toString()));
         }
         final user = await ClientHandler.instance.account.get();
-        final response =
-            await ClientHandler.instance.callApi((dio) => dio.postUri(
-                  Uri.parse(
-                      '${UrlHelper.appwriteApiUrl}setRemindersForNewSession'),
-                  options: Options(
-                    contentType: 'application/json',
-                  ),
-                  data: jsonEncode({'userId': user.$id}),
-                ));
+        try {
+          final response =
+              await ClientHandler.instance.callApi((dio) => dio.postUri(
+                    Uri.parse(
+                        '${UrlHelper.appwriteApiUrl}setRemindersForNewSession'),
+                    options: Options(
+                      contentType: 'application/json',
+                    ),
+                    data: jsonEncode({'userId': user.$id}),
+                  ));
+          log(response.data.toString());
+        } catch (e) {
+          log(e.toString());
+        }
         return ResponseModel.success(true);
       } else if (!permissionApproved) {
         return ResponseModel.failed(PermissionFailure());
