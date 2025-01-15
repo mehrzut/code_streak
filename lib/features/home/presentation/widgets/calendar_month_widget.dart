@@ -128,7 +128,8 @@ class _DayItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
                 border: data.date.isToday
                     ? Border.all(
-                        color: Theme.of(context).colorScheme.outline, width: 2)
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        width: 1)
                     : null,
               ),
               child: Center(
