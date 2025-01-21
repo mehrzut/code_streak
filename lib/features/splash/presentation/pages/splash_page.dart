@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/features/home/presentation/pages/home_page.dart';
@@ -15,8 +17,16 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPage extends State<SplashPage> {
+  late Timer timer;
+  bool _timerFinished = false;
+  String? _nextPageRoute;
+
   @override
   void initState() {
+    timer = Timer(const Duration(seconds: 2), () {
+      _timerFinished = true;
+      _checkTimerAndNavigate();
+    });
     _checkAuthenticationStatus();
     super.initState();
   }
@@ -26,8 +36,14 @@ class _SplashPage extends State<SplashPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         state.whenOrNull(
-          success: () => _navigateToHomePage(),
-          failed: (failure) => _navigateToLoginPage(),
+          success: () {
+            _nextPageRoute = HomePage.pageRoute;
+            _checkTimerAndNavigate();
+          },
+          failed: (failure) {
+            _nextPageRoute = AuthPage.pageRoute;
+            _checkTimerAndNavigate();
+          },
         );
       },
       child: Scaffold(
@@ -61,11 +77,9 @@ class _SplashPage extends State<SplashPage> {
     context.read<AuthBloc>().add(AuthEvent.loadCredentials());
   }
 
-  void _navigateToHomePage() {
-    context.pushReplacementNamed(HomePage.pageRoute);
-  }
-
-  void _navigateToLoginPage() {
-    context.pushReplacementNamed(AuthPage.pageRoute);
+  void _checkTimerAndNavigate() {
+    if (_timerFinished && _nextPageRoute != null) {
+      context.pushReplacementNamed(_nextPageRoute!);
+    }
   }
 }
