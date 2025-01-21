@@ -80,6 +80,7 @@ class MyTheme {
       surface: Color(0xFF1C2126),
       onSurface: Color(0xffffffff),
       onSurfaceVariant: Color(0xff9EABB8),
+      onSecondaryFixed: Color(0xff5b636b),
       tertiary: Color(0xff293038),
       onTertiary: Color(0xffffffff),
       primaryContainer: Color(0xff98C1EA),

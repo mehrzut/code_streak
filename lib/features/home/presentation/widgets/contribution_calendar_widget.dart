@@ -116,7 +116,8 @@ class _ContributionCalendarWidgetState
       );
 
   Widget get _daysWidget => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsetsDirectional.only(
+            end: MediaQuery.sizeOf(context).width / 10),
         child: LayoutBuilder(builder: (context, constraints) {
           return BlocBuilder<CalendarMonthCubit, CalendarMonthState>(
             builder: (context, state) {
@@ -128,10 +129,11 @@ class _ContributionCalendarWidgetState
                     Expanded(
                       child: PageView.builder(
                         reverse: true,
-                        scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.vertical,
                         controller: _pageController,
                         itemBuilder: (context, index) {
                           return CalendarMonthWidget(
+                            cellSize: cellSize,
                             allDaysContributionData:
                                 state.allDaysContributionData,
                             month: state.current
