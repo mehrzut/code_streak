@@ -17,14 +17,14 @@ class CalendarMonthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      final _cellSize = constraints.biggest.width / 7;
+      final cellSize = constraints.biggest.width / 7;
       return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Column(
           children: List.generate(
             7,
             (index) => Container(
-              height: _cellSize,
-              width: _cellSize,
+              height: cellSize,
+              width: cellSize,
               padding: const EdgeInsets.all(2),
               child: Center(
                   child: Text(
@@ -47,7 +47,7 @@ class CalendarMonthWidget extends StatelessWidget {
 
                   if (month.firstWeekdayOfMonth > index) {
                     // previous month's days
-                    return SizedBox.square(dimension: _cellSize);
+                    return SizedBox.square(dimension: cellSize);
                   }
                   if (thisMonthContributionDays.length > i) {
                     // current month's days with data
@@ -55,13 +55,13 @@ class CalendarMonthWidget extends StatelessWidget {
                       defaultColor: defaultCalendarColor,
                       color: _getColor(thisMonthContributionDays, i,
                           month.maxContributeInMonth(allDaysContributionData)),
-                      size: Size.square(_cellSize),
+                      size: Size.square(cellSize),
                       data: thisMonthContributionDays[i],
                     );
                   }
                   if (i + 1 > month.monthLengthInDays) {
                     // next month's days
-                    return SizedBox.square(dimension: _cellSize);
+                    return SizedBox.square(dimension: cellSize);
                   }
                   // current month's days without data
                   final date = (thisMonthContributionDays.isNotEmpty
@@ -72,7 +72,7 @@ class CalendarMonthWidget extends StatelessWidget {
                   return _DayItemWidget(
                     defaultColor: defaultCalendarColor,
                     color: defaultCalendarColor,
-                    size: Size.square(_cellSize),
+                    size: Size.square(cellSize),
                     data: ContributionDayData(date: date, contributionCount: 0),
                   );
                 }),

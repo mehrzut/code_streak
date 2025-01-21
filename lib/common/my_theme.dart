@@ -85,6 +85,7 @@ class MyTheme {
       primaryContainer: Color(0xff98C1EA),
       onPrimaryContainer: Color(0xff053C73),
       surfaceContainerLow: Color(0xff2793FF),
+      surfaceContainerHigh: Color(0xff053C73),
       outline: Color(0xff3D4754),
     ),
   );

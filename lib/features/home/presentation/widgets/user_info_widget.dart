@@ -6,8 +6,6 @@ class UserInfoWidget extends StatelessWidget {
   const UserInfoWidget({super.key, required this.state});
   final UserInfoState state;
 
-  double get _imageSize => 64;
-
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
