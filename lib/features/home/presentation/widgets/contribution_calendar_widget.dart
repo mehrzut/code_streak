@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:code_streak/core/extensions.dart';
 import 'package:code_streak/features/home/domain/entities/contribution_day_data.dart';
 import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
@@ -50,6 +52,7 @@ class _ContributionCalendarWidgetState
     extends State<_ContributionCalendarWidget> {
   static const _initIndex = 50;
   final _pageController = PageController(initialPage: _initIndex);
+  final StreamController<int> _monthStreamController = StreamController();
 
   @override
   void initState() {
@@ -60,6 +63,7 @@ class _ContributionCalendarWidgetState
   @override
   void dispose() {
     _pageController.removeListener(_pageListener);
+    _monthStreamController.close();
     super.dispose();
   }
 
@@ -97,14 +101,20 @@ class _ContributionCalendarWidgetState
                     onPressed: () =>
                         context.read<CalendarMonthCubit>().previousMonth(),
                     icon: const Icon(Icons.chevron_left)),
-                AnimatedSwitcher(
-                  duration: Durations.medium2,
-                  child: Text(
-                    state.current.monthNameYearString,
-                    key: ValueKey(state.current),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
+                StreamBuilder<int>(
+                    stream: _monthStreamController.stream,
+                    builder: (context, snapshot) {
+                      final current = state.current
+                          .goMonthsForwardOrBackward(snapshot.data ?? 0);
+                      return AnimatedSwitcher(
+                        duration: Durations.medium2,
+                        child: Text(
+                          current.monthNameYearString,
+                          key: ValueKey(current),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      );
+                    }),
                 IconButton(
                     onPressed: () =>
                         context.read<CalendarMonthCubit>().nextMonth(),
@@ -160,5 +170,7 @@ class _ContributionCalendarWidgetState
           _initIndex - _pageController.page!.toInt());
       _pageController.jumpToPage(_initIndex);
     }
+    _monthStreamController
+        .add((_initIndex - (_pageController.page ?? 0)).round());
   }
 }
