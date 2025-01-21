@@ -7,4 +7,11 @@ class ContributionsState with _$ContributionsState {
   factory ContributionsState.success({required ContributionsData data}) =
       _SuccessState;
   factory ContributionsState.failed({required Failure failure}) = _FailedState;
+
+  ContributionsState._();
+
+  bool get isLoading => this is _LoadingState;
+
+  ContributionsData? get data =>
+      this is _SuccessState ? (this as _SuccessState).data : null;
 }

@@ -25,6 +25,7 @@ class ReminderStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer(
       enabled: isLoading,
+      enableSwitchAnimation: true,
       child: AnimatedContainer(
         duration: Durations.medium2,
         padding: const EdgeInsets.all(12),
@@ -36,22 +37,25 @@ class ReminderStatusWidget extends StatelessWidget {
                   : Theme.of(context).colorScheme.errorContainer,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Expanded(
-            child: Text(
-              isReminderEnabled
-                  ? "Hooray! 🎉 You'll receive reminders every day! ✅"
-                  : failure is PermissionFailure
-                      ? "Notification permission Denied! 😕 You need to approve it in settings to set reminders. 🚨"
-                      : "Oops! 😕 Something went wrong setting up reminders. 🔄",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: isReminderEnabled
-                        ? Theme.of(context).colorScheme.onPrimaryContainer
-                        : Theme.of(context).colorScheme.onErrorContainer,
-                  ),
-            ),
-          )
-        ]),
+        child: AnimatedSize(
+          duration: Durations.medium2,
+          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Expanded(
+              child: Text(
+                isReminderEnabled
+                    ? "Hooray! 🎉 You'll receive reminders every day! ✅"
+                    : failure is PermissionFailure
+                        ? "Notification permission Denied! 😕 You need to approve it in settings to set reminders. 🚨"
+                        : "Oops! 😕 Something went wrong setting up reminders. 🔄",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: isReminderEnabled
+                          ? Theme.of(context).colorScheme.onPrimaryContainer
+                          : Theme.of(context).colorScheme.onErrorContainer,
+                    ),
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

@@ -6,9 +6,12 @@ part 'contributions_data.freezed.dart';
 @freezed
 class ContributionsData with _$ContributionsData {
   factory ContributionsData({
-    required int totlaContributions,
+    required int totalContributions,
     required List<ContributionWeekData> contributionCalendar,
   }) = _ContributionsData;
 
   ContributionsData._();
+
+  factory ContributionsData.empty() =>
+      ContributionsData(totalContributions: 0, contributionCalendar: []);
 }

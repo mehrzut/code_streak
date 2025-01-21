@@ -315,8 +315,8 @@ class __$$InitialStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InitialStateImpl implements _InitialState {
-  _$InitialStateImpl();
+class _$InitialStateImpl extends _InitialState {
+  _$InitialStateImpl() : super._();
 
   @override
   String toString() {
@@ -407,8 +407,9 @@ class _$InitialStateImpl implements _InitialState {
   }
 }
 
-abstract class _InitialState implements ContributionsState {
+abstract class _InitialState extends ContributionsState {
   factory _InitialState() = _$InitialStateImpl;
+  _InitialState._() : super._();
 }
 
 /// @nodoc
@@ -429,8 +430,8 @@ class __$$LoadingStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingStateImpl implements _LoadingState {
-  _$LoadingStateImpl();
+class _$LoadingStateImpl extends _LoadingState {
+  _$LoadingStateImpl() : super._();
 
   @override
   String toString() {
@@ -521,8 +522,9 @@ class _$LoadingStateImpl implements _LoadingState {
   }
 }
 
-abstract class _LoadingState implements ContributionsState {
+abstract class _LoadingState extends ContributionsState {
   factory _LoadingState() = _$LoadingStateImpl;
+  _LoadingState._() : super._();
 }
 
 /// @nodoc
@@ -568,8 +570,8 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SuccessStateImpl implements _SuccessState {
-  _$SuccessStateImpl({required this.data});
+class _$SuccessStateImpl extends _SuccessState {
+  _$SuccessStateImpl({required this.data}) : super._();
 
   @override
   final ContributionsData data;
@@ -671,9 +673,10 @@ class _$SuccessStateImpl implements _SuccessState {
   }
 }
 
-abstract class _SuccessState implements ContributionsState {
+abstract class _SuccessState extends ContributionsState {
   factory _SuccessState({required final ContributionsData data}) =
       _$SuccessStateImpl;
+  _SuccessState._() : super._();
 
   ContributionsData get data;
   @JsonKey(ignore: true)
@@ -714,8 +717,8 @@ class __$$FailedStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FailedStateImpl implements _FailedState {
-  _$FailedStateImpl({required this.failure});
+class _$FailedStateImpl extends _FailedState {
+  _$FailedStateImpl({required this.failure}) : super._();
 
   @override
   final Failure failure;
@@ -817,8 +820,9 @@ class _$FailedStateImpl implements _FailedState {
   }
 }
 
-abstract class _FailedState implements ContributionsState {
+abstract class _FailedState extends ContributionsState {
   factory _FailedState({required final Failure failure}) = _$FailedStateImpl;
+  _FailedState._() : super._();
 
   Failure get failure;
   @JsonKey(ignore: true)

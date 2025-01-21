@@ -1,5 +1,6 @@
 import 'package:code_streak/core/controllers/overlay_manager.dart';
 import 'package:code_streak/core/extensions.dart';
+import 'package:code_streak/core/widget/pull_to_refresh_widget.dart';
 import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
@@ -24,9 +25,13 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   @override
   void initState() {
+    _handleInitialization();
+    super.initState();
+  }
+
+  void _handleInitialization() {
     _getUserInfo();
     _setUserReminder();
-    super.initState();
   }
 
   double get appbarExpandedHeight => MediaQuery.sizeOf(context).width;
@@ -73,85 +78,69 @@ class _HomePage extends State<HomePage> {
           ),
         ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: CustomScrollView(
-              slivers: [
-                // SliverAppBar(
-                //   pinned: true,
-                //   floating: false,
-                //   backgroundColor: Colors.transparent,
-                //   expandedHeight: appbarExpandedHeight,
-                //   collapsedHeight: appbarCollapsedHeight,
-                //   flexibleSpace: BlocBuilder<UserInfoBloc, UserInfoState>(
-                //     builder: (context, state) {
-                //       return UserInfoAppBar(
-                //         state: state,
-                //         expandedHeight: appbarExpandedHeight,
-                //         collapsedHeight: appbarCollapsedHeight,
-                //       );
-                //     },
-                //   ),
-                // ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      BlocBuilder<UserInfoBloc, UserInfoState>(
-                        builder: (context, state) {
-                          return UserInfoWidget(
-                            key: ValueKey(state),
-                            state: state,
-                          );
-                        },
+          child: PullToRefreshWidget(
+            onRefresh: () async => _handleInitialization(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        BlocBuilder<UserInfoBloc, UserInfoState>(
+                          builder: (context, state) {
+                            return UserInfoWidget(
+                              key: ValueKey(state),
+                              state: state,
+                            );
+                          },
+                        ),
+                        BlocBuilder<ReminderBloc, ReminderState>(
+                          builder: (context, state) {
+                            return ReminderStatusWidget(
+                              state: state,
+                            );
+                          },
+                        ),
+                        BlocBuilder<UserInfoBloc, UserInfoState>(
+                          builder: (context, infoState) {
+                            return BlocBuilder<ContributionsBloc,
+                                ContributionsState>(
+                              builder: (context, state) {
+                                return state.maybeWhen(
+                                  failed: (failure) => const Center(
+                                    child: Text(
+                                      'Something went wrong',
+                                    ),
+                                  ),
+                                  orElse: () => Skeletonizer(
+                                    enabled:
+                                        state.isLoading || infoState.isLoading,
+                                    enableSwitchAnimation: true,
+                                    child: ContributionCalendarWidget(
+                                      data: state.data ??
+                                          ContributionsData.empty(),
+                                      heatMapColor: Theme.of(context)
+                                          .colorScheme
+                                          .surfaceContainerLow,
+                                      defaultCalendarColor:
+                                          Theme.of(context).colorScheme.surface,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ].verticalPadding(
+                        24,
+                        addToStart: true,
+                        addToEnd: true,
                       ),
-                      BlocBuilder<ReminderBloc, ReminderState>(
-                        builder: (context, state) {
-                          return ReminderStatusWidget(
-                            state: state,
-                          );
-                        },
-                      ),
-                      BlocBuilder<ContributionsBloc, ContributionsState>(
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            failed: (failure) => const Center(
-                              child: Text(
-                                'Something went wrong',
-                              ),
-                            ),
-                            success: (data) => ContributionCalendarWidget(
-                              data: data,
-                              heatMapColor: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainerLow,
-                              defaultCalendarColor:
-                                  Theme.of(context).colorScheme.surface,
-                            ),
-                            orElse: () => Skeletonizer(
-                              enabled: true,
-                              enableSwitchAnimation: true,
-                              child: ContributionCalendarWidget(
-                                data: ContributionsData(
-                                    totlaContributions: 0,
-                                    contributionCalendar: []),
-                                heatMapColor: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerLow,
-                                defaultCalendarColor:
-                                    Theme.of(context).colorScheme.surface,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ].verticalPadding(
-                      24,
-                      addToStart: true,
-                      addToEnd: true,
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

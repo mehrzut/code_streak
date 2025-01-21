@@ -16,6 +16,7 @@ class UserAvatar extends StatelessWidget {
         orElse: () => false,
         loading: () => true,
       ),
+      enableSwitchAnimation: true,
       child: state.maybeWhen(
         success: (data) => Container(
           width: size,

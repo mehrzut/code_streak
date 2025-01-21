@@ -52,7 +52,7 @@ class HomeDataSourceImpl implements HomeDataSource {
 
         return ResponseModel.success(
           ContributionsData(
-              totlaContributions: contributionCalendar['totalContributions'],
+              totalContributions: contributionCalendar['totalContributions'],
               contributionCalendar:
                   ((contributionCalendar['weeks'] ?? []) as List<dynamic>)
                       .map(

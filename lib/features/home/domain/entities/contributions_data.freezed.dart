@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ContributionsData {
-  int get totlaContributions => throw _privateConstructorUsedError;
+  int get totalContributions => throw _privateConstructorUsedError;
   List<ContributionWeekData> get contributionCalendar =>
       throw _privateConstructorUsedError;
 
@@ -32,7 +32,7 @@ abstract class $ContributionsDataCopyWith<$Res> {
       _$ContributionsDataCopyWithImpl<$Res, ContributionsData>;
   @useResult
   $Res call(
-      {int totlaContributions,
+      {int totalContributions,
       List<ContributionWeekData> contributionCalendar});
 }
 
@@ -49,13 +49,13 @@ class _$ContributionsDataCopyWithImpl<$Res, $Val extends ContributionsData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? totlaContributions = null,
+    Object? totalContributions = null,
     Object? contributionCalendar = null,
   }) {
     return _then(_value.copyWith(
-      totlaContributions: null == totlaContributions
-          ? _value.totlaContributions
-          : totlaContributions // ignore: cast_nullable_to_non_nullable
+      totalContributions: null == totalContributions
+          ? _value.totalContributions
+          : totalContributions // ignore: cast_nullable_to_non_nullable
               as int,
       contributionCalendar: null == contributionCalendar
           ? _value.contributionCalendar
@@ -74,7 +74,7 @@ abstract class _$$ContributionsDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int totlaContributions,
+      {int totalContributions,
       List<ContributionWeekData> contributionCalendar});
 }
 
@@ -89,13 +89,13 @@ class __$$ContributionsDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? totlaContributions = null,
+    Object? totalContributions = null,
     Object? contributionCalendar = null,
   }) {
     return _then(_$ContributionsDataImpl(
-      totlaContributions: null == totlaContributions
-          ? _value.totlaContributions
-          : totlaContributions // ignore: cast_nullable_to_non_nullable
+      totalContributions: null == totalContributions
+          ? _value.totalContributions
+          : totalContributions // ignore: cast_nullable_to_non_nullable
               as int,
       contributionCalendar: null == contributionCalendar
           ? _value._contributionCalendar
@@ -109,13 +109,13 @@ class __$$ContributionsDataImplCopyWithImpl<$Res>
 
 class _$ContributionsDataImpl extends _ContributionsData {
   _$ContributionsDataImpl(
-      {required this.totlaContributions,
+      {required this.totalContributions,
       required final List<ContributionWeekData> contributionCalendar})
       : _contributionCalendar = contributionCalendar,
         super._();
 
   @override
-  final int totlaContributions;
+  final int totalContributions;
   final List<ContributionWeekData> _contributionCalendar;
   @override
   List<ContributionWeekData> get contributionCalendar {
@@ -127,7 +127,7 @@ class _$ContributionsDataImpl extends _ContributionsData {
 
   @override
   String toString() {
-    return 'ContributionsData(totlaContributions: $totlaContributions, contributionCalendar: $contributionCalendar)';
+    return 'ContributionsData(totalContributions: $totalContributions, contributionCalendar: $contributionCalendar)';
   }
 
   @override
@@ -135,14 +135,14 @@ class _$ContributionsDataImpl extends _ContributionsData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ContributionsDataImpl &&
-            (identical(other.totlaContributions, totlaContributions) ||
-                other.totlaContributions == totlaContributions) &&
+            (identical(other.totalContributions, totalContributions) ||
+                other.totalContributions == totalContributions) &&
             const DeepCollectionEquality()
                 .equals(other._contributionCalendar, _contributionCalendar));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, totlaContributions,
+  int get hashCode => Object.hash(runtimeType, totalContributions,
       const DeepCollectionEquality().hash(_contributionCalendar));
 
   @JsonKey(ignore: true)
@@ -155,13 +155,13 @@ class _$ContributionsDataImpl extends _ContributionsData {
 
 abstract class _ContributionsData extends ContributionsData {
   factory _ContributionsData(
-          {required final int totlaContributions,
+          {required final int totalContributions,
           required final List<ContributionWeekData> contributionCalendar}) =
       _$ContributionsDataImpl;
   _ContributionsData._() : super._();
 
   @override
-  int get totlaContributions;
+  int get totalContributions;
   @override
   List<ContributionWeekData> get contributionCalendar;
   @override
