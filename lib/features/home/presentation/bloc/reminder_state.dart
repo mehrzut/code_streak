@@ -6,4 +6,8 @@ class ReminderState with _$ReminderState {
   factory ReminderState.loading() = _LoadingState;
   factory ReminderState.success() = _SuccessState;
   factory ReminderState.failed({required Failure failure}) = _FailedState;
+
+  ReminderState._();
+
+  bool get isLoading => this is _LoadingState || this is _InitialState;
 }

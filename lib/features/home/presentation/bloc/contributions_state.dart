@@ -10,7 +10,7 @@ class ContributionsState with _$ContributionsState {
 
   ContributionsState._();
 
-  bool get isLoading => this is _LoadingState;
+  bool get isLoading => this is _LoadingState || this is _InitialState;
 
   ContributionsData? get data =>
       this is _SuccessState ? (this as _SuccessState).data : null;

@@ -12,10 +12,7 @@ class ReminderStatusWidget extends StatelessWidget {
         orElse: () => false,
       );
 
-  bool get isLoading => state.maybeWhen(
-        loading: () => true,
-        orElse: () => false,
-      );
+  bool get isLoading => state.isLoading;
 
   Failure? get failure => state.whenOrNull(
         failed: (failure) => failure,

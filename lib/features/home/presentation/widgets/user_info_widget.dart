@@ -9,10 +9,7 @@ class UserInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-      enabled: state.maybeWhen(
-        orElse: () => false,
-        loading: () => true,
-      ),
+      enabled: state.isLoading,
       enableSwitchAnimation: true,
       child: Row(
         children: [

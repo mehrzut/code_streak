@@ -9,5 +9,5 @@ class UserInfoState with _$UserInfoState {
 
   UserInfoState._();
 
-  bool get isLoading => this is _LoadingState;
+  bool get isLoading => this is _LoadingState || this is _InitialState;
 }
