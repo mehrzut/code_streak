@@ -224,6 +224,27 @@ extension ListExt<T> on List<T> {
     return [sublist(0, index), sublist(index + 1)];
   }
 
+  List<List<T>> splitWhere(bool Function(T element) condition) {
+    List<List<T>> list = [];
+    int previousItemIndex = 0;
+    for (int i = 0; i < length; i++) {
+      if (condition(elementAt(i))) {
+        list.add(sublist(previousItemIndex, i));
+        previousItemIndex = i + 1;
+      }
+    }
+    return list;
+  }
+
+  List<T> fromStartUntil(bool Function(T element) condition) {
+    for (int i = 0; i < length; i++) {
+      if (condition(elementAt(i))) {
+        return sublist(0, i);
+      }
+    }
+    return this;
+  }
+
   List<T> addOrUpdateWhere(
     bool Function(T e) condition,
     T Function(T? e) updatedItemGenerator,
@@ -232,6 +253,14 @@ extension ListExt<T> on List<T> {
       return map((e) => condition(e) ? updatedItemGenerator(e) : e).toList();
     } else {
       return [...this, updatedItemGenerator(null)];
+    }
+  }
+
+  T? firstWhereOrNull(bool Function(T element) condition) {
+    try {
+      return firstWhere(condition);
+    } catch (e) {
+      return null;
     }
   }
 }

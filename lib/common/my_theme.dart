@@ -81,13 +81,14 @@ class MyTheme {
       onSurface: Color(0xffffffff),
       onSurfaceVariant: Color(0xff9EABB8),
       onSecondaryFixed: Color(0xff5b636b),
-      tertiary: Color(0xff293038),
-      onTertiary: Color(0xffffffff),
       primaryContainer: Color(0xff98C1EA),
       onPrimaryContainer: Color(0xff053C73),
       surfaceContainerLow: Color(0xff2793FF),
       surfaceContainerHigh: Color(0xff053C73),
       outline: Color(0xff3D4754),
+      tertiary: Color(0xff2E8B57),
+      onTertiary: Color(0xffffffff),
+      inversePrimary: Color(0xffEBC106)
     ),
   );
 }

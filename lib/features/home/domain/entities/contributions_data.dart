@@ -33,4 +33,27 @@ class ContributionsData with _$ContributionsData {
 
   List<ContributionDayData> get allDaysContributionData =>
       contributionCalendar.expand((element) => element.days).toList();
+
+  int get currentStreak {
+    final sorted = allDaysContributionData
+      ..sort(
+        (a, b) => b.date.compareTo(a.date),
+      );
+    return sorted
+        .sublist(hasContributionsToday ? 0 : 1)
+        .fromStartUntil(
+          (element) => element.contributionCount == 0,
+        )
+        .length;
+  }
+
+  bool get hasContributionsToday {
+    final sorted = allDaysContributionData
+      ..sort(
+        (a, b) => b.date.compareTo(a.date),
+      );
+    final today = sorted.firstWhereOrNull(
+        (element) => element.date.isSameDayAs(DateTime.now()));
+    return (today?.contributionCount ?? 0) > 0;
+  }
 }

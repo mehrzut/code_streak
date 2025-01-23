@@ -10,6 +10,7 @@ import 'package:code_streak/features/home/presentation/widgets/contribution_cale
 import 'package:code_streak/features/home/presentation/widgets/reminder_status_widget.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_avatar.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_info_widget.dart';
+import 'package:code_streak/features/home/presentation/widgets/user_streak_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -95,6 +96,21 @@ class _HomePage extends State<HomePage> {
                             );
                           },
                         ),
+                        BlocBuilder<UserInfoBloc, UserInfoState>(
+                            builder: (context, infoState) {
+                          return BlocBuilder<ContributionsBloc,
+                              ContributionsState>(
+                            builder: (context, state) {
+                              return Skeletonizer(
+                                enableSwitchAnimation: true,
+                                enabled: state.isLoading || infoState.isLoading,
+                                child: UserStreakWidget(
+                                  state: state,
+                                ),
+                              );
+                            },
+                          );
+                        }),
                         BlocBuilder<ReminderBloc, ReminderState>(
                           builder: (context, state) {
                             return ReminderStatusWidget(
