@@ -28,6 +28,7 @@ class HomeRepoImpl implements HomeRepo {
     required DateTime start,
     required DateTime end,
   }) async {
+    await localDatabase.deleteContributions();
     late RangeData range;
     final localData = await localDatabase.getContributions();
     if (localData != null) {
@@ -44,7 +45,7 @@ class HomeRepoImpl implements HomeRepo {
           success: (data) {
             final fullData = data.append(localData);
             localDatabase.saveContributions(fullData.withoutToday);
-            return ResponseModel.success(fullData);
+            return ResponseModel.success(data);
           },
           failed: (failure) => result,
         );

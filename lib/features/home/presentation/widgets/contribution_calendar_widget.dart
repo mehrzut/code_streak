@@ -13,21 +13,28 @@ class ContributionCalendarWidget extends StatelessWidget {
       {super.key,
       required this.data,
       required this.heatMapColor,
-      required this.defaultCalendarColor});
+      required this.defaultCalendarColor,
+      required this.onMonthChanged,
+      this.current});
   final ContributionsData data;
   final Color heatMapColor;
   final Color defaultCalendarColor;
+  final ValueChanged<DateTime> onMonthChanged;
+  final DateTime? current;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CalendarMonthCubit(data.contributionCalendar.fold(
-          <ContributionDayData>[],
-          (previousValue, element) => [...previousValue, ...element.days])),
+      create: (context) => CalendarMonthCubit(
+        data.contributionCalendar.fold(<ContributionDayData>[],
+            (previousValue, element) => [...previousValue, ...element.days]),
+        current ?? DateTime.now(),
+      ),
       child: _ContributionCalendarWidget(
         data: data,
         defaultCalendarColor: defaultCalendarColor,
         heatMapColor: heatMapColor,
+        onMonthChanged: onMonthChanged,
       ),
     );
   }
@@ -38,10 +45,12 @@ class _ContributionCalendarWidget extends StatefulWidget {
     required this.data,
     required this.heatMapColor,
     required this.defaultCalendarColor,
+    required this.onMonthChanged,
   });
   final ContributionsData data;
   final Color heatMapColor;
   final Color defaultCalendarColor;
+  final ValueChanged<DateTime> onMonthChanged;
 
   @override
   State<_ContributionCalendarWidget> createState() =>
@@ -69,22 +78,27 @@ class _ContributionCalendarWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline,
-          width: 2,
+    return BlocListener<CalendarMonthCubit, CalendarMonthState>(
+      listener: (context, state) {
+        widget.onMonthChanged(state.current);
+      },
+      child: Container(
+        padding: const EdgeInsets.only(bottom: 24),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(12),
         ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _monthControllerWidget,
-          _daysWidget,
-        ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _monthControllerWidget,
+            _daysWidget,
+          ],
+        ),
       ),
     );
   }

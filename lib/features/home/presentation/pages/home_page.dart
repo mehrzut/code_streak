@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+  DateTime? currentCalendarDate;
   @override
   void initState() {
     _handleInitialization();
@@ -106,7 +107,9 @@ class _HomePage extends State<HomePage> {
                             builder: (context, state) {
                               return Skeletonizer(
                                 enableSwitchAnimation: true,
-                                enabled: state.isLoading || infoState.isLoading,
+                                enabled:
+                                    (state.data == null && state.isLoading) ||
+                                        infoState.isLoading,
                                 child: UserStreakWidget(
                                   state: state,
                                 ),
@@ -126,25 +129,25 @@ class _HomePage extends State<HomePage> {
                             return BlocBuilder<ContributionsBloc,
                                 ContributionsState>(
                               builder: (context, state) {
-                                return state.maybeWhen(
-                                  failed: (failure) => const Center(
-                                    child: Text(
-                                      'Something went wrong',
-                                    ),
-                                  ),
-                                  orElse: () => Skeletonizer(
-                                    enabled:
-                                        state.isLoading || infoState.isLoading,
-                                    enableSwitchAnimation: true,
-                                    child: ContributionCalendarWidget(
-                                      data: state.data ??
-                                          ContributionsData.empty(),
-                                      heatMapColor: Theme.of(context)
-                                          .colorScheme
-                                          .surfaceContainerLow,
-                                      defaultCalendarColor:
-                                          Theme.of(context).colorScheme.surface,
-                                    ),
+                                if (state.data == null && !state.isLoading) {
+                                  return const Text(
+                                    'Something went wrong',
+                                  );
+                                }
+                                return Skeletonizer(
+                                  enabled:
+                                      state.isLoading || infoState.isLoading,
+                                  enableSwitchAnimation: true,
+                                  child: ContributionCalendarWidget(
+                                    current: currentCalendarDate,
+                                    data:
+                                        state.data ?? ContributionsData.empty(),
+                                    heatMapColor: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceContainerLow,
+                                    defaultCalendarColor:
+                                        Theme.of(context).colorScheme.surface,
+                                    onMonthChanged: _onCalendarMonthChanged,
                                   ),
                                 );
                               },
@@ -188,5 +191,22 @@ class _HomePage extends State<HomePage> {
         }
       },
     );
+  }
+
+  void _onCalendarMonthChanged(DateTime date) {
+    currentCalendarDate = date;
+    final startOfMonth = date.firstDayOfMonth;
+    final endOfMonth = date.lastDayOfMonth;
+    final contributionData = context.read<ContributionsBloc>().state.data;
+    if (contributionData != null &&
+        !startOfMonth.isAfter(DateTime.now()) &&
+        !endOfMonth.isAfter(DateTime.now()) &&
+        !contributionData.hasRange(startOfMonth, endOfMonth)) {
+      context.read<UserInfoBloc>().state.whenOrNull(
+        success: (data) {
+          _getContributionsData(data.username, startOfMonth, endOfMonth);
+        },
+      );
+    }
   }
 }

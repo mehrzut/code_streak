@@ -7,9 +7,10 @@ part 'calendar_month_state.dart';
 part 'calendar_month_cubit.freezed.dart';
 
 class CalendarMonthCubit extends Cubit<CalendarMonthState> {
-  CalendarMonthCubit(List<ContributionDayData> allDaysContributionData)
+  CalendarMonthCubit(
+      List<ContributionDayData> allDaysContributionData, DateTime current)
       : super(CalendarMonthState(
-          current: DateTime.now(),
+          current: current,
           allDaysContributionData: allDaysContributionData,
         ));
 

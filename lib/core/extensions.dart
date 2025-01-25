@@ -233,16 +233,16 @@ extension ListExt<T> on List<T> {
   List<List<T>> splitAtNotContaining(int index) {
     return [sublist(0, index), sublist(index + 1)];
   }
-
   List<List<T>> splitWhere(bool Function(T element) condition) {
     List<List<T>> list = [];
     int previousItemIndex = 0;
     for (int i = 0; i < length; i++) {
       if (condition(elementAt(i))) {
         list.add(sublist(previousItemIndex, i));
-        previousItemIndex = i + 1;
+        previousItemIndex = i;
       }
     }
+    list.add(sublist(previousItemIndex));
     return list;
   }
 

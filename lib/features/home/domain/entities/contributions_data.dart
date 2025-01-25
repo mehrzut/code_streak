@@ -4,7 +4,7 @@ import 'package:code_streak/features/home/domain/entities/contribution_day_data.
 import 'package:code_streak/features/home/domain/entities/contribution_week_data.dart';
 import 'package:code_streak/features/home/domain/entities/range_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
+import 'dart:math' as math;
 part 'contributions_data.freezed.dart';
 part 'contributions_data.g.dart';
 
@@ -45,7 +45,7 @@ class ContributionsData with _$ContributionsData {
       );
     final startIndex = hasContributionsToday ? 0 : 1;
     return sorted
-        .sublist(startIndex, startIndex + 365)
+        .sublist(startIndex, startIndex + math.min(sorted.length - 1, 365))
         .fromStartUntil(
           (element) => element.contributionCount == 0,
         )
@@ -126,10 +126,11 @@ class ContributionsData with _$ContributionsData {
       (a, b) => a.compareTo(b),
     );
     final split = dates.splitWhere(
-      (element) => element.isSameDayAs(start) || element.isSameDayAs(end),
+      (element) =>
+          element.isSameDayAs(start) || element.isSameDayAs(end.tomorrow),
     );
     final range = split.length == 3 ? split[1] : [];
-    final actualRangeInDays = start.difference(end).inDays;
+    final actualRangeInDays = start.difference(end).inDays.abs() + 1;
     return range.length == actualRangeInDays;
   }
 
@@ -139,11 +140,11 @@ class ContributionsData with _$ContributionsData {
       (a, b) => a.compareTo(b),
     );
     final startDate =
-        RangeData.range(start: start.tomorrow, end: end).dates.firstWhereOrNull(
+        RangeData.range(start: start, end: end).dates.firstWhereOrNull(
               (element) => !dates.contains(element),
             );
     final endDate =
-        RangeData.range(start: start.tomorrow, end: end).dates.lastWhereOrNull(
+        RangeData.range(start: start, end: end).dates.lastWhereOrNull(
               (element) => !dates.contains(element),
             );
     if (startDate == null || endDate == null) {

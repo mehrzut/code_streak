@@ -21,12 +21,14 @@ class ContributionsBloc extends Bloc<ContributionsEvent, ContributionsState> {
   Future<FutureOr<void>> _onGetContributionsDataEvent(
       _GetContributionsDataEvent event,
       Emitter<ContributionsState> emit) async {
-    emit(ContributionsState.loading());
+    emit(ContributionsState.loading(data: state.data));
     final response = await _getContributionsData(
         Params(username: event.username, start: event.start, end: event.end));
     final newState = response.when(
-      failed: (failure) => ContributionsState.failed(failure: failure),
-      success: (data) => ContributionsState.success(data: data),
+      failed: (failure) =>
+          ContributionsState.failed(failure: failure, data: state.data),
+      success: (data) => ContributionsState.success(
+          data: (data as ContributionsData).append(state.data)),
     );
     emit(newState);
   }

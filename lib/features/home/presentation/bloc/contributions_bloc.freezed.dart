@@ -267,25 +267,25 @@ mixin _$ContributionsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(ContributionsData? data) loading,
     required TResult Function(ContributionsData data) success,
-    required TResult Function(Failure failure) failed,
+    required TResult Function(Failure failure, ContributionsData? data) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(ContributionsData? data)? loading,
     TResult? Function(ContributionsData data)? success,
-    TResult? Function(Failure failure)? failed,
+    TResult? Function(Failure failure, ContributionsData? data)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(ContributionsData? data)? loading,
     TResult Function(ContributionsData data)? success,
-    TResult Function(Failure failure)? failed,
+    TResult Function(Failure failure, ContributionsData? data)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -373,9 +373,9 @@ class _$InitialStateImpl extends _InitialState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(ContributionsData? data) loading,
     required TResult Function(ContributionsData data) success,
-    required TResult Function(Failure failure) failed,
+    required TResult Function(Failure failure, ContributionsData? data) failed,
   }) {
     return initial();
   }
@@ -384,9 +384,9 @@ class _$InitialStateImpl extends _InitialState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(ContributionsData? data)? loading,
     TResult? Function(ContributionsData data)? success,
-    TResult? Function(Failure failure)? failed,
+    TResult? Function(Failure failure, ContributionsData? data)? failed,
   }) {
     return initial?.call();
   }
@@ -395,9 +395,9 @@ class _$InitialStateImpl extends _InitialState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(ContributionsData? data)? loading,
     TResult Function(ContributionsData data)? success,
-    TResult Function(Failure failure)? failed,
+    TResult Function(Failure failure, ContributionsData? data)? failed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -454,6 +454,10 @@ abstract class _$$LoadingStateImplCopyWith<$Res> {
   factory _$$LoadingStateImplCopyWith(
           _$LoadingStateImpl value, $Res Function(_$LoadingStateImpl) then) =
       __$$LoadingStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ContributionsData? data});
+
+  $ContributionsDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -463,60 +467,96 @@ class __$$LoadingStateImplCopyWithImpl<$Res>
   __$$LoadingStateImplCopyWithImpl(
       _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = freezed,
+  }) {
+    return _then(_$LoadingStateImpl(
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as ContributionsData?,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ContributionsDataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $ContributionsDataCopyWith<$Res>(_value.data!, (value) {
+      return _then(_value.copyWith(data: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$LoadingStateImpl extends _LoadingState {
-  _$LoadingStateImpl() : super._();
+  _$LoadingStateImpl({required this.data}) : super._();
+
+  @override
+  final ContributionsData? data;
 
   @override
   String toString() {
-    return 'ContributionsState.loading()';
+    return 'ContributionsState.loading(data: $data)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingStateImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$LoadingStateImpl &&
+            (identical(other.data, data) || other.data == data));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, data);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadingStateImplCopyWith<_$LoadingStateImpl> get copyWith =>
+      __$$LoadingStateImplCopyWithImpl<_$LoadingStateImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(ContributionsData? data) loading,
     required TResult Function(ContributionsData data) success,
-    required TResult Function(Failure failure) failed,
+    required TResult Function(Failure failure, ContributionsData? data) failed,
   }) {
-    return loading();
+    return loading(data);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(ContributionsData? data)? loading,
     TResult? Function(ContributionsData data)? success,
-    TResult? Function(Failure failure)? failed,
+    TResult? Function(Failure failure, ContributionsData? data)? failed,
   }) {
-    return loading?.call();
+    return loading?.call(data);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(ContributionsData? data)? loading,
     TResult Function(ContributionsData data)? success,
-    TResult Function(Failure failure)? failed,
+    TResult Function(Failure failure, ContributionsData? data)? failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading();
+      return loading(data);
     }
     return orElse();
   }
@@ -560,8 +600,14 @@ class _$LoadingStateImpl extends _LoadingState {
 }
 
 abstract class _LoadingState extends ContributionsState {
-  factory _LoadingState() = _$LoadingStateImpl;
+  factory _LoadingState({required final ContributionsData? data}) =
+      _$LoadingStateImpl;
   _LoadingState._() : super._();
+
+  ContributionsData? get data;
+  @JsonKey(ignore: true)
+  _$$LoadingStateImplCopyWith<_$LoadingStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -639,9 +685,9 @@ class _$SuccessStateImpl extends _SuccessState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(ContributionsData? data) loading,
     required TResult Function(ContributionsData data) success,
-    required TResult Function(Failure failure) failed,
+    required TResult Function(Failure failure, ContributionsData? data) failed,
   }) {
     return success(data);
   }
@@ -650,9 +696,9 @@ class _$SuccessStateImpl extends _SuccessState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(ContributionsData? data)? loading,
     TResult? Function(ContributionsData data)? success,
-    TResult? Function(Failure failure)? failed,
+    TResult? Function(Failure failure, ContributionsData? data)? failed,
   }) {
     return success?.call(data);
   }
@@ -661,9 +707,9 @@ class _$SuccessStateImpl extends _SuccessState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(ContributionsData? data)? loading,
     TResult Function(ContributionsData data)? success,
-    TResult Function(Failure failure)? failed,
+    TResult Function(Failure failure, ContributionsData? data)? failed,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -727,7 +773,9 @@ abstract class _$$FailedStateImplCopyWith<$Res> {
           _$FailedStateImpl value, $Res Function(_$FailedStateImpl) then) =
       __$$FailedStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Failure failure});
+  $Res call({Failure failure, ContributionsData? data});
+
+  $ContributionsDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -742,27 +790,46 @@ class __$$FailedStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? failure = null,
+    Object? data = freezed,
   }) {
     return _then(_$FailedStateImpl(
       failure: null == failure
           ? _value.failure
           : failure // ignore: cast_nullable_to_non_nullable
               as Failure,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as ContributionsData?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ContributionsDataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $ContributionsDataCopyWith<$Res>(_value.data!, (value) {
+      return _then(_value.copyWith(data: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$FailedStateImpl extends _FailedState {
-  _$FailedStateImpl({required this.failure}) : super._();
+  _$FailedStateImpl({required this.failure, required this.data}) : super._();
 
   @override
   final Failure failure;
+  @override
+  final ContributionsData? data;
 
   @override
   String toString() {
-    return 'ContributionsState.failed(failure: $failure)';
+    return 'ContributionsState.failed(failure: $failure, data: $data)';
   }
 
   @override
@@ -770,11 +837,12 @@ class _$FailedStateImpl extends _FailedState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FailedStateImpl &&
-            (identical(other.failure, failure) || other.failure == failure));
+            (identical(other.failure, failure) || other.failure == failure) &&
+            (identical(other.data, data) || other.data == data));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failure);
+  int get hashCode => Object.hash(runtimeType, failure, data);
 
   @JsonKey(ignore: true)
   @override
@@ -786,35 +854,35 @@ class _$FailedStateImpl extends _FailedState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(ContributionsData? data) loading,
     required TResult Function(ContributionsData data) success,
-    required TResult Function(Failure failure) failed,
+    required TResult Function(Failure failure, ContributionsData? data) failed,
   }) {
-    return failed(failure);
+    return failed(failure, data);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(ContributionsData? data)? loading,
     TResult? Function(ContributionsData data)? success,
-    TResult? Function(Failure failure)? failed,
+    TResult? Function(Failure failure, ContributionsData? data)? failed,
   }) {
-    return failed?.call(failure);
+    return failed?.call(failure, data);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(ContributionsData? data)? loading,
     TResult Function(ContributionsData data)? success,
-    TResult Function(Failure failure)? failed,
+    TResult Function(Failure failure, ContributionsData? data)? failed,
     required TResult orElse(),
   }) {
     if (failed != null) {
-      return failed(failure);
+      return failed(failure, data);
     }
     return orElse();
   }
@@ -858,10 +926,13 @@ class _$FailedStateImpl extends _FailedState {
 }
 
 abstract class _FailedState extends ContributionsState {
-  factory _FailedState({required final Failure failure}) = _$FailedStateImpl;
+  factory _FailedState(
+      {required final Failure failure,
+      required final ContributionsData? data}) = _$FailedStateImpl;
   _FailedState._() : super._();
 
   Failure get failure;
+  ContributionsData? get data;
   @JsonKey(ignore: true)
   _$$FailedStateImplCopyWith<_$FailedStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
