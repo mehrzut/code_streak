@@ -28,7 +28,6 @@ class HomeRepoImpl implements HomeRepo {
     required DateTime start,
     required DateTime end,
   }) async {
-    await localDatabase.deleteContributions();
     late RangeData range;
     final localData = await localDatabase.getContributions();
     if (localData != null) {
