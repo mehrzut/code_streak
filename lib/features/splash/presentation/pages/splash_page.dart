@@ -57,7 +57,7 @@ class _SplashPage extends State<SplashPage> {
                   'CodeStreak',
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         color:
-                            Theme.of(context).colorScheme.surfaceContainerHigh,
+                            Theme.of(context).colorScheme.surfaceContainerLow,
                       ),
                 )
                     .animate(
@@ -66,7 +66,7 @@ class _SplashPage extends State<SplashPage> {
                       onInit: (controller) => controller.repeat(reverse: true),
                     )
                     .tint(
-                      color: Theme.of(context).colorScheme.surfaceContainerLow,
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
                       duration: const Duration(seconds: 1),
                     ),
               ),
