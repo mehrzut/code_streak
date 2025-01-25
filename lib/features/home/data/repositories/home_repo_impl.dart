@@ -17,11 +17,14 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
-  Future<ResponseModel<ContributionsData>> getContributionsData(
-      {required String username}) {
-    return dataSource.fetchGithubContributions(username);
+  Future<ResponseModel<ContributionsData>> getContributionsData({
+    required String username,
+    DateTime? start,
+    DateTime? end,
+  }) {
+    return dataSource.fetchGithubContributions(username, start, end);
   }
-  
+
   @override
   Future<ResponseModel<bool>> setUserReminders() {
     return dataSource.setUserReminders();

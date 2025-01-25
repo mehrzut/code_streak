@@ -5,8 +5,11 @@ import 'package:code_streak/features/home/domain/entities/user_info.dart';
 abstract class HomeRepo {
   Future<ResponseModel<UserInfo>> getUserInfo();
 
-  Future<ResponseModel<ContributionsData>> getContributionsData(
-      {required String username});
+  Future<ResponseModel<ContributionsData>> getContributionsData({
+    required String username,
+    DateTime? start,
+    DateTime? end,
+  });
 
   Future<ResponseModel<bool>> setUserReminders();
 }

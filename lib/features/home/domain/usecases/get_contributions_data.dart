@@ -7,18 +7,24 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class GetContributionsData
     extends UseCase<ResponseModel<ContributionsData>, Params> {
-      final HomeRepo repo;
+  final HomeRepo repo;
 
   GetContributionsData({required this.repo});
-      @override
-      Future<ResponseModel<ContributionsData>> call(Params params) {
-    return repo.getContributionsData(username:params.username);
-      }
-      
-    }
+  @override
+  Future<ResponseModel<ContributionsData>> call(Params params) {
+    return repo.getContributionsData(
+        username: params.username, start: params.start, end: params.end);
+  }
+}
 
 class Params extends NoParams {
   final String username;
+  final DateTime? start;
+  final DateTime? end;
 
-  Params({required this.username});
+  Params({
+    required this.username,
+    this.start,
+    this.end,
+  });
 }

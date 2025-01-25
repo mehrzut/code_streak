@@ -19,7 +19,10 @@ import 'package:injectable/injectable.dart';
 
 abstract class HomeDataSource {
   Future<ResponseModel<ContributionsData>> fetchGithubContributions(
-      String username);
+    String username,
+    DateTime? start,
+    DateTime? end,
+  );
   Future<ResponseModel<UserInfo>> fetchUserInfo();
 
   Future<ResponseModel<bool>> setUserReminders();
@@ -29,12 +32,18 @@ abstract class HomeDataSource {
 class HomeDataSourceImpl implements HomeDataSource {
   @override
   Future<ResponseModel<ContributionsData>> fetchGithubContributions(
-      String username) async {
+    String username,
+    DateTime? start,
+    DateTime? end,
+  ) async {
     try {
       final response = await ClientHandler.instance.callApi((dio) => dio.getUri(
-            Uri.parse(
-              '${UrlHelper.appwriteApiUrl}getGithubContributions?username=$username',
-            ),
+            Uri.parse('${UrlHelper.appwriteApiUrl}getGithubContributions')
+                .replace(queryParameters: {
+              'username': username,
+              if (start != null) 'start': start.toIso8601String(),
+              if (end != null) 'end': end.toIso8601String(),
+            }),
             options: Options(
               contentType: 'application/json',
             ),
