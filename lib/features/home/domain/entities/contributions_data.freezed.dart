@@ -14,12 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+ContributionsData _$ContributionsDataFromJson(Map<String, dynamic> json) {
+  return _ContributionsData.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ContributionsData {
   int get totalContributions => throw _privateConstructorUsedError;
   List<ContributionWeekData> get contributionCalendar =>
       throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ContributionsDataCopyWith<ContributionsData> get copyWith =>
       throw _privateConstructorUsedError;
@@ -107,12 +112,16 @@ class __$$ContributionsDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@JsonSerializable(explicitToJson: true)
 class _$ContributionsDataImpl extends _ContributionsData {
   _$ContributionsDataImpl(
       {required this.totalContributions,
       required final List<ContributionWeekData> contributionCalendar})
       : _contributionCalendar = contributionCalendar,
         super._();
+
+  factory _$ContributionsDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContributionsDataImplFromJson(json);
 
   @override
   final int totalContributions;
@@ -141,6 +150,7 @@ class _$ContributionsDataImpl extends _ContributionsData {
                 .equals(other._contributionCalendar, _contributionCalendar));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, totalContributions,
       const DeepCollectionEquality().hash(_contributionCalendar));
@@ -151,6 +161,13 @@ class _$ContributionsDataImpl extends _ContributionsData {
   _$$ContributionsDataImplCopyWith<_$ContributionsDataImpl> get copyWith =>
       __$$ContributionsDataImplCopyWithImpl<_$ContributionsDataImpl>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ContributionsDataImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _ContributionsData extends ContributionsData {
@@ -159,6 +176,9 @@ abstract class _ContributionsData extends ContributionsData {
           required final List<ContributionWeekData> contributionCalendar}) =
       _$ContributionsDataImpl;
   _ContributionsData._() : super._();
+
+  factory _ContributionsData.fromJson(Map<String, dynamic> json) =
+      _$ContributionsDataImpl.fromJson;
 
   @override
   int get totalContributions;

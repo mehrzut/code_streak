@@ -19,12 +19,12 @@ class GetContributionsData
 
 class Params extends NoParams {
   final String username;
-  final DateTime? start;
-  final DateTime? end;
+  final DateTime start;
+  final DateTime end;
 
   Params({
     required this.username,
-    this.start,
-    this.end,
+    required this.start,
+    required this.end,
   });
 }

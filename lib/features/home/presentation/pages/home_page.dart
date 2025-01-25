@@ -43,7 +43,10 @@ class _HomePage extends State<HomePage> {
     return BlocListener<UserInfoBloc, UserInfoState>(
       listener: (context, state) {
         state.whenOrNull(
-          success: (data) => _getContributionsData(data.username),
+          success: (data) => _getContributionsData(
+              data.username,
+              DateTime.now().zeroHour.subtract(const Duration(days: 365)),
+              DateTime.now()),
         );
       },
       child: Scaffold(
@@ -168,10 +171,9 @@ class _HomePage extends State<HomePage> {
     context.read<UserInfoBloc>().add(UserInfoEvent.getUserInfo());
   }
 
-  void _getContributionsData(String username) {
-    context
-        .read<ContributionsBloc>()
-        .add(ContributionsEvent.get(username: username));
+  void _getContributionsData(String username, DateTime start, DateTime end) {
+    context.read<ContributionsBloc>().add(
+        ContributionsEvent.get(username: username, start: start, end: end));
   }
 
   void _setUserReminder() {

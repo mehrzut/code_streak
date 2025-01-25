@@ -64,8 +64,10 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i5.AuthDataSource>(() => _i5.AuthDataSourceImpl());
     gh.lazySingleton<_i6.NavigationHelper>(() => _i6.NavigationHelperImpl());
     gh.lazySingleton<_i7.LocalDatabase>(() => const _i7.LocalDatabaseImpl());
-    gh.lazySingleton<_i8.HomeRepo>(
-        () => _i9.HomeRepoImpl(dataSource: gh<_i4.HomeDataSource>()));
+    gh.lazySingleton<_i8.HomeRepo>(() => _i9.HomeRepoImpl(
+          dataSource: gh<_i4.HomeDataSource>(),
+          localDatabase: gh<_i7.LocalDatabase>(),
+        ));
     gh.lazySingleton<_i10.GetContributionsData>(
         () => _i10.GetContributionsData(repo: gh<_i8.HomeRepo>()));
     gh.lazySingleton<_i11.SetUserReminders>(

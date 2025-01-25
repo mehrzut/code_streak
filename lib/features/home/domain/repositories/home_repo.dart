@@ -7,8 +7,8 @@ abstract class HomeRepo {
 
   Future<ResponseModel<ContributionsData>> getContributionsData({
     required String username,
-    DateTime? start,
-    DateTime? end,
+    required DateTime start,
+    required DateTime end,
   });
 
   Future<ResponseModel<bool>> setUserReminders();

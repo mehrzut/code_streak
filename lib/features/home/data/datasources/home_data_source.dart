@@ -41,8 +41,8 @@ class HomeDataSourceImpl implements HomeDataSource {
             Uri.parse('${UrlHelper.appwriteApiUrl}getGithubContributions')
                 .replace(queryParameters: {
               'username': username,
-              if (start != null) 'start': start.toIso8601String(),
-              if (end != null) 'end': end.toIso8601String(),
+              if (start != null) 'from': start.toIso8601String(),
+              if (end != null) 'until': end.toIso8601String(),
             }),
             options: Options(
               contentType: 'application/json',

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:appwrite/models.dart';
 import 'package:code_streak/core/data/failure.dart';
 import 'package:code_streak/core/data/response_model.dart';
+import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,6 +13,11 @@ abstract class LocalDatabase {
   Future<ResponseModel<Session>> loadSession();
 
   Future<void> deleteSession();
+
+  Future<void> saveContributions(ContributionsData data);
+
+  Future<void> deleteContributions();
+  Future<ContributionsData?> getContributions();
 }
 
 @LazySingleton(as: LocalDatabase)
@@ -23,6 +29,7 @@ class LocalDatabaseImpl implements LocalDatabase {
   ));
 
   static const _sessionKey = 'SESSION_KEY';
+  static const _contributionsKey = 'CONTRIBUTIONS_KEY';
 
   @override
   Future<ResponseModel<Session>> loadSession() async {
@@ -43,5 +50,26 @@ class LocalDatabaseImpl implements LocalDatabase {
   @override
   Future<void> deleteSession() {
     return _storage.delete(key: _sessionKey);
+  }
+
+  @override
+  Future<void> saveContributions(ContributionsData data) {
+    return _storage.write(
+        key: _contributionsKey, value: jsonEncode(data.toJson()));
+  }
+
+  @override
+  Future<void> deleteContributions() {
+    return _storage.delete(key: _contributionsKey);
+  }
+
+  @override
+  Future<ContributionsData?> getContributions() async {
+    final data = await _storage.read(key: _contributionsKey);
+    if (data != null) {
+      return ContributionsData.fromJson(jsonDecode(data));
+    } else {
+      return null;
+    }
   }
 }

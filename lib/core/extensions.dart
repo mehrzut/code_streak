@@ -126,6 +126,16 @@ extension DateTimeExt on DateTime {
     }
     return temp;
   }
+
+  DateTime get startOfWeek {
+    return subtract(Duration(days: weekday - 1));
+  }
+
+  DateTime get zeroHour => DateTime(year, month, day, 0, 0, 0, 0, 0);
+
+  DateTime get yesterday => subtract(const Duration(days: 1)).zeroHour;
+
+  DateTime get tomorrow => add(const Duration(days: 1)).zeroHour;
 }
 
 extension IntExt on int {
@@ -259,6 +269,14 @@ extension ListExt<T> on List<T> {
   T? firstWhereOrNull(bool Function(T element) condition) {
     try {
       return firstWhere(condition);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  T? lastWhereOrNull(bool Function(T element) condition) {
+    try {
+      return lastWhere(condition);
     } catch (e) {
       return null;
     }

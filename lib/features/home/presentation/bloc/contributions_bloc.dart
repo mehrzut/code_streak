@@ -22,8 +22,8 @@ class ContributionsBloc extends Bloc<ContributionsEvent, ContributionsState> {
       _GetContributionsDataEvent event,
       Emitter<ContributionsState> emit) async {
     emit(ContributionsState.loading());
-    final response =
-        await _getContributionsData(Params(username: event.username));
+    final response = await _getContributionsData(
+        Params(username: event.username, start: event.start, end: event.end));
     final newState = response.when(
       failed: (failure) => ContributionsState.failed(failure: failure),
       success: (data) => ContributionsState.success(data: data),

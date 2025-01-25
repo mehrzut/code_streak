@@ -17,19 +17,22 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ContributionsEvent {
   String get username => throw _privateConstructorUsedError;
+  DateTime get start => throw _privateConstructorUsedError;
+  DateTime get end => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String username) get,
+    required TResult Function(String username, DateTime start, DateTime end)
+        get,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String username)? get,
+    TResult? Function(String username, DateTime start, DateTime end)? get,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String username)? get,
+    TResult Function(String username, DateTime start, DateTime end)? get,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -61,7 +64,7 @@ abstract class $ContributionsEventCopyWith<$Res> {
           ContributionsEvent value, $Res Function(ContributionsEvent) then) =
       _$ContributionsEventCopyWithImpl<$Res, ContributionsEvent>;
   @useResult
-  $Res call({String username});
+  $Res call({String username, DateTime start, DateTime end});
 }
 
 /// @nodoc
@@ -78,12 +81,22 @@ class _$ContributionsEventCopyWithImpl<$Res, $Val extends ContributionsEvent>
   @override
   $Res call({
     Object? username = null,
+    Object? start = null,
+    Object? end = null,
   }) {
     return _then(_value.copyWith(
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      start: null == start
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      end: null == end
+          ? _value.end
+          : end // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -97,7 +110,7 @@ abstract class _$$GetContributionsDataEventImplCopyWith<$Res>
       __$$GetContributionsDataEventImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String username});
+  $Res call({String username, DateTime start, DateTime end});
 }
 
 /// @nodoc
@@ -114,12 +127,22 @@ class __$$GetContributionsDataEventImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? username = null,
+    Object? start = null,
+    Object? end = null,
   }) {
     return _then(_$GetContributionsDataEventImpl(
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      start: null == start
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      end: null == end
+          ? _value.end
+          : end // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -127,14 +150,19 @@ class __$$GetContributionsDataEventImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetContributionsDataEventImpl implements _GetContributionsDataEvent {
-  _$GetContributionsDataEventImpl({required this.username});
+  _$GetContributionsDataEventImpl(
+      {required this.username, required this.start, required this.end});
 
   @override
   final String username;
+  @override
+  final DateTime start;
+  @override
+  final DateTime end;
 
   @override
   String toString() {
-    return 'ContributionsEvent.get(username: $username)';
+    return 'ContributionsEvent.get(username: $username, start: $start, end: $end)';
   }
 
   @override
@@ -143,11 +171,13 @@ class _$GetContributionsDataEventImpl implements _GetContributionsDataEvent {
         (other.runtimeType == runtimeType &&
             other is _$GetContributionsDataEventImpl &&
             (identical(other.username, username) ||
-                other.username == username));
+                other.username == username) &&
+            (identical(other.start, start) || other.start == start) &&
+            (identical(other.end, end) || other.end == end));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, username);
+  int get hashCode => Object.hash(runtimeType, username, start, end);
 
   @JsonKey(ignore: true)
   @override
@@ -159,27 +189,28 @@ class _$GetContributionsDataEventImpl implements _GetContributionsDataEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String username) get,
+    required TResult Function(String username, DateTime start, DateTime end)
+        get,
   }) {
-    return get(username);
+    return get(username, start, end);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String username)? get,
+    TResult? Function(String username, DateTime start, DateTime end)? get,
   }) {
-    return get?.call(username);
+    return get?.call(username, start, end);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String username)? get,
+    TResult Function(String username, DateTime start, DateTime end)? get,
     required TResult orElse(),
   }) {
     if (get != null) {
-      return get(username);
+      return get(username, start, end);
     }
     return orElse();
   }
@@ -214,11 +245,17 @@ class _$GetContributionsDataEventImpl implements _GetContributionsDataEvent {
 }
 
 abstract class _GetContributionsDataEvent implements ContributionsEvent {
-  factory _GetContributionsDataEvent({required final String username}) =
-      _$GetContributionsDataEventImpl;
+  factory _GetContributionsDataEvent(
+      {required final String username,
+      required final DateTime start,
+      required final DateTime end}) = _$GetContributionsDataEventImpl;
 
   @override
   String get username;
+  @override
+  DateTime get start;
+  @override
+  DateTime get end;
   @override
   @JsonKey(ignore: true)
   _$$GetContributionsDataEventImplCopyWith<_$GetContributionsDataEventImpl>

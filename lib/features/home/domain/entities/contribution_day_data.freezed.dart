@@ -14,11 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+ContributionDayData _$ContributionDayDataFromJson(Map<String, dynamic> json) {
+  return _ContributionDayData.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ContributionDayData {
   int get contributionCount => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ContributionDayDataCopyWith<ContributionDayData> get copyWith =>
       throw _privateConstructorUsedError;
@@ -101,11 +106,14 @@ class __$$ContributionDayDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ContributionDayDataImpl extends _ContributionDayData {
   _$ContributionDayDataImpl(
       {required this.contributionCount, required this.date})
       : super._();
+
+  factory _$ContributionDayDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ContributionDayDataImplFromJson(json);
 
   @override
   final int contributionCount;
@@ -127,6 +135,7 @@ class _$ContributionDayDataImpl extends _ContributionDayData {
             (identical(other.date, date) || other.date == date));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, contributionCount, date);
 
@@ -136,6 +145,13 @@ class _$ContributionDayDataImpl extends _ContributionDayData {
   _$$ContributionDayDataImplCopyWith<_$ContributionDayDataImpl> get copyWith =>
       __$$ContributionDayDataImplCopyWithImpl<_$ContributionDayDataImpl>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ContributionDayDataImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _ContributionDayData extends ContributionDayData {
@@ -143,6 +159,9 @@ abstract class _ContributionDayData extends ContributionDayData {
       {required final int contributionCount,
       required final DateTime date}) = _$ContributionDayDataImpl;
   _ContributionDayData._() : super._();
+
+  factory _ContributionDayData.fromJson(Map<String, dynamic> json) =
+      _$ContributionDayDataImpl.fromJson;
 
   @override
   int get contributionCount;
