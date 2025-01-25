@@ -38,7 +38,7 @@ class UserStreakWidget extends StatelessWidget {
                           ),
                     ),
                   Text(
-                    'days',
+                    'days streak in past year',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),

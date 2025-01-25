@@ -43,8 +43,9 @@ class ContributionsData with _$ContributionsData {
       ..sort(
         (a, b) => b.date.compareTo(a.date),
       );
+    final startIndex = hasContributionsToday ? 0 : 1;
     return sorted
-        .sublist(hasContributionsToday ? 0 : 1)
+        .sublist(startIndex, startIndex + 365)
         .fromStartUntil(
           (element) => element.contributionCount == 0,
         )
