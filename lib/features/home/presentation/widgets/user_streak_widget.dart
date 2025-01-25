@@ -32,7 +32,9 @@ class UserStreakWidget extends StatelessWidget {
                 children: [
                   if (!(state.data?.hasContributionsToday ?? true))
                     Text(
-                      '⚠️ Your streak is in danger!',
+                      (state.data?.currentStreak ?? 0) > 0
+                          ? '⚠️ Your streak is in danger!'
+                          : 'You can start your streak today.',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Theme.of(context).colorScheme.inversePrimary,
                           ),
