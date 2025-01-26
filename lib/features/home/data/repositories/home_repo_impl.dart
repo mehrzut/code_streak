@@ -44,7 +44,7 @@ class HomeRepoImpl implements HomeRepo {
           success: (data) {
             final fullData = data.append(localData);
             localDatabase.saveContributions(fullData.withoutToday);
-            return ResponseModel.success(data);
+            return ResponseModel.success(fullData);
           },
           failed: (failure) => result,
         );
