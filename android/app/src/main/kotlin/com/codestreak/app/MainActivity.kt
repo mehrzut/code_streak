@@ -1,4 +1,4 @@
-package com.example.code_streak
+package com.codestreak.app
 
 import io.flutter.embedding.android.FlutterActivity
 

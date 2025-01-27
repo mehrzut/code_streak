@@ -129,6 +129,7 @@ class HomeDataSourceImpl implements HomeDataSource {
       await ClientHandler.instance.account
           .updatePrefs(prefs: {'timezone': currentTimeZone});
       final token = await FirebaseMessaging.instance.getToken();
+      log('fcm token: $token');
       final targetId = await IdHandler.getDeviceId();
       if (token != null && permissionApproved) {
         try {
@@ -139,10 +140,14 @@ class HomeDataSourceImpl implements HomeDataSource {
         } on AppwriteException catch (e) {
           log(e.toString());
           if (e.type == 'user_target_already_exists') {
-            await ClientHandler.instance.account.updatePushTarget(
-              identifier: token,
-              targetId: targetId,
-            );
+            try {
+              await ClientHandler.instance.account.updatePushTarget(
+                identifier: token,
+                targetId: targetId,
+              );
+            } catch (e) {
+              log(e.toString());
+            }
           } else {
             return ResponseModel.failed(AppWritePrefFailure());
           }
