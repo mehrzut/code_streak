@@ -149,7 +149,7 @@ class HomeDataSourceImpl implements HomeDataSource {
               log(e.toString());
             }
           } else {
-            return ResponseModel.failed(AppWritePrefFailure());
+            return ResponseModel.failed(AppWriteFailure(message: e.message));
           }
         } catch (e) {
           log(e.toString());

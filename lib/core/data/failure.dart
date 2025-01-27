@@ -20,6 +20,10 @@ class AppWritePrefFailure extends Failure {
   AppWritePrefFailure();
 }
 
+class AppWriteFailure extends Failure {
+  AppWriteFailure({super.message});
+}
+
 class FirebaseFailure extends Failure {
   FirebaseFailure();
 }
