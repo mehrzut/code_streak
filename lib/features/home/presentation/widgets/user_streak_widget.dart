@@ -64,7 +64,7 @@ class UserStreakWidget extends StatelessWidget {
                                 ),
                           ),
                         Text(
-                          'days streak',
+                          'day${(state.data?.currentDailyStreak ?? 0) == 1 ? '' : 's'} streak',
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: Theme.of(context)
@@ -88,7 +88,8 @@ class UserStreakWidget extends StatelessWidget {
                   fontSize: 32),
             ),
             TextSpan(
-              text: ' weeks streak',
+              text:
+                  ' week${(state.data?.currentWeeklyStreak ?? 0) == 1 ? '' : 's'} streak',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -103,7 +104,8 @@ class UserStreakWidget extends StatelessWidget {
                   fontSize: 32),
             ),
             TextSpan(
-              text: ' contributions',
+              text:
+                  ' contribution${(state.data?.totalContributionsInPastYear ?? 0) == 1 ? '' : 's'}',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
