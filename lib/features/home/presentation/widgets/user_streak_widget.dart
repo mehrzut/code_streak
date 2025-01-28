@@ -23,7 +23,7 @@ class UserStreakWidget extends StatelessWidget {
           Text(
             'In past year...',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
           IntrinsicHeight(
