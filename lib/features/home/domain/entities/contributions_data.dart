@@ -86,6 +86,14 @@ class ContributionsData with _$ContributionsData {
     return streak;
   }
 
+  int get totalContributionsInPastYear {
+    final now = DateTime.now();
+    final oneYearAgo = now.subtract(const Duration(days: 365)).zeroHour;
+    return allDaysContributionData
+        .where((day) => day.date.isAfter(oneYearAgo) && day.date.isBefore(now))
+        .fold<int>(0, (sum, day) => sum + day.contributionCount);
+  }
+
   factory ContributionsData.fromJson(Json json) =>
       _$ContributionsDataFromJson(json);
 

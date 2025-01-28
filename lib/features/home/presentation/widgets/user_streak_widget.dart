@@ -94,6 +94,21 @@ class UserStreakWidget extends StatelessWidget {
                   ),
             ),
           ])),
+          Text.rich(TextSpan(children: [
+            TextSpan(
+              text: '${state.data?.totalContributionsInPastYear ?? 0}',
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32),
+            ),
+            TextSpan(
+              text: ' contributions',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ])),
         ],
       ),
     );
