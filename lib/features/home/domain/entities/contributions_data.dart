@@ -38,7 +38,7 @@ class ContributionsData with _$ContributionsData {
   List<ContributionDayData> get allDaysContributionData =>
       contributionCalendar.expand((element) => element.days).toList();
 
-  int get currentStreak {
+  int get currentDailyStreak {
     final sorted = allDaysContributionData
       ..sort(
         (a, b) => b.date.compareTo(a.date),
@@ -60,6 +60,30 @@ class ContributionsData with _$ContributionsData {
     final today = sorted.firstWhereOrNull(
         (element) => element.date.isSameDayAs(DateTime.now()));
     return (today?.contributionCount ?? 0) > 0;
+  }
+
+  bool get hasContributionsThisWeek {
+    final now = DateTime.now();
+    final startOfWeek = now.startOfWeek;
+    final endOfWeek = now.endOfWeek;
+    return allDaysContributionData.any((day) =>
+        day.date.isAfter(startOfWeek.subtract(const Duration(days: 1))) &&
+        day.date.isBefore(endOfWeek.add(const Duration(days: 1))) &&
+        day.contributionCount > 0);
+  }
+
+  int get currentWeeklyStreak {
+    final sortedWeeks = [...contributionCalendar]
+      ..sort((a, b) => b.days.first.date.compareTo(a.days.first.date));
+    int streak = 0;
+    for (var week in sortedWeeks) {
+      if (week.days.any((day) => day.contributionCount > 0)) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak;
   }
 
   factory ContributionsData.fromJson(Json json) =>

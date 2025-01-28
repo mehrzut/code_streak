@@ -44,10 +44,11 @@ class ReminderStatusWidget extends StatelessWidget {
                     : failure is PermissionFailure
                         ? "Notification permission Denied! 😕 You need to approve it in settings to set reminders. 🚨"
                         : "Oops! 😕 Something went wrong setting up reminders. 🔄",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: isReminderEnabled
                           ? Theme.of(context).colorScheme.onPrimaryContainer
                           : Theme.of(context).colorScheme.onErrorContainer,
+                          
                     ),
               ),
             )

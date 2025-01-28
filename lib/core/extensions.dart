@@ -131,6 +131,10 @@ extension DateTimeExt on DateTime {
     return subtract(Duration(days: weekday - 1));
   }
 
+  DateTime get endOfWeek {
+    return add(Duration(days: DateTime.daysPerWeek - weekday));
+  }
+
   DateTime get zeroHour => DateTime(year, month, day, 0, 0, 0, 0, 0);
 
   DateTime get yesterday => subtract(const Duration(days: 1)).zeroHour;
@@ -233,6 +237,7 @@ extension ListExt<T> on List<T> {
   List<List<T>> splitAtNotContaining(int index) {
     return [sublist(0, index), sublist(index + 1)];
   }
+
   List<List<T>> splitWhere(bool Function(T element) condition) {
     List<List<T>> list = [];
     int previousItemIndex = 0;

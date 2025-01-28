@@ -8,48 +8,93 @@ class UserStreakWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${state.data?.currentStreak ?? 0}',
-            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                color: state.data?.hasContributionsToday ?? false
-                    ? Theme.of(context).colorScheme.secondary
-                    : Theme.of(context).colorScheme.inversePrimary,
-                fontWeight: FontWeight.bold,
-                fontSize: 72),
+            'In past year...',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: state.data?.hasContributionsToday ?? true
-                    ? MainAxisAlignment.end
-                    : MainAxisAlignment.spaceBetween,
-                children: [
-                  if (!(state.data?.hasContributionsToday ?? true))
-                    Text(
-                      (state.data?.currentStreak ?? 0) > 0
-                          ? '⚠️ Your streak is in danger!'
-                          : 'You can start your streak today.',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.inversePrimary,
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  '${state.data?.currentDailyStreak ?? 0}',
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      color: state.data?.hasContributionsToday ?? false
+                          ? Theme.of(context).colorScheme.secondary
+                          : Theme.of(context).colorScheme.inversePrimary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 72),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment:
+                          state.data?.hasContributionsToday ?? true
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (!(state.data?.hasContributionsToday ?? true))
+                          Text(
+                            (state.data?.currentDailyStreak ?? 0) > 0
+                                ? '⚠️ Your streak is in danger!'
+                                : 'You can start your streak today.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                ),
                           ),
-                    ),
-                  Text(
-                    'days streak in past year',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        Text(
+                          'days streak',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
                         ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ].horizontalPadding(8),
             ),
           ),
-        ].horizontalPadding(8),
+          Text.rich(TextSpan(children: [
+            TextSpan(
+              text: '${state.data?.currentWeeklyStreak ?? 0}',
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32),
+            ),
+            TextSpan(
+              text: ' weeks streak',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ])),
+        ],
       ),
     );
   }
