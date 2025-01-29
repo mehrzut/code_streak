@@ -52,6 +52,28 @@ class ContributionsData with _$ContributionsData {
         .length;
   }
 
+  int get mostContributeInADayInPastYear {
+    // Ensure the list is sorted by date (ascending)
+    final sorted = allDaysContributionData
+      ..sort((a, b) => a.date.compareTo(b.date));
+
+    // If the list is empty, return 0
+    if (sorted.isEmpty) {
+      return 0;
+    }
+
+    // Calculate the index to start searching from (364 days ago)
+    final startIndex = math.max(0, sorted.length - 365);
+
+    // Extract the last 365 days (or fewer if the list is shorter)
+    final lastYearContributions = sorted.sublist(startIndex);
+
+    // Find the maximum contribution count in the past year
+    return lastYearContributions
+        .map((day) => day.contributionCount)
+        .reduce((a, b) => math.max(a, b));
+  }
+
   bool get hasContributionsToday {
     final sorted = allDaysContributionData
       ..sort(
