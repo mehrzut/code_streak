@@ -79,7 +79,6 @@ class CalendarMonthWidget extends StatelessWidget {
                 if (thisMonthContributionDays.length > i) {
                   // current month's days with data
                   return _DayItemWidget(
-                    defaultColor: defaultCalendarColor,
                     color: _getColor(thisMonthContributionDays, i,
                         month.maxContributeInMonth(allDaysContributionData)),
                     size: Size.square(cellSize),
@@ -116,7 +115,6 @@ class CalendarMonthWidget extends StatelessWidget {
                     .add(Duration(
                         days: i - thisMonthContributionDays.length + 1));
                 return _DayItemWidget(
-                  defaultColor: defaultCalendarColor,
                   color: defaultCalendarColor,
                   size: Size.square(cellSize),
                   data: ContributionDayData(date: date, contributionCount: 0),
@@ -131,21 +129,18 @@ class CalendarMonthWidget extends StatelessWidget {
 
   Color _getColor(List<ContributionDayData> currentDays, int i,
       int maxContributeInCurrentPeriod) {
-    final opacity = maxContributeInCurrentPeriod != 0
+    final lerpValue = maxContributeInCurrentPeriod != 0
         ? currentDays[i].contributionCount / maxContributeInCurrentPeriod
         : 0.0;
-    return heatMapColor.withOpacity(opacity);
+    return Color.lerp(defaultCalendarColor, heatMapColor, lerpValue) ??
+        defaultCalendarColor;
   }
 }
 
 class _DayItemWidget extends StatelessWidget {
   const _DayItemWidget(
-      {required this.data,
-      required this.color,
-      required this.defaultColor,
-      required this.size});
+      {required this.data, required this.color, required this.size});
   final Color color;
-  final Color defaultColor;
   final ContributionDayData data;
   final Size size;
 
@@ -164,11 +159,6 @@ class _DayItemWidget extends StatelessWidget {
             Container(
               margin: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                  color: defaultColor, borderRadius: BorderRadius.circular(4)),
-            ),
-            Container(
-              margin: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(4),
                 border: data.date.isToday
@@ -181,7 +171,10 @@ class _DayItemWidget extends StatelessWidget {
                 child: Text(
                   data.date.day.toString(),
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: ThemeData.estimateBrightnessForColor(color) ==
+                                Brightness.dark
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
               ),
