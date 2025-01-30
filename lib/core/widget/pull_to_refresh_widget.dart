@@ -46,7 +46,7 @@ class PullToRefreshWidget extends StatelessWidget {
                             shape: BoxShape.circle),
                         child: Icon(
                           Icons.refresh_rounded,
-                          color: Theme.of(context).colorScheme.primaryContainer,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ),

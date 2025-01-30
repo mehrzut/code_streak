@@ -13,7 +13,6 @@ import 'package:code_streak/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,9 +65,7 @@ class _MainAppState extends State<MainApp> {
         );
       },
       child: MaterialApp.router(
-        theme: MyTheme.data.copyWith(
-            textTheme:
-                GoogleFonts.spaceGroteskTextTheme(ThemeData.dark().textTheme)),
+        theme: MyTheme.dark,
         routerConfig: router,
       ),
     );
