@@ -1,4 +1,6 @@
+import 'package:code_streak/core/extensions.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
+import 'package:code_streak/features/home/presentation/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -13,6 +15,10 @@ class UserInfoWidget extends StatelessWidget {
       enableSwitchAnimation: true,
       child: Row(
         children: [
+          UserAvatar(
+            state: state,
+            size: 48,
+          ),
           Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +32,7 @@ class UserInfoWidget extends StatelessWidget {
               )
             ],
           ))
-        ],
+        ].horizontalPadding(16),
       ),
     );
   }

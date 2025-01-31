@@ -8,9 +8,9 @@ import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/widgets/contribution_calendar_widget.dart';
 import 'package:code_streak/features/home/presentation/widgets/reminder_status_widget.dart';
-import 'package:code_streak/features/home/presentation/widgets/user_avatar.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_info_widget.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_streak_widget.dart';
+import 'package:code_streak/features/theme/presentation/bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -64,20 +64,25 @@ class _HomePage extends State<HomePage> {
             )
           ],
           leadingWidth: 96,
-          leading: BlocBuilder<UserInfoBloc, UserInfoState>(
+          leading: BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    UserAvatar(
-                      state: state,
-                      size: 48,
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: IconButton(
+                      icon: Icon(
+                        state.when(
+                          dark: () => Icons.light_mode,
+                          light: () => Icons.dark_mode,
+                        ),
+                      ),
+                      onPressed: _toggleTheme,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
             },
           ),
@@ -208,5 +213,9 @@ class _HomePage extends State<HomePage> {
         },
       );
     }
+  }
+
+  void _toggleTheme() {
+    context.read<ThemeBloc>().add(const ThemeEvent.toggle());
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:appwrite/models.dart';
 import 'package:code_streak/core/data/failure.dart';
@@ -18,6 +19,9 @@ abstract class LocalDatabase {
 
   Future<void> deleteContributions();
   Future<ContributionsData?> getContributions();
+
+  Future<Brightness> checkTheme();
+  Future<void> saveTheme(Brightness brightness);
 }
 
 @LazySingleton(as: LocalDatabase)
@@ -30,6 +34,7 @@ class LocalDatabaseImpl implements LocalDatabase {
 
   static const _sessionKey = 'SESSION_KEY';
   static const _contributionsKey = 'CONTRIBUTIONS_KEY';
+  static const _themeKey = 'THEME_KEY';
 
   @override
   Future<ResponseModel<Session>> loadSession() async {
@@ -71,5 +76,22 @@ class LocalDatabaseImpl implements LocalDatabase {
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<Brightness> checkTheme() async {
+    final data = await _storage.read(key: _themeKey);
+    if (data != null) {
+      return data == 'dark' ? Brightness.dark : Brightness.light;
+    } else {
+      return Brightness.dark;
+    }
+  }
+
+  @override
+  Future<void> saveTheme(Brightness brightness) {
+    return _storage.write(
+        key: _themeKey,
+        value: brightness == Brightness.dark ? 'dark' : 'light');
   }
 }

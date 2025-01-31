@@ -155,7 +155,7 @@ class MyTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFFFFFFFF),
       foregroundColor: Color(0xFF121417),
-      surfaceTintColor: Color(0xffffffff),
+      surfaceTintColor: Color.fromARGB(255, 227, 241, 253),
     ),
     colorScheme: const ColorScheme.light(
       brightness: Brightness.light,
@@ -174,7 +174,7 @@ class MyTheme {
       primaryContainer: Color(0xFFD6E8F7),
       onPrimaryContainer: Color(0xFF003A70),
       surfaceContainerHigh: Color(0xFFEDF5FF),
-      surfaceContainerLow: Color(0xFF003A70),
+      surfaceContainerLow: Color(0xFF1980E8),
       outline: Color.fromARGB(255, 216, 221, 227),
       tertiary: Color(0xFF2E8B57),
       onTertiary: Color(0xFFFFFFFF),

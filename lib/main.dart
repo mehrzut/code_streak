@@ -3,6 +3,7 @@ import 'package:code_streak/common/my_theme.dart';
 import 'package:code_streak/core/controllers/navigation_helper.dart';
 import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
+import 'package:code_streak/features/theme/presentation/bloc/theme_bloc.dart';
 import 'package:code_streak/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -30,6 +31,9 @@ void main() async {
       BlocProvider(
         create: (context) => sl<SignOutBloc>(),
       ),
+      BlocProvider(
+        create: (context) => sl<ThemeBloc>(),
+      ),
     ],
     child: const MainApp(),
   ));
@@ -53,6 +57,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   void initState() {
+    _loadTheme();
     super.initState();
   }
 
@@ -64,9 +69,16 @@ class _MainAppState extends State<MainApp> {
           success: () => _handleSignOut(),
         );
       },
-      child: MaterialApp.router(
-        theme: MyTheme.dark,
-        routerConfig: router,
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            theme: state.when(
+              dark: () => MyTheme.dark,
+              light: () => MyTheme.light,
+            ),
+            routerConfig: router,
+          );
+        },
       ),
     );
   }
@@ -76,5 +88,9 @@ class _MainAppState extends State<MainApp> {
         .key
         .currentContext
         ?.pushReplacementNamed(AuthPage.pageRoute);
+  }
+
+  void _loadTheme() {
+    context.read<ThemeBloc>().add(const ThemeEvent.check());
   }
 }

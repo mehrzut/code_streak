@@ -23,11 +23,22 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [avatar, loginImage];
 }
 
+class $AssetsJsonsGen {
+  const $AssetsJsonsGen();
+
+  /// File path: assets/jsons/crown.json
+  String get crown => 'assets/jsons/crown.json';
+
+  /// List of all assets
+  List<String> get values => [crown];
+}
+
 class Assets {
   Assets._();
 
   static const String aEnv = 'assets/.env';
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsJsonsGen jsons = $AssetsJsonsGen();
 
   /// List of all assets
   static List<String> get values => [aEnv];

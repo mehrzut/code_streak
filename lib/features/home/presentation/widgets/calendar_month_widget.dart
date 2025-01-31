@@ -1,6 +1,8 @@
 import 'package:code_streak/core/extensions.dart';
 import 'package:code_streak/features/home/domain/entities/contribution_day_data.dart';
+import 'package:code_streak/features/theme/presentation/bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CalendarMonthWidget extends StatelessWidget {
   const CalendarMonthWidget(
@@ -156,28 +158,38 @@ class _DayItemWidget extends StatelessWidget {
           alignment: Alignment.center,
           fit: StackFit.expand,
           children: [
-            Container(
-              margin: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(4),
-                border: data.date.isToday
-                    ? Border.all(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        width: 1)
-                    : null,
-              ),
-              child: Center(
-                child: Text(
-                  data.date.day.toString(),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: ThemeData.estimateBrightnessForColor(color) ==
-                                Brightness.dark
-                            ? Theme.of(context).colorScheme.onPrimary
-                            : Theme.of(context).colorScheme.onSurface,
-                      ),
-                ),
-              ),
+            BlocBuilder<ThemeBloc, ThemeState>(
+              builder: (context, state) {
+                return Container(
+                  margin: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(4),
+                    border: data.date.isToday
+                        ? Border.all(
+                            color: state.when(
+                              dark: () =>
+                                  Theme.of(context).colorScheme.onPrimary,
+                              light: () =>
+                                  Theme.of(context).colorScheme.onSurface,
+                            ),
+                            width: 1)
+                        : null,
+                  ),
+                  child: Center(
+                    child: Text(
+                      data.date.day.toString(),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color:
+                                ThemeData.estimateBrightnessForColor(color) ==
+                                        Brightness.dark
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).colorScheme.onSurface,
+                          ),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

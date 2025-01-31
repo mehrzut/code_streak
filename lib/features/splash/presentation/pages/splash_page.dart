@@ -4,6 +4,7 @@ import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/features/home/presentation/pages/home_page.dart';
 import 'package:code_streak/features/splash/presentation/widgets/version_widget.dart';
+import 'package:code_streak/features/theme/presentation/bloc/theme_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,22 +54,36 @@ class _SplashPage extends State<SplashPage> {
           children: [
             Expanded(
               child: Center(
-                child: Text(
-                  'CodeStreak',
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        color:
-                            Theme.of(context).colorScheme.surfaceContainerLow,
-                      ),
-                )
-                    .animate(
-                      onComplete: (controller) =>
-                          controller.repeat(reverse: true),
-                      onInit: (controller) => controller.repeat(reverse: true),
+                child: BlocBuilder<ThemeBloc, ThemeState>(
+                  builder: (context, state) {
+                    return Text(
+                      'CodeStreak',
+                      style:
+                          Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerLow,
+                              ),
                     )
-                    .tint(
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                      duration: const Duration(seconds: 1),
-                    ),
+                        .animate(
+                          onComplete: (controller) =>
+                              controller.repeat(reverse: true),
+                          onInit: (controller) =>
+                              controller.repeat(reverse: true),
+                        )
+                        .tint(
+                          color: state.when(
+                            dark: () => Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHigh,
+                            light: () => Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerLow,
+                          ),
+                          duration: const Duration(seconds: 1),
+                        );
+                  },
+                ),
               ),
             ),
             const Padding(
