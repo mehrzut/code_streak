@@ -1,4 +1,5 @@
 import 'package:code_streak/core/extensions.dart';
+import 'package:code_streak/core/widget/glowing_text.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -30,14 +31,37 @@ class UserStreakWidget extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  '${state.data?.currentDailyStreak ?? 0}',
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      color: state.data?.hasContributionsToday ?? false
-                          ? Theme.of(context).colorScheme.secondary
-                          : Theme.of(context).colorScheme.inversePrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 72),
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    (state.data?.hasContributionsToday ?? false)
+                        ? GlowingText(
+                            '${state.data?.currentDailyStreak ?? 0}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 72,
+                                ),
+                            shadowColor: Theme.of(context).colorScheme.primary,
+                          )
+                        : Text(
+                            '${state.data?.currentDailyStreak ?? 0}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 72,
+                                ),
+                          ),
+                  ],
                 ),
                 Expanded(
                   child: Padding(
