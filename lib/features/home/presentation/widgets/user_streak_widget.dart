@@ -46,7 +46,10 @@ class UserStreakWidget extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 72,
                                 ),
-                            shadowColor: Theme.of(context).colorScheme.primary,
+                            shadowColor: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.3),
                           )
                         : Text(
                             '${state.data?.currentDailyStreak ?? 0}',
