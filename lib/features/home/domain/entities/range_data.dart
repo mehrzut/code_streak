@@ -20,4 +20,8 @@ class RangeData with _$RangeData {
         ),
         empty: () => [],
       );
+
+  DateTime? get start => when(range: (start, end) => start, empty: () => null);
+
+  DateTime? get end => when(range: (start, end) => end, empty: () => null);
 }

@@ -189,22 +189,19 @@ class ContributionsData with _$ContributionsData {
   }
 
   RangeData getNotExistingRange(DateTime start, DateTime end) {
-    final dates = allDaysContributionData.map((e) => e.date).toList();
-    dates.sort(
-      (a, b) => a.compareTo(b),
-    );
-    final startDate =
-        RangeData.range(start: start, end: end).dates.firstWhereOrNull(
-              (element) => !dates.contains(element),
-            );
-    final endDate =
-        RangeData.range(start: start, end: end).dates.lastWhereOrNull(
-              (element) => !dates.contains(element),
-            );
-    if (startDate == null || endDate == null) {
+    final expectedDates = RangeData.range(start: start, end: end).dates;
+    final actualDates = allDaysContributionData.map((e) => e.date).toList();
+    actualDates.sort((a, b) => a.compareTo(b));
+    // Remove the end date to consider it incomplete.
+    if (actualDates.contains(end)) {
+      actualDates.remove(end);
+    }
+    final missingDates =
+        expectedDates.where((date) => !actualDates.contains(date)).toList();
+    if (missingDates.isEmpty) {
       return RangeData.empty();
     } else {
-      return RangeData.range(start: startDate, end: endDate);
+      return RangeData.range(start: missingDates.first, end: missingDates.last);
     }
   }
 
