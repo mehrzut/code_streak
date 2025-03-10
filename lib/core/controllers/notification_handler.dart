@@ -81,9 +81,8 @@ class NotificationHandler {
     String day = _padZero(now.day);
     String hour = _padZero(now.hour);
     String minute = _padZero(now.minute);
-    String second = _padZero(now.second);
 
-    return int.parse(day + hour + minute + second);
+    return int.parse(day + hour + minute);
   }
 
   static String _padZero(int value) {
