@@ -48,6 +48,7 @@ class NotificationHandler {
         ),
       );
       _addOnReceiveMessageListener();
+      _addOnReceiveBackgroundMessageListener();
       _addTokenRefreshListener();
       return result.authorizationStatus == AuthorizationStatus.authorized;
     } catch (e) {
@@ -58,15 +59,24 @@ class NotificationHandler {
 
   static void _addOnReceiveMessageListener() {
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification != null) {
-        _showLocalNotification(
-            title: message.notification!.title ?? '',
-            message: message.notification!.body ?? '',
-            data: jsonEncode(message.data));
-      }
+      _showLocalNotification(
+          title: message.title,
+          message: message.body,
+          data: jsonEncode(message.data));
     });
   }
 
+  static void _addOnReceiveBackgroundMessageListener() {
+    FirebaseMessaging.onBackgroundMessage((message) async {
+      _showLocalNotification(
+          title: message.title,
+          message: message.body,
+          data: jsonEncode(message.data));
+    });
+  }
+
+  // annotate to ignore in tree shaking
+  @pragma('vm:entry-point')
   static void _showLocalNotification(
       {required String title, required String message, String? data}) {
     FlutterLocalNotificationsPlugin()
@@ -168,5 +178,15 @@ extension NotificationDetailsExt on NotificationDetails {
       linux: linux,
       macOS: macOS,
     );
+  }
+}
+
+extension RemoteMessageExt on RemoteMessage {
+  String get title {
+    return notification?.title ?? data['title'] ?? '';
+  }
+
+  String get body {
+    return notification?.body ?? data['body'] ?? '';
   }
 }
