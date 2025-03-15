@@ -8,30 +8,30 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+const NotificationDetails _details = NotificationDetails(
+  android: AndroidNotificationDetails(
+    "com.code_streak.app.push.notif.channel",
+    'Reminder Notifications',
+    playSound: true,
+    enableVibration: true,
+    fullScreenIntent: true,
+    importance: Importance.max,
+    priority: Priority.max,
+    visibility: NotificationVisibility.public,
+  ),
+  iOS: DarwinNotificationDetails(),
+);
+
+const AndroidNotificationChannel _reminderChannel = AndroidNotificationChannel(
+  "com.code_streak.app.push.notif.channel",
+  'Reminder Notifications',
+  importance: Importance.max,
+);
+
 class NotificationHandler {
   static FlutterLocalNotificationsPlugin localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  static const NotificationDetails _details = NotificationDetails(
-    android: AndroidNotificationDetails(
-      "com.code_streak.app.push.notif.channel",
-      'Reminder Notifications',
-      playSound: true,
-      enableVibration: true,
-      fullScreenIntent: true,
-      importance: Importance.max,
-      priority: Priority.max,
-      visibility: NotificationVisibility.public,
-    ),
-    iOS: DarwinNotificationDetails(),
-  );
-
-  static const AndroidNotificationChannel reminderChannel =
-      AndroidNotificationChannel(
-    "com.code_streak.app.push.notif.channel",
-    'Reminder Notifications',
-    importance: Importance.max,
-  );
   static Future<bool> initialize() async {
     try {
       final result = await FirebaseMessaging.instance.requestPermission();
@@ -39,7 +39,7 @@ class NotificationHandler {
         await localNotifications
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
-            ?.createNotificationChannel(reminderChannel);
+            ?.createNotificationChannel(_reminderChannel);
       }
       await localNotifications.initialize(
         const InitializationSettings(
@@ -58,35 +58,21 @@ class NotificationHandler {
 
   static void _addOnReceiveMessageListener() {
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification != null) {
-        _showLocalNotification(
-            title: message.notification!.title ?? '',
-            message: message.notification!.body ?? '',
-            data: jsonEncode(message.data));
-      }
+      final content = getContent(message);
+      _showLocalNotification(
+          title: content.$1,
+          message: content.$2,
+          data: jsonEncode(message.data));
     });
   }
 
   static void _showLocalNotification(
       {required String title, required String message, String? data}) {
-    FlutterLocalNotificationsPlugin()
+    localNotifications
         .show(generateTimeBasedId(), title, message,
             _details.supportLongContent(message),
             payload: data)
         .then((_) {});
-  }
-
-  static int generateTimeBasedId() {
-    DateTime now = DateTime.now();
-    String day = _padZero(now.day);
-    String hour = _padZero(now.hour);
-    String minute = _padZero(now.minute);
-
-    return int.parse(day + hour + minute);
-  }
-
-  static String _padZero(int value) {
-    return value.toString().padLeft(2, '0');
   }
 
   static void _addTokenRefreshListener() {
@@ -168,4 +154,36 @@ extension NotificationDetailsExt on NotificationDetails {
       macOS: macOS,
     );
   }
+}
+
+(String, String) getContent(RemoteMessage message) {
+  final body = message.notification?.body ?? message.data['body'] ?? '';
+  final title = message.notification?.title ?? message.data['title'] ?? '';
+  return (title, body);
+}
+
+int generateTimeBasedId() {
+  DateTime now = DateTime.now();
+  String day = _padZero(now.day);
+  String hour = _padZero(now.hour);
+  String minute = _padZero(now.minute);
+
+  return int.parse(day + hour + minute);
+}
+
+String _padZero(int value) {
+  return value.toString().padLeft(2, '0');
+}
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  final content = getContent(message);
+  FlutterLocalNotificationsPlugin()
+      .show(
+        generateTimeBasedId(),
+        content.$1,
+        content.$2,
+        _details.supportLongContent(content.$2),
+      )
+      .then((_) {});
 }
