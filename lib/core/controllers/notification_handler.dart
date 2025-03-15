@@ -59,10 +59,12 @@ class NotificationHandler {
   static void _addOnReceiveMessageListener() {
     FirebaseMessaging.onMessage.listen((message) {
       final content = getContent(message);
-      _showLocalNotification(
-          title: content.$1,
-          message: content.$2,
-          data: jsonEncode(message.data));
+      if (content.$1.isNotEmpty && content.$2.isNotEmpty) {
+        _showLocalNotification(
+            title: content.$1,
+            message: content.$2,
+            data: jsonEncode(message.data));
+      }
     });
   }
 
@@ -177,13 +179,27 @@ String _padZero(int value) {
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Initialize FlutterLocalNotificationsPlugin
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  // Initialization settings for both platforms
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+    iOS: DarwinInitializationSettings(),
+  );
+  // Initialize the plugin
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
   final content = getContent(message);
-  FlutterLocalNotificationsPlugin()
-      .show(
-        generateTimeBasedId(),
-        content.$1,
-        content.$2,
-        _details.supportLongContent(content.$2),
-      )
-      .then((_) {});
+  if (content.$1.isNotEmpty && content.$2.isNotEmpty) {
+    await flutterLocalNotificationsPlugin
+        .show(
+          generateTimeBasedId(),
+          content.$1,
+          content.$2,
+          _details.supportLongContent(content.$2),
+        )
+        .then((_) {});
+  }
 }
