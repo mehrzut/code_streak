@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'package:code_streak/common/my_theme.dart';
 import 'package:code_streak/core/controllers/navigation_helper.dart';
+import 'package:code_streak/core/controllers/notification_handler.dart';
 import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/features/theme/presentation/bloc/theme_bloc.dart';
 import 'package:code_streak/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:code_streak/features/auth/presentation/bloc/auth_bloc.dart';
@@ -22,6 +24,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await configureDependencies();
   runApp(MultiBlocProvider(
     providers: [

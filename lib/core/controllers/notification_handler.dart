@@ -8,30 +8,30 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+const NotificationDetails _details = NotificationDetails(
+  android: AndroidNotificationDetails(
+    "com.code_streak.app.push.notif.channel",
+    'Reminder Notifications',
+    playSound: true,
+    enableVibration: true,
+    fullScreenIntent: true,
+    importance: Importance.max,
+    priority: Priority.max,
+    visibility: NotificationVisibility.public,
+  ),
+  iOS: DarwinNotificationDetails(),
+);
+
+const AndroidNotificationChannel _reminderChannel = AndroidNotificationChannel(
+  "com.code_streak.app.push.notif.channel",
+  'Reminder Notifications',
+  importance: Importance.max,
+);
+
 class NotificationHandler {
   static FlutterLocalNotificationsPlugin localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  static const NotificationDetails _details = NotificationDetails(
-    android: AndroidNotificationDetails(
-      "com.code_streak.app.push.notif.channel",
-      'Reminder Notifications',
-      playSound: true,
-      enableVibration: true,
-      fullScreenIntent: true,
-      importance: Importance.max,
-      priority: Priority.max,
-      visibility: NotificationVisibility.public,
-    ),
-    iOS: DarwinNotificationDetails(),
-  );
-
-  static const AndroidNotificationChannel reminderChannel =
-      AndroidNotificationChannel(
-    "com.code_streak.app.push.notif.channel",
-    'Reminder Notifications',
-    importance: Importance.max,
-  );
   static Future<bool> initialize() async {
     try {
       final result = await FirebaseMessaging.instance.requestPermission();
@@ -39,7 +39,7 @@ class NotificationHandler {
         await localNotifications
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
-            ?.createNotificationChannel(reminderChannel);
+            ?.createNotificationChannel(_reminderChannel);
       }
       await localNotifications.initialize(
         const InitializationSettings(
@@ -48,7 +48,6 @@ class NotificationHandler {
         ),
       );
       _addOnReceiveMessageListener();
-      _addOnReceiveBackgroundMessageListener();
       _addTokenRefreshListener();
       return result.authorizationStatus == AuthorizationStatus.authorized;
     } catch (e) {
@@ -59,19 +58,13 @@ class NotificationHandler {
 
   static void _addOnReceiveMessageListener() {
     FirebaseMessaging.onMessage.listen((message) {
-      _showLocalNotification(
-          title: message.title,
-          message: message.body,
-          data: jsonEncode(message.data));
-    });
-  }
-
-  static void _addOnReceiveBackgroundMessageListener() {
-    FirebaseMessaging.onBackgroundMessage((message) async {
-      _showLocalNotification(
-          title: message.title,
-          message: message.body,
-          data: jsonEncode(message.data));
+      final content = getContent(message);
+      if (content.$1.isNotEmpty && content.$2.isNotEmpty) {
+        _showLocalNotification(
+            title: content.$1,
+            message: content.$2,
+            data: jsonEncode(message.data));
+      }
     });
   }
 
@@ -79,25 +72,11 @@ class NotificationHandler {
   @pragma('vm:entry-point')
   static void _showLocalNotification(
       {required String title, required String message, String? data}) {
-    FlutterLocalNotificationsPlugin()
+    localNotifications
         .show(generateTimeBasedId(), title, message,
             _details.supportLongContent(message),
             payload: data)
         .then((_) {});
-  }
-
-  static int generateTimeBasedId() {
-    DateTime now = DateTime.now();
-    String day = _padZero(now.day);
-    String hour = _padZero(now.hour);
-    String minute = _padZero(now.minute);
-    String second = _padZero(now.second);
-
-    return int.parse(day + hour + minute + second);
-  }
-
-  static String _padZero(int value) {
-    return value.toString().padLeft(2, '0');
   }
 
   static void _addTokenRefreshListener() {
@@ -181,12 +160,48 @@ extension NotificationDetailsExt on NotificationDetails {
   }
 }
 
-extension RemoteMessageExt on RemoteMessage {
-  String get title {
-    return notification?.title ?? data['title'] ?? '';
-  }
+(String, String) getContent(RemoteMessage message) {
+  final body = message.notification?.body ?? message.data['body'] ?? '';
+  final title = message.notification?.title ?? message.data['title'] ?? '';
+  return (title, body);
+}
 
-  String get body {
-    return notification?.body ?? data['body'] ?? '';
+int generateTimeBasedId() {
+  DateTime now = DateTime.now();
+  String day = _padZero(now.day);
+  String hour = _padZero(now.hour);
+  String minute = _padZero(now.minute);
+
+  return int.parse(day + hour + minute);
+}
+
+String _padZero(int value) {
+  return value.toString().padLeft(2, '0');
+}
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Initialize FlutterLocalNotificationsPlugin
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  // Initialization settings for both platforms
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+    iOS: DarwinInitializationSettings(),
+  );
+  // Initialize the plugin
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  final content = getContent(message);
+  if (content.$1.isNotEmpty && content.$2.isNotEmpty) {
+    await flutterLocalNotificationsPlugin
+        .show(
+          generateTimeBasedId(),
+          content.$1,
+          content.$2,
+          _details.supportLongContent(content.$2),
+        )
+        .then((_) {});
   }
 }
