@@ -39,13 +39,16 @@ class ContributionsData with _$ContributionsData {
       contributionCalendar.expand((element) => element.days).toList();
 
   int get currentDailyStreak {
+    if (allDaysContributionData.isEmpty) {
+      return 0;
+    }
     final sorted = allDaysContributionData
       ..sort(
         (a, b) => b.date.compareTo(a.date),
       );
     final startIndex = hasContributionsToday ? 0 : 1;
     return sorted
-        .sublist(startIndex, startIndex + math.min(sorted.length - 1, 365))
+        .sublist(startIndex, startIndex + math.min(sorted.length, 365))
         .fromStartUntil(
           (element) => element.contributionCount == 0,
         )
@@ -95,6 +98,9 @@ class ContributionsData with _$ContributionsData {
   }
 
   int get currentWeeklyStreak {
+    if (contributionCalendar.isEmpty) {
+      return 0;
+    }
     final sortedWeeks = [...contributionCalendar]
       ..sort((a, b) => b.days.first.date.compareTo(a.days.first.date));
     int streak = 0;
