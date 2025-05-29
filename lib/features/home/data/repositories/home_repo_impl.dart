@@ -5,6 +5,7 @@ import 'package:code_streak/features/home/domain/entities/contributions_data.dar
 import 'package:code_streak/features/home/domain/entities/range_data.dart';
 import 'package:code_streak/features/home/domain/entities/user_info.dart';
 import 'package:code_streak/features/home/domain/repositories/home_repo.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: HomeRepo)
@@ -59,5 +60,14 @@ class HomeRepoImpl implements HomeRepo {
   @override
   Future<ResponseModel<bool>> setUserReminders() {
     return dataSource.setUserReminders();
+  }
+
+  @override
+  Future<ResponseModel<TimeOfDay>> getNotificationTime() {
+    return dataSource.getNotificationTime();
+  }
+  @override
+  Future<ResponseModel<bool>> setNotificationTime(TimeOfDay notificationTime) {
+    return dataSource.setNotificationTime(notificationTime);
   }
 }

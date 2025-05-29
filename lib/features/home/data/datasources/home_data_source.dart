@@ -14,6 +14,7 @@ import 'package:code_streak/features/home/domain/entities/contributions_data.dar
 import 'package:code_streak/features/home/domain/entities/user_info.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 
@@ -26,6 +27,10 @@ abstract class HomeDataSource {
   Future<ResponseModel<UserInfo>> fetchUserInfo();
 
   Future<ResponseModel<bool>> setUserReminders();
+
+  Future<ResponseModel<bool>> setNotificationTime(TimeOfDay notificationTime);
+  
+  Future<ResponseModel<TimeOfDay>> getNotificationTime();
 }
 
 @LazySingleton(as: HomeDataSource)
@@ -176,6 +181,47 @@ class HomeDataSourceImpl implements HomeDataSource {
       } else {
         return ResponseModel.failed(FirebaseFailure());
       }
+    } catch (e) {
+      log(e.toString());
+      return ResponseModel.failed(AppWritePrefFailure());
+    }
+  }
+
+  @override
+  Future<ResponseModel<bool>> setNotificationTime(
+      TimeOfDay notificationTime) async {
+    try {
+      await ClientHandler.instance.account.updatePrefs(prefs: {
+        'notificationTime':
+             '${notificationTime.hour.toString().padLeft(2, '0')}:${notificationTime.minute.toString().padLeft(2, '0')}:00'
+      });
+      return ResponseModel.success(true);
+    } catch (e) {
+      log(e.toString());
+      return ResponseModel.failed(AppWritePrefFailure());
+    }
+  }
+  
+  @override
+  Future<ResponseModel<TimeOfDay>> getNotificationTime() async {
+    try {
+      final prefs = await ClientHandler.instance.account.getPrefs();
+      final notificationTimeStr = prefs.data['notificationTime'];
+      
+      if (notificationTimeStr == null) {
+        // Return default time of 21:00 if no time is set
+        return ResponseModel.success(const TimeOfDay(hour: 21, minute: 0));
+      }
+      
+      final timeParts = notificationTimeStr.split(':');
+      if (timeParts.length >= 2) {
+        final hour = int.tryParse(timeParts[0]) ?? 0;
+        final minute = int.tryParse(timeParts[1]) ?? 0;
+        return ResponseModel.success(TimeOfDay(hour: hour, minute: minute));
+      }
+      
+      // Return default time if format is invalid
+      return ResponseModel.success(const TimeOfDay(hour: 21, minute: 0));
     } catch (e) {
       log(e.toString());
       return ResponseModel.failed(AppWritePrefFailure());

@@ -4,10 +4,11 @@ import 'package:code_streak/core/widget/pull_to_refresh_widget.dart';
 import 'package:code_streak/features/auth/presentation/bloc/sign_out_bloc.dart';
 import 'package:code_streak/features/home/domain/entities/contributions_data.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
+import 'package:code_streak/features/home/presentation/bloc/notification_time_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/widgets/contribution_calendar_widget.dart';
-import 'package:code_streak/features/home/presentation/widgets/reminder_status_widget.dart';
+import 'package:code_streak/features/home/presentation/widgets/notification_reminder_widget.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_info_widget.dart';
 import 'package:code_streak/features/home/presentation/widgets/user_streak_widget.dart';
 import 'package:code_streak/features/theme/presentation/bloc/theme_bloc.dart';
@@ -34,6 +35,7 @@ class _HomePage extends State<HomePage> {
   void _handleInitialization() {
     _getUserInfo();
     _setUserReminder();
+    _getNotificationTime();
   }
 
   double get appbarExpandedHeight => MediaQuery.sizeOf(context).width;
@@ -124,11 +126,18 @@ class _HomePage extends State<HomePage> {
                         }),
                         BlocBuilder<ReminderBloc, ReminderState>(
                           builder: (context, state) {
-                            return ReminderStatusWidget(
-                              state: state,
+                            return BlocBuilder<NotificationTimeBloc,
+                                NotificationTimeState>(
+                              builder: (context, notifState) {
+                                return NotificationReminderWidget(
+                                  reminderState: state,
+                                  notificationTimeState: notifState,
+                                );
+                              },
                             );
                           },
                         ),
+                     
                         BlocBuilder<UserInfoBloc, UserInfoState>(
                           builder: (context, infoState) {
                             return BlocBuilder<ContributionsBloc,
@@ -217,5 +226,9 @@ class _HomePage extends State<HomePage> {
 
   void _toggleTheme() {
     context.read<ThemeBloc>().add(const ThemeEvent.toggle());
+  }
+
+  void _getNotificationTime() {
+    context.read<NotificationTimeBloc>().add(NotificationTimeEvent.get());
   }
 }

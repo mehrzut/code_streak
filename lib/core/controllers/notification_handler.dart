@@ -34,7 +34,7 @@ class NotificationHandler {
 
   static Future<bool> initialize() async {
     try {
-      final result = await FirebaseMessaging.instance.requestPermission();
+      final result = await requestPermission();
       if (Platform.isAndroid) {
         await localNotifications
             .resolvePlatformSpecificImplementation<
@@ -98,6 +98,10 @@ class NotificationHandler {
         }
       }
     });
+  }
+
+  static Future<NotificationSettings> requestPermission() {
+    return FirebaseMessaging.instance.requestPermission();
   }
 }
 

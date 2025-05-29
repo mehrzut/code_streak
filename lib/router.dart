@@ -1,6 +1,7 @@
 import 'package:code_streak/core/controllers/navigation_helper.dart';
 import 'package:code_streak/features/auth/presentation/pages/auth_page.dart';
 import 'package:code_streak/features/home/presentation/bloc/contributions_bloc.dart';
+import 'package:code_streak/features/home/presentation/bloc/notification_time_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/reminder_bloc.dart';
 import 'package:code_streak/features/home/presentation/bloc/user_info_bloc.dart';
 import 'package:code_streak/features/home/presentation/pages/home_page.dart';
@@ -31,6 +32,9 @@ final router = GoRouter(
           ),
           BlocProvider(
             create: (context) => sl<ReminderBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<NotificationTimeBloc>(),
           ),
         ],
         child: const HomePage(),
